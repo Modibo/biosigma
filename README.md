@@ -1,0 +1,230 @@
+# BioSigma
+
+Application mobile (Android/iOS), en français, de calculs de biochimie clinique et d'hémostase
+pour les biologistes médicaux et professionnels de santé. Fonctionne **entièrement hors
+connexion** : tous les calculs s'exécutent sur l'appareil, aucun compte ni serveur.
+
+> **Outil d'aide au calcul.** Chaque résultat doit être confronté aux données analytiques et
+> cliniques, et validé par un professionnel compétent. BioSigma ne pose jamais de diagnostic.
+
+## Sommaire
+
+- [Architecture](#architecture)
+- [Prérequis](#prérequis)
+- [Installer et lancer l'application](#installer-et-lancer-lapplication)
+- [Exécuter les tests](#exécuter-les-tests)
+- [Construire les paquets Android (APK) et iOS](#construire-les-paquets-android-apk-et-ios)
+- [Héberger la version web sur un sous-domaine](#héberger-la-version-web-sur-un-sous-domaine)
+- [Catalogue des calculs et sources scientifiques](#catalogue-des-calculs-et-sources-scientifiques)
+- [Décisions qui dépendent de la validation du laboratoire](#décisions-qui-dépendent-de-la-validation-du-laboratoire)
+- [Confidentialité](#confidentialité)
+- [État du projet : ce qui est construit et testé, ce qui reste à faire](#état-du-projet--ce-qui-est-construit-et-testé-ce-qui-reste-à-faire)
+
+## Architecture
+
+Monorepo à deux paquets Dart/Flutter :
+
+```
+BioSigma/
+  packages/biosigma_core/   # Moteur de calcul PUR — aucune dépendance Flutter
+    lib/src/models/         # Quantity, CalculationResult, FormulaMeta, Reference, erreurs
+    lib/src/units/          # Bibliothèque centrale de conversion d'unités (Analyte, UnitRegistry)
+    lib/src/calculators/    # 32 fonctions de calcul pures, groupées par domaine :
+      renal/  metabolic/  ionogram/  hemostasis/
+    lib/src/catalog.dart    # Registre déclaratif des métadonnées (recherche, catégories)
+    test/                   # 95 tests unitaires (dart test)
+  app/biosigma/              # Application Flutter
+    lib/models/               Contrat déclaratif du formulaire (CalculatorDefinition, champs)
+    lib/data/                 Câblage des 32 calculateurs (formulaire ↔ fonction du moteur)
+    lib/screens/               accueil, calculateur générique, panel CKD-EPI, scores guidés
+                                (ISTH-CIVD, 4Ts), réglages, références
+    lib/services/              stockage local (réglages/historique/seuils), formatage des nombres
+    lib/state/                 état applicatif partagé (provider)
+    test/                      tests widget (dart test / flutter test), parcours bout en bout
+    android/ ios/               projets natifs générés par `flutter create`, prêts à compiler
+  docs/
+    tracabilite-scientifique.md   Table complète : calcul → source → version → formule → limites
+    rapport-de-tests.md           Résultats des analyses et tests exécutés dans cette session
+    branding/                     Source SVG de l'icône (sigma + molécule + goutte)
+  README.md                       Ce document
+```
+
+**Pourquoi un paquet séparé `biosigma_core`** : c'est le noyau scientifique, testable avec le seul
+SDK Dart (sans Android Studio ni Xcode), indépendant de l'interface. Chaque calcul y est une
+fonction pure retournant une valeur, sa formule exacte, sa version/source, ses unités, ses
+avertissements et ses limites d'emploi — jamais un indice isolé.
+
+**Interface pilotée par déclaration** : chaque calcul standard est décrit par un
+`CalculatorDefinition` (`app/biosigma/lib/data/calculator_registry_*.dart`) qui relie ses champs de
+saisie à la fonction du moteur. Un seul écran générique (`calculator_screen.dart`) affiche la
+saisie, le résultat, les unités utilisées, la formule, la version et les limites. Trois écrans
+dédiés existent pour les cas explicitement composés par le cahier des charges : le panel DFG
+CKD-EPI (jusqu'à 3 équations côte à côte, jamais mélangées) et les modules guidés Score ISTH-CIVD
+et Score 4Ts (saisie pas à pas, jamais d'inférence d'une donnée manquante, interprétation masquée
+tant que le biologiste responsable n'a pas validé localement dans Réglages).
+
+## Prérequis
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (canal stable — testé avec Flutter
+  3.47.5 / Dart 3.13.4). Le SDK embarque Dart, aucune installation séparée n'est nécessaire.
+- Pour Android : Android Studio (SDK, plateforme, outils de build, un JDK 17+) et un appareil ou
+  émulateur.
+- Pour iOS : un Mac avec Xcode complet (pas seulement les Command Line Tools) et, pour un appareil
+  physique ou une publication, un compte développeur Apple.
+
+## Installer et lancer l'application
+
+```bash
+cd BioSigma/app/biosigma
+flutter pub get
+flutter run            # lance sur l'appareil/émulateur/navigateur connecté
+```
+
+Le paquet `biosigma_core` est référencé en dépendance locale (`path: ../../packages/biosigma_core`)
+dans `app/biosigma/pubspec.yaml` : aucune publication sur pub.dev n'est nécessaire.
+
+## Exécuter les tests
+
+```bash
+# Moteur de calcul pur (95 tests) :
+cd BioSigma/packages/biosigma_core
+dart analyze
+dart test
+
+# Application Flutter (analyse + tests widget, dont un parcours bout en bout) :
+cd BioSigma/app/biosigma
+flutter analyze
+flutter test
+```
+
+Résultats obtenus dans cette session : voir [`docs/rapport-de-tests.md`](docs/rapport-de-tests.md)
+— `dart analyze` et `flutter analyze` sans aucun problème, 95/95 puis 5/5 tests verts.
+
+## Construire les paquets Android (APK) et iOS
+
+### Android
+
+```bash
+cd BioSigma/app/biosigma
+flutter build apk --release      # APK de démonstration (signature debug par défaut)
+# ou, pour le Play Store :
+flutter build appbundle --release
+```
+
+Pour une signature de production, suivez le guide officiel
+[« Sign your Android app »](https://docs.flutter.dev/deployment/android#signing-the-app) (création
+d'un keystore, configuration de `android/key.properties`, référencé dans
+`android/app/build.gradle.kts`).
+
+**Non exécuté dans cette session** : cet environnement de développement ne contenait pas de SDK
+Android (aucun Android Studio, Gradle, JDK) — installation volontairement écartée avec
+l'utilisateur pour limiter le temps et le volume de téléchargement de cette passe. Le projet
+`android/` généré par `flutter create` est présent, personnalisé (nom « BioSigma », icônes
+générées), et prêt à compiler dès que ces outils sont installés.
+
+### iOS
+
+```bash
+cd BioSigma/app/biosigma
+flutter build ios --release      # nécessite Xcode complet et une équipe de signature configurée
+```
+
+Étapes restantes précises pour aller jusqu'à l'IPA :
+1. Ouvrir `ios/Runner.xcworkspace` dans Xcode.
+2. Sélectionner une équipe de développement (Signing & Capabilities) — un compte développeur
+   Apple est nécessaire pour un appareil physique ou TestFlight/App Store.
+3. `flutter build ipa --release`, ou archiver directement depuis Xcode (Product → Archive).
+
+**Non exécuté dans cette session** : seules les Command Line Tools Xcode sont installées sur cette
+machine (pas Xcode.app complet), et aucun compte développeur Apple n'est configuré pour la
+signature — conformément à la consigne de ne jamais prétendre livrer un IPA sans les moyens
+effectifs de le construire. Le projet `ios/` généré par `flutter create` est présent, personnalisé
+(nom « BioSigma », icônes générées), et prêt à compiler dès que ces prérequis sont réunis.
+
+### Vérification alternative effectuée dans cette session
+
+`flutter build web --release` compile avec succès (voir `docs/rapport-de-tests.md`) et a permis de
+vérifier visuellement l'ensemble des écrans dans un navigateur, y compris à largeur mobile (375 px)
+— une confirmation supplémentaire que le code Dart/Flutter est correct, en complément des tests
+automatisés, en l'absence d'émulateur/simulateur Android ou iOS dans cet environnement.
+
+## Héberger la version web sur un sous-domaine
+
+Flutter compile aussi vers le web (`flutter build web`) : cette même base de code peut être servie
+comme site à part entière, en plus (ou en attendant) des paquets Android/iOS. Un déploiement Docker
+prêt à l'emploi est fourni à la racine (`Dockerfile`, `nginx.conf`, `docker-compose.yml`,
+`docker-compose.caddy.yml`, `deploy/Caddyfile.biosigma`, `install-caddy.sh`) — construit et testé
+localement dans cette session (image Docker fonctionnelle, servie par nginx, vérifiée en HTTP 200).
+
+Pour l'installation sur le VPS partagé avec NexoLab et PhénoBac
+(`biosigma.komodi-labo.org`), voir [`DEPLOY-VPS.md`](DEPLOY-VPS.md) — spécifique à cette
+infrastructure (réseau Docker de la façade Caddy déjà identifié, commande de rechargement exacte).
+
+**Important** : la version web n'est qu'une vitrine supplémentaire du même moteur de calcul ; elle
+ne remplace pas les paquets Android/iOS natifs pour un usage professionnel hors connexion garanti
+(un navigateur reste tributaire du cache du service worker, moins robuste qu'une application
+installée). Le service worker généré par Flutter (`flutter_service_worker.js`) permet néanmoins un
+fonctionnement hors connexion après un premier chargement, avec mise à jour automatique à la
+prochaine visite en ligne.
+
+## Catalogue des calculs et sources scientifiques
+
+Voir [`docs/tracabilite-scientifique.md`](docs/tracabilite-scientifique.md) pour la table complète
+(32 calculs → source primaire → version → formule → unités → population → cas interdits →
+limites). Les 8 ajouts explicitement requis sont présents et testés : indice de Rosner, les trois
+équations CKD-EPI (créatinine 2021, cystatine C 2012, créatinine-cystatine C 2021), Schwartz
+bedside, protéinurie des 24 h, QUICKI et TyG.
+
+Les références complètes (citations) sont embarquées dans le code (`FormulaMeta.sources`) et
+consultables hors connexion depuis l'écran « Références et limites » de l'application.
+
+## Décisions qui dépendent de la validation du laboratoire
+
+BioSigma ne code aucun seuil interprétatif clinique comme une vérité universelle. Les points
+suivants nécessitent une décision et une validation propres à chaque laboratoire :
+
+1. **Confirmation IDMS** : une case à cocher est exigée avant tout calcul CKD-EPI/Schwartz — la
+   méthode analytique ne peut pas être vérifiée automatiquement par l'application.
+2. **Seuils interprétatifs** (HOMA-IR, TyG, indice athérogène, TSAT, A/G, ASAT/ALAT, indice de
+   Rosner…) : configurables dans Réglages → Seuils locaux (valeur, unité, méthode, date,
+   responsable de validation) ; aucune valeur par défaut n'est présentée comme universelle.
+3. **Formule LDL par défaut** (Friedewald ou Sampson) et seuil de triglycérides bloquant : un choix
+   par défaut est proposé mais reconfigurable.
+4. **Facteur transferrine → CTF** (×1,42 usuel) : affiché comme un facteur de laboratoire par
+   défaut, à confirmer localement.
+5. **Activation de l'interprétation des scores ISTH-CIVD et 4Ts** : les scores se calculent
+   toujours, mais leur texte d'interprétation clinique reste masqué tant que le biologiste
+   responsable n'a pas coché « interprétations locales validées » dans Réglages.
+6. **Coefficient de correction du sodium** (Katz 1,6 ou Hillier 2,4) : les deux résultats sont
+   toujours affichés côte à côte, le laboratoire retient celui qu'il utilise en pratique.
+
+## Confidentialité
+
+- Aucune identité de patient n'est jamais demandée ni stockée.
+- Aucune télémétrie, aucun accès réseau nécessaire au fonctionnement.
+- L'historique local est **désactivé par défaut** ; une fois activé, il ne contient que le calcul,
+  les entrées et le résultat (jamais d'identité), et peut être effacé à tout moment.
+- Un bouton « Supprimer toutes les données locales » (réglages, favoris, historique, seuils) est
+  disponible dans Réglages.
+- Copier ou partager un résultat exige une action explicite de l'utilisateur.
+
+## État du projet : ce qui est construit et testé, ce qui reste à faire
+
+| Élément | État |
+|---|---|
+| Moteur de calcul pur (32 calculs, conversions, métadonnées) | ✅ Construit, `dart analyze` propre, 95/95 tests verts |
+| Application Flutter (accueil, recherche, favoris, 32 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 5/5 tests widget verts, vérifiée visuellement (bureau et mobile) |
+| Icône et identité visuelle (bleu nuit/cyan/corail, sigma + molécule + goutte) | ✅ Générée pour Android et iOS (`flutter_launcher_icons`) |
+| Table de traçabilité scientifique complète | ✅ `docs/tracabilite-scientifique.md` |
+| Build web de démonstration | ✅ `flutter build web` réussi, utilisé pour la vérification visuelle |
+| Image Docker d'hébergement web (Dockerfile, nginx, Caddy) | ✅ Construite et testée localement (HTTP 200, en-têtes de cache corrects) ; non encore déployée sur le VPS — voir `DEPLOY-VPS.md` |
+| **APK Android** | ❌ Non construit : SDK Android absent de cet environnement (choix explicite pour cette passe). Projet `android/` prêt. |
+| **IPA iOS** | ❌ Non construit : Xcode complet et compte développeur Apple absents. Projet `ios/` prêt. |
+| Tests d'instrumentation sur appareil/émulateur réel | ❌ Non exécutés (pas de SDK Android/iOS) |
+| Revue scientifique finale par un biologiste responsable | ❌ À faire par le laboratoire avant mise en production |
+
+---
+
+*Nom de travail « BioSigma » et icône fournis à titre provisoire — remplaçables si une vérification
+de disponibilité du nom (stores, marques) le nécessite ; voir `docs/branding/icon.svg` pour la
+source modifiable de l'icône.*

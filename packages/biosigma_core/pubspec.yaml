@@ -1,0 +1,17 @@
+name: biosigma_core
+description: >
+  Moteur de calcul pur pour BioSigma : conversions d'unités, formules de
+  biochimie clinique et d'hémostase, métadonnées et références scientifiques.
+  Aucune dépendance Flutter — utilisable et testable avec le seul SDK Dart.
+version: 0.1.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.13.4
+
+dependencies:
+  meta: ^1.16.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

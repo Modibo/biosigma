@@ -1,0 +1,27 @@
+# docker-compose.caddy.yml — surcouche pour un serveur de façade EN CONTENEUR
+# (c'est le cas sur ce VPS : Caddy tourne dans le conteneur nexolab-api-caddy-1).
+#
+# « 127.0.0.1 » vu depuis le conteneur Caddy désigne SA PROPRE loopback, pas
+# celle de l'hôte : il ne peut pas atteindre BioSigma par cette adresse. La
+# solution est de placer les deux conteneurs sur le même réseau Docker, et de
+# laisser Caddy joindre BioSigma par son nom de conteneur.
+#
+#   1. PROXY_NETWORK est déjà connu pour ce VPS : nexolab-api_default
+#      (déjà utilisé par PhénoBac — vérifiable avec :
+#        docker inspect -f '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}' nexolab-api-caddy-1)
+#   2. Renseignez-le dans .env :  PROXY_NETWORK=nexolab-api_default
+#   3. Démarrez avec les DEUX fichiers :
+#        docker compose -f docker-compose.yml -f docker-compose.caddy.yml up -d --build
+#   4. Dans le Caddyfile partagé, visez le nom du conteneur :
+#        reverse_proxy biosigma:80
+
+services:
+  biosigma:
+    networks:
+      - default
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:?PROXY_NETWORK doit être renseigné dans .env (nom du réseau Docker de la façade Caddy)}

@@ -1,0 +1,17 @@
+# BioSigma — déploiement en une commande :
+#   docker compose up -d --build
+#
+# Application statique (Flutter Web) : aucun secret, aucune base de données.
+# Le port n'est publié que sur la loopback : c'est le serveur de façade
+# (Caddy) qui expose le service — voir DEPLOY-VPS.md.
+
+services:
+  biosigma:
+    build: .
+    image: biosigma:latest
+    container_name: biosigma
+    restart: unless-stopped
+    ports:
+      # Publié UNIQUEMENT sur la loopback : rien n'est exposé à l'internet.
+      # HOST_PORT évite un conflit si 8081 sert déjà à autre chose.
+      - "127.0.0.1:${HOST_PORT:-8081}:80"

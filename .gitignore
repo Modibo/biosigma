@@ -1,0 +1,12 @@
+# Secrets de déploiement — jamais versionnés (voir .env.example).
+.env
+
+# macOS
+.DS_Store
+
+# Éditeurs
+.vscode/
+.idea/
+
+# Les paquets Flutter/Dart ont chacun leur propre .gitignore
+# (build/, .dart_tool/, etc.) — celui-ci ne les duplique pas.
