@@ -1,7 +1,10 @@
 import 'calculators/hematology/inflammation_indices.dart';
 import 'calculators/hematology/microcytic_indices.dart';
 import 'calculators/hematology/reticulocytes.dart';
+import 'calculators/hemostasis/afib_risk_scores.dart';
+import 'calculators/hemostasis/caprini_score.dart';
 import 'calculators/hemostasis/four_ts_score.dart';
+import 'calculators/hemostasis/hospitalized_vte_risk_scores.dart';
 import 'calculators/hemostasis/inr.dart';
 import 'calculators/hemostasis/isth_dic_score.dart';
 import 'calculators/hemostasis/lupus_and_sepsis_coagulopathy.dart';
@@ -86,6 +89,11 @@ class CalculatorCatalog {
     fourTsScoreMeta,
     drvvtNormalizedRatioMeta,
     sicScoreMeta,
+    hasBledScoreMeta,
+    cha2ds2VascScoreMeta,
+    paduaPredictionScoreMeta,
+    improveBleedingScoreMeta,
+    capriniScoreMeta,
 
     // Hématologie (NFS, réticulocytes)
     mentzerIndexMeta,

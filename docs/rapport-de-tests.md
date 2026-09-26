@@ -419,3 +419,87 @@ seuils propres au laboratoire toujours réglables dans Réglages > Seuils locaux
   masquage derrière une validation locale** décrit dans le cahier des charges initial — changement
   demandé explicitement par l'utilisateur dans cette session, signalé ici pour traçabilité de la
   décision.
+
+## 10. Livraison du 26/09/2026 — 5 scores de risque hémorragique/thrombotique cliniques
+
+Suite de la demande initiale (« scores de risque hémorragique ou thrombotique », reportée faute de
+précision) : l'utilisateur, une fois informé que ce sont des scores cliniques (âge, antécédents,
+contexte chirurgical) et non de simples calculs biologiques, a choisi les 5 scores suivants :
+**HAS-BLED**, **CHA₂DS₂-VASc** (paire fibrillation atriale/anticoagulation), **score de Padua**,
+**IMPROVE** (paire patient hospitalisé en médecine), et **score de Caprini** (périopératoire).
+
+### Méthode
+
+Trois agents en arrière-plan, en parallèle, chacun équipé d'outils de recherche web
+(`WebSearch`/`WebFetch`) et instruit de vérifier chaque critère et chaque valeur de points contre
+au moins deux sources indépendantes plutôt que de faire confiance à la mémoire seule — ces scores
+sont des check-lists denses (jusqu'à 40 critères pour Caprini, avec des valeurs décimales pour
+IMPROVE), particulièrement exposées aux erreurs de transcription :
+- Agent 1 : HAS-BLED + CHA₂DS₂-VASc.
+- Agent 2 : Padua + IMPROVE.
+- Agent 3 : Caprini (isolé, du fait de sa complexité — 40 facteurs répartis en 4 paliers de points).
+
+Chaque agent a travaillé exclusivement dans de nouveaux fichiers (aucun fichier partagé —
+`catalog.dart`, `biosigma_core.dart`, registres applicatifs existants — touché en parallèle),
+intégration finale faite manuellement par la suite. Catégorie retenue : `CalculatorCategory.hemostasis`
+(existante, cohérente thématiquement avec Rosner/INR/ISTH-CIVD/4Ts/dRVVT/SIC déjà présents).
+
+### Vérification par score
+
+- **HAS-BLED** : structure à 9 critères/7 lettres confirmée (Wikipedia, mdtools.org, fpnotebook,
+  citation originale Pisters et al., Chest 2010). Les taux de saignement annuels par score
+  divergeaient entre deux sources secondaires par ailleurs fiables (ex. score 1 : 1,0 % vs 3,4 %) —
+  **aucun pourcentage précis n'a été retenu**, seule la catégorisation qualitative (0-1 faible,
+  2 modéré, ≥3 élevé) a été conservée, honnêtement présentée comme un repère usuel.
+- **CHA₂DS₂-VASc** : structure à 8 critères confirmée (Wikipedia, MDCalc). Point notable signalé
+  par l'agent : les recommandations ont divergé entre l'ESC 2020, l'ACC/AHA/ACCP/HRS 2023 (garde le
+  sexe, seuils ≥2 hommes/≥3 femmes) et l'**ESC 2024, qui a remplacé le CHA₂DS₂-VASc par un
+  CHA₂DS₂-VA sans distinction de sexe**. La structure classique (avec sexe), demandée par
+  l'utilisateur, a été conservée, avec le seuil d'anticoagulation de la recommandation ACC/AHA/ACCP/HRS
+  2023 (toujours en vigueur pour cette structure) — la divergence ESC 2024 est documentée
+  explicitement dans `limitations` plutôt que masquée.
+- **Score de Padua** : 11 facteurs et seuil ≥4 confirmés par 4 sources convergentes (MDCalc, mdapp,
+  2 articles PMC dont la publication originale reproduite intégralement et le guide ASH 2018) ; une
+  5ᵉ source paraphrasait le seuil en « > 4 » plutôt que « ≥ 4 » — écart mineur résolu en faveur de la
+  majorité des sources et du texte explicite de l'ASH 2018.
+- **IMPROVE** : les 13 facteurs et leurs valeurs décimales (0,5 à 4,5 points) vérifiés sur 4 sources
+  indépendantes parfaitement concordantes (wikidoc, practical-haemostasis, ecgwaves, MDCalc), total
+  maximal 30,5 cohérent entre toutes ; seuil ≥7 = risque élevé confirmé. Aucun facteur omis.
+- **Caprini** : 40 facteurs (17×1pt, 8×2pt, 10×3pt, 5×5pt) vérifiés sur 3 sources indépendantes
+  (MDCalc, capriniriskscore.org, practical-haemostasis) plus la référence de bandes de risque ACCP/CHEST
+  (Gould et al. 2012). Quelques items rarement cités de manière incohérente entre sources (ex.
+  « IMC > 40 » comme item séparé) ont été volontairement repliés dans la case générique « autre
+  facteur de risque non listé » plutôt que retenus avec une valeur de points non fiable.
+
+Aucune interprétation n'a été inventée : chaque score renvoie sa catégorie de risque (`info`,
+toujours affichée, cf. politique établie lors de la livraison précédente) sourcée par la
+littérature originale et, quand vérifiable, par une société savante actuelle (ACCP/CHEST,
+ACC/AHA/ACCP/HRS).
+
+### Intégration finale
+
+- Barrel `biosigma_core.dart`, `catalog.dart` et `calculator_registry.dart` (app) mis à jour
+  manuellement pour intégrer les 5 nouvelles formules (aucun conflit entre agents, fichiers
+  disjoints par construction).
+- Corrigé au passage : la liste `caprinCalculators` du registre applicatif portait une coquille de
+  nommage (« caprin » au lieu de « caprini ») — renommée en `capriniCalculators` avant intégration.
+
+### Vérification
+
+- `dart analyze` (biosigma_core) : propre.
+- `dart test` (biosigma_core) : **240/240 tests verts** (206 avant cette livraison → 240).
+- `flutter analyze` (app) : propre.
+- `flutter test` (app) : 9/9 verts, aucune régression.
+- Vérification visuelle (navigateur, `flutter build web --release`) : écran Score de Caprini ouvert,
+  les 40 cases à cocher rendues avec leur valeur de points en sous-titre ; cas test « Âge 41-60 ans »
+  + « Chirurgie mineure prévue » cochés → 2 points calculés, avertissement « Score 1-2 : risque
+  faible selon les catégories ACCP/CHEST (Gould et al. 2012) » affiché correctement, avec le détail
+  des facteurs cochés par palier de points.
+
+### Non fait / signalé pour suite
+
+- `docs/tracabilite-scientifique.md` non mise à jour avec le détail de ces 5 formules (même limite
+  que pour les livraisons précédentes) — traçabilité complète disponible dans chaque `FormulaMeta`
+  et à l'écran Références.
+- Les taux de saignement annuels précis par score HAS-BLED n'ont pas été retenus faute de sources
+  concordantes — seule la catégorisation qualitative est affichée.

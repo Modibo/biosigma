@@ -1,8 +1,11 @@
 import '../models/calculator_definition.dart';
+import 'calculator_registry_afib_risk.dart';
+import 'calculator_registry_caprini.dart';
 import 'calculator_registry_cardiovascular_risk.dart';
 import 'calculator_registry_hematology.dart';
 import 'calculator_registry_hemostasis.dart';
 import 'calculator_registry_hemostasis_additions.dart';
+import 'calculator_registry_hospitalized_vte_risk.dart';
 import 'calculator_registry_hepatic_acidbase.dart';
 import 'calculator_registry_ionogram.dart';
 import 'calculator_registry_metabolic.dart';
@@ -23,6 +26,9 @@ final List<CalculatorDefinition> allCalculators = [
   ...hepaticAcidBaseCalculators,
   ...hemostasisCalculators,
   ...hemostasisAdditionsCalculators,
+  ...afibRiskCalculators,
+  ...hospitalizedVteRiskCalculators,
+  ...capriniCalculators,
   ...hematologyCalculators,
 ];
 

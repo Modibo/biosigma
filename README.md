@@ -30,14 +30,14 @@ BioSigma/
   packages/biosigma_core/   # Moteur de calcul PUR — aucune dépendance Flutter
     lib/src/models/         # Quantity, CalculationResult, FormulaMeta, Reference, erreurs
     lib/src/units/          # Bibliothèque centrale de conversion d'unités (Analyte, UnitRegistry)
-    lib/src/calculators/    # 54 fonctions de calcul pures, groupées par domaine :
+    lib/src/calculators/    # 59 fonctions de calcul pures, groupées par domaine :
       renal/  metabolic/  ionogram/  hemostasis/  hematology/
     lib/src/catalog.dart    # Registre déclaratif des métadonnées (recherche, catégories)
-    test/                   # 206 tests unitaires (dart test)
+    test/                   # 240 tests unitaires (dart test)
   app/biosigma/              # Application Flutter
     lib/models/               Contrat déclaratif du formulaire (CalculatorDefinition, champs),
                                questions/tentatives d'entraînement
-    lib/data/                  Câblage des 54 calculateurs + banques de questions par domaine
+    lib/data/                  Câblage des 59 calculateurs + banques de questions par domaine
     lib/screens/               root_tab_screen (barre de navigation à 5 onglets), calculateur
                                 générique, panel CKD-EPI, scores guidés (ISTH-CIVD, 4Ts),
                                 entraînement, références, réglages, à propos
@@ -117,7 +117,7 @@ dans `app/biosigma/pubspec.yaml` : aucune publication sur pub.dev n'est nécessa
 ## Exécuter les tests
 
 ```bash
-# Moteur de calcul pur (206 tests) :
+# Moteur de calcul pur (240 tests) :
 cd BioSigma/packages/biosigma_core
 dart analyze
 dart test
@@ -129,7 +129,7 @@ flutter test
 ```
 
 Résultats obtenus dans cette session : voir [`docs/rapport-de-tests.md`](docs/rapport-de-tests.md)
-— `dart analyze` et `flutter analyze` sans aucun problème, 206/206 puis 9/9 tests verts.
+— `dart analyze` et `flutter analyze` sans aucun problème, 240/240 puis 9/9 tests verts.
 
 ## Construire les paquets Android (APK) et iOS
 
@@ -202,12 +202,16 @@ prochaine visite en ligne.
 
 Voir [`docs/tracabilite-scientifique.md`](docs/tracabilite-scientifique.md) pour la table des 32
 premiers calculs (source primaire → version → formule → unités → population → cas interdits →
-limites) ; les 22 calculs ajoutés ultérieurement (MELD-Na, ALBI, IMC, TyG-IMC, HOMA-β, CT/HDL-C,
+limites) ; les 27 calculs ajoutés ultérieurement (MELD-Na, ALBI, IMC, TyG-IMC, HOMA-β, CT/HDL-C,
 ApoB/ApoA1, compensation acido-basique attendue, rapport bicarbonates/chlorures, indices de Mentzer,
 Shine-Lal, England-Fraser, Green-King et RDWI, panel réticulocytaire, SII, SIRI, rapport normalisé
-dRVVT, score SIC, score de Framingham et SCORE2) suivent la même exigence de traçabilité, documentée
-directement dans leur `FormulaMeta` (source, équation, population, limites) et consultable hors
-connexion depuis l'écran « Références ». Les 8 ajouts initialement requis sont présents et testés : indice de Rosner, les
+dRVVT, score SIC, score de Framingham, SCORE2, HAS-BLED, CHA₂DS₂-VASc, score de Padua, IMPROVE et
+score de Caprini) suivent la même exigence de traçabilité, documentée directement dans leur
+`FormulaMeta` (source, équation, population, limites) et consultable hors connexion depuis l'écran
+« Références ». Les 5 derniers (HAS-BLED, CHA₂DS₂-VASc, Padua, IMPROVE, Caprini) sont des **scores
+cliniques** — âge, antécédents, contexte chirurgical — pas de simples calculs biologiques ; ajoutés
+à la demande explicite de l'utilisateur, qui en a choisi la liste après avoir été informé de cette
+nature clinique. Les 8 ajouts initialement requis sont présents et testés : indice de Rosner, les
 trois équations CKD-EPI (créatinine 2021, cystatine C 2012, créatinine-cystatine C 2021), Schwartz
 bedside, protéinurie des 24 h, QUICKI et TyG.
 
@@ -272,11 +276,12 @@ suivants nécessitent une décision et une validation propres à chaque laborato
 
 | Élément | État |
 |---|---|
-| Moteur de calcul pur (54 calculs, conversions, métadonnées, 5 domaines dont hématologie, interprétations sourcées) | ✅ Construit, `dart analyze` propre, 206/206 tests verts |
-| Application Flutter (accueil, recherche, favoris, 54 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 9/9 tests widget verts, vérifiée visuellement (bureau et mobile) |
+| Moteur de calcul pur (59 calculs, conversions, métadonnées, 5 domaines dont hématologie, interprétations sourcées) | ✅ Construit, `dart analyze` propre, 240/240 tests verts |
+| Application Flutter (accueil, recherche, favoris, 59 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 9/9 tests widget verts, vérifiée visuellement (bureau et mobile) |
 | Navigation par onglets, en haut de l'écran (Calcul, Entraînement, Références, Réglages, À propos) | ✅ `TabBar` sous une `AppBar` partagée (logo visible en permanence, y compris à l'ouverture de chaque onglet), testée (parcours bout en bout par onglet) |
 | Interprétations toujours affichées, sourcées par société savante (KDIGO, ESC/EAS, ADA, AASLD, WHO, ISTH...) ; honnêtement signalées comme non consensuelles quand aucune n'existe (SII, SIRI, HOMA-IR, QUICKI, TyG...) | ✅ `CalculationWarning` (sévérité `info`) sur chaque calculateur concerné, jamais masqué |
 | SCORE2 (risque cardiovasculaire ESC 2021, 4 régions européennes) | ✅ Coefficients vérifiés par recherche web contre le papier original et deux implémentations indépendantes (résultats reproduits au dixième de %) |
+| Scores de risque hémorragique/thrombotique cliniques (HAS-BLED, CHA₂DS₂-VASc, Padua, IMPROVE, Caprini) | ✅ Chaque critère et valeur de points vérifiés par recherche web contre ≥2 sources indépendantes ; catégories de risque sourcées (ACCP/CHEST, ACC/AHA/HRS...) |
 | Écran de démarrage (logo) | ✅ Généré pour Android et iOS (`flutter_native_splash`) ; équivalent HTML/CSS ajouté pour le web (retiré au premier rendu Flutter) |
 | Vérification de nouvelle version (apps installées, jamais sur le web) | ✅ `version.json` publié sur le site, bandeau in-app avec lien si une version plus récente existe |
 | Onglet Entraînement (4 banques, séries de 20 tirées au hasard, majorité cas cliniques/interprétation) | ✅ **232 questions** au total (55 rénal, 55 cardiométabolique, 68 ionogramme, 54 hémostase) ; scores locaux uniquement, tests de contenu + parcours bout en bout verts. Banque en expansion progressive vers l'objectif de ~1000 questions. |

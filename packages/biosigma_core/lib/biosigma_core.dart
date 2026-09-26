@@ -42,6 +42,9 @@ export 'src/calculators/hemostasis/inr.dart';
 export 'src/calculators/hemostasis/isth_dic_score.dart';
 export 'src/calculators/hemostasis/four_ts_score.dart';
 export 'src/calculators/hemostasis/lupus_and_sepsis_coagulopathy.dart';
+export 'src/calculators/hemostasis/afib_risk_scores.dart';
+export 'src/calculators/hemostasis/hospitalized_vte_risk_scores.dart';
+export 'src/calculators/hemostasis/caprini_score.dart';
 
 // Calculateurs — hématologie (NFS, réticulocytes)
 export 'src/calculators/hematology/microcytic_indices.dart';
