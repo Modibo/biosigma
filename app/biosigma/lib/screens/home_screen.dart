@@ -2,8 +2,11 @@ import 'package:biosigma_core/biosigma_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../data/quiz/quiz_registry.dart';
+import '../models/quiz_question.dart';
 import '../state/app_state.dart';
 import 'calculator_router.dart';
+import 'quiz_module_screen.dart';
 import 'references_screen.dart';
 import 'settings_screen.dart';
 
@@ -129,6 +132,8 @@ class _BrowseContent extends StatelessWidget {
           title: const Text('Score 4Ts (module guidé)'),
           onTap: () => openCalculator(context, 'four_ts_score'),
         ),
+        _SectionHeader('Formation — quiz'),
+        ...allQuizModules.map((module) => _QuizModuleTile(module: module)),
         if (favorites.isNotEmpty) ...[
           _SectionHeader('Favoris'),
           ...favorites.map((m) => _CalculatorTile(meta: m)),
@@ -156,6 +161,30 @@ class _SectionHeader extends StatelessWidget {
               .textTheme
               .titleSmall
               ?.copyWith(color: Theme.of(context).colorScheme.primary)),
+    );
+  }
+}
+
+class _QuizModuleTile extends StatelessWidget {
+  const _QuizModuleTile({required this.module});
+  final QuizModule module;
+
+  @override
+  Widget build(BuildContext context) {
+    final appState = context.watch<AppState>();
+    final best = appState.bestAttemptFor(module.id);
+    return ListTile(
+      leading: const Icon(Icons.school_outlined),
+      title: Text(module.title),
+      subtitle: Text('${module.questions.length} questions'),
+      trailing: best == null
+          ? null
+          : Chip(
+              label: Text('${best.score}/${best.totalQuestions}'),
+              visualDensity: VisualDensity.compact,
+            ),
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => QuizModuleScreen(module: module))),
     );
   }
 }

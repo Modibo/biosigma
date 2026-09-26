@@ -16,6 +16,7 @@ connexion** : tous les calculs s'exécutent sur l'appareil, aucun compte ni serv
 - [Construire les paquets Android (APK) et iOS](#construire-les-paquets-android-apk-et-ios)
 - [Héberger la version web sur un sous-domaine](#héberger-la-version-web-sur-un-sous-domaine)
 - [Catalogue des calculs et sources scientifiques](#catalogue-des-calculs-et-sources-scientifiques)
+- [Modules de quiz de formation](#modules-de-quiz-de-formation)
 - [Décisions qui dépendent de la validation du laboratoire](#décisions-qui-dépendent-de-la-validation-du-laboratoire)
 - [Confidentialité](#confidentialité)
 - [État du projet : ce qui est construit et testé, ce qui reste à faire](#état-du-projet--ce-qui-est-construit-et-testé-ce-qui-reste-à-faire)
@@ -178,6 +179,23 @@ bedside, protéinurie des 24 h, QUICKI et TyG.
 Les références complètes (citations) sont embarquées dans le code (`FormulaMeta.sources`) et
 consultables hors connexion depuis l'écran « Références et limites » de l'application.
 
+## Modules de quiz de formation
+
+Un module de quiz par domaine (rénal, cardiométabolique, ionogramme, hémostase — 4 modules, 32
+questions), accessible depuis la section « Formation » de l'accueil (`lib/data/quiz/`). Trois types
+de question, sans jamais asserter un seuil clinique numérique comme une vérité universelle :
+
+- **Culture scientifique** : auteur, année, revue de la publication d'origine d'une formule.
+- **Cas clinique conceptuel** : reconnaître *quand* et *pourquoi* un outil s'applique (ou ne
+  s'applique pas), en reprenant les mêmes limites que celles déjà codées dans `FormulaMeta` —
+  jamais une réponse de type « le diagnostic est X à partir de tel chiffre ».
+- **Vocabulaire** : définition des acronymes utilisés dans l'application (IDMS, ISI, AIP…).
+
+Correction immédiate avec explication sourcée après chaque réponse ; score final sauvegardé
+localement uniquement (`AppStorageService`, jamais transmis en ligne), effaçable depuis Réglages.
+C'est un outil d'auto-évaluation pédagogique — il ne remplace ni une formation validante ni un
+jugement clinique, rappelé en bandeau sur chaque écran de quiz.
+
 ## Décisions qui dépendent de la validation du laboratoire
 
 BioSigma ne code aucun seuil interprétatif clinique comme une vérité universelle. Les points
@@ -213,11 +231,12 @@ suivants nécessitent une décision et une validation propres à chaque laborato
 | Élément | État |
 |---|---|
 | Moteur de calcul pur (32 calculs, conversions, métadonnées) | ✅ Construit, `dart analyze` propre, 95/95 tests verts |
-| Application Flutter (accueil, recherche, favoris, 32 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 5/5 tests widget verts, vérifiée visuellement (bureau et mobile) |
+| Application Flutter (accueil, recherche, favoris, 32 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 8/8 tests widget verts, vérifiée visuellement (bureau et mobile) |
+| Modules de quiz de formation (4 modules, 32 questions : culture scientifique, cas cliniques conceptuels, vocabulaire) | ✅ Scores locaux uniquement, tests de contenu + parcours bout en bout verts, vérifiée visuellement (bonne et mauvaise réponse) |
 | Icône et identité visuelle (bleu nuit/cyan/corail, sigma + molécule + goutte) | ✅ Générée pour Android et iOS (`flutter_launcher_icons`) |
 | Table de traçabilité scientifique complète | ✅ `docs/tracabilite-scientifique.md` |
 | Build web de démonstration | ✅ `flutter build web` réussi, utilisé pour la vérification visuelle |
-| Image Docker d'hébergement web (Dockerfile, nginx, Caddy) | ✅ Construite et testée localement (HTTP 200, en-têtes de cache corrects) ; non encore déployée sur le VPS — voir `DEPLOY-VPS.md` |
+| Hébergement web (Dockerfile, nginx, Caddy) | ✅ **En service** sur https://biosigma.komodi-labo.org (VPS partagé avec NexoLab/PhénoBac) — voir `DEPLOY-VPS.md` |
 | **APK Android** | ❌ Non construit : SDK Android absent de cet environnement (choix explicite pour cette passe). Projet `android/` prêt. |
 | **IPA iOS** | ❌ Non construit : Xcode complet et compte développeur Apple absents. Projet `ios/` prêt. |
 | Tests d'instrumentation sur appareil/émulateur réel | ❌ Non exécutés (pas de SDK Android/iOS) |

@@ -76,6 +76,25 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
+          Text('Formation — scores de quiz', style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 8),
+          Card(
+            child: appState.quizAttempts.isEmpty
+                ? const ListTile(title: Text('Aucun quiz encore tenté.'))
+                : ListTile(
+                    leading: const Icon(Icons.delete_forever),
+                    title: Text(
+                        'Effacer les scores de quiz (${appState.quizAttempts.length} tentative(s))'),
+                    onTap: () async {
+                      await appState.clearQuizAttempts();
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(content: Text('Scores de quiz effacés.')));
+                      }
+                    },
+                  ),
+          ),
+          const SizedBox(height: 24),
           Text('Historique local', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
           Card(

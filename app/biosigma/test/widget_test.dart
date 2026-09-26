@@ -2,6 +2,7 @@
 // résultat. Vérifie que l'application démarre, affiche le catalogue, et
 // qu'un calcul réel (QUICKI) produit un résultat affiché à l'écran.
 import 'package:biosigma/app.dart';
+import 'package:biosigma/data/quiz/quiz_renal.dart';
 import 'package:biosigma/services/app_storage_service.dart';
 import 'package:biosigma/state/app_state.dart';
 import 'package:flutter/material.dart';
@@ -85,5 +86,49 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Références et limites'), findsOneWidget);
     expect(find.textContaining('Formule, version et limites'), findsWidgets);
+  });
+
+  testWidgets('Quiz de formation : parcours complet avec toutes les bonnes réponses',
+      (tester) async {
+    // Fenêtre de test agrandie : le contenu d'une question (énoncé + 4
+    // options + explication + bouton) dépasse la taille par défaut, ce qui
+    // ferait défiler le bouton hors-écran (et donc hors des finders) entre
+    // deux questions. Un écran réel scrolle sans problème ; ceci évite
+    // simplement de coupler ce test à la logique de défilement.
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await _pumpApp(tester);
+
+    await tester.tap(find.widgetWithText(ListTile, quizRenal.title));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Auto-évaluation pédagogique'), findsOneWidget);
+
+    for (final question in quizRenal.questions) {
+      expect(find.text(question.prompt), findsOneWidget, reason: 'prompt de ${question.id}');
+      final options = find.byType(RadioListTile<int>);
+      expect(options, findsNWidgets(4), reason: 'options de ${question.id}');
+      await tester.tap(options.at(question.correctIndex));
+      await tester.pump();
+
+      await tester.tap(find.byType(FilledButton));
+      await tester.pumpAndSettle();
+      expect(find.text('Correct.'), findsOneWidget, reason: 'correction de ${question.id}');
+
+      await tester.tap(find.byType(FilledButton));
+      await tester.pumpAndSettle();
+    }
+
+    // Score final : toutes les réponses étaient correctes.
+    expect(find.text('${quizRenal.questions.length} / ${quizRenal.questions.length}'), findsOneWidget);
+
+    await tester.tap(find.widgetWithText(OutlinedButton, 'Retour à la formation'));
+    await tester.pumpAndSettle();
+
+    // Le score revient sur l'accueil sous forme de badge.
+    expect(find.text('${quizRenal.questions.length}/${quizRenal.questions.length}'), findsOneWidget);
   });
 }

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../models/app_settings.dart';
 import '../models/history_entry.dart';
 import '../models/local_threshold.dart';
+import '../models/quiz_attempt.dart';
 import '../services/app_storage_service.dart';
 
 /// État applicatif partagé (réglages, favoris, historique, seuils
@@ -13,7 +14,8 @@ class AppState extends ChangeNotifier {
       : settings = _storage.loadSettings(),
         favoriteIds = _storage.loadFavorites(),
         history = _storage.loadHistory(),
-        thresholds = _storage.loadThresholds();
+        thresholds = _storage.loadThresholds(),
+        quizAttempts = _storage.loadQuizAttempts();
 
   final AppStorageService _storage;
 
@@ -21,6 +23,7 @@ class AppState extends ChangeNotifier {
   Set<String> favoriteIds;
   List<HistoryEntry> history;
   List<LocalThreshold> thresholds;
+  List<QuizAttempt> quizAttempts;
 
   Future<void> updateSettings(AppSettings Function(AppSettings) update) async {
     settings = update(settings);
@@ -72,6 +75,29 @@ class AppState extends ChangeNotifier {
   List<LocalThreshold> thresholdsFor(String calculatorId) =>
       thresholds.where((t) => t.calculatorId == calculatorId).toList(growable: false);
 
+  /// Enregistre le résultat d'une tentative de quiz. Toujours sauvegardé
+  /// localement (score anonyme, sans lien avec l'historique de calcul et
+  /// son réglage d'activation) — jamais transmis en ligne.
+  Future<void> recordQuizAttempt(QuizAttempt attempt) async {
+    await _storage.appendQuizAttempt(attempt);
+    quizAttempts = _storage.loadQuizAttempts();
+    notifyListeners();
+  }
+
+  Future<void> clearQuizAttempts() async {
+    await _storage.clearQuizAttempts();
+    quizAttempts = const [];
+    notifyListeners();
+  }
+
+  /// Meilleure tentative enregistrée pour un module donné, ou `null` si le
+  /// module n'a jamais été tenté.
+  QuizAttempt? bestAttemptFor(String moduleId) {
+    final attempts = quizAttempts.where((a) => a.moduleId == moduleId);
+    if (attempts.isEmpty) return null;
+    return attempts.reduce((a, b) => a.ratio >= b.ratio ? a : b);
+  }
+
   /// Supprime toutes les données locales et réinitialise l'état en mémoire.
   Future<void> clearAllLocalData() async {
     await _storage.clearAllLocalData();
@@ -79,6 +105,7 @@ class AppState extends ChangeNotifier {
     favoriteIds = <String>{};
     history = const [];
     thresholds = const [];
+    quizAttempts = const [];
     notifyListeners();
   }
 }

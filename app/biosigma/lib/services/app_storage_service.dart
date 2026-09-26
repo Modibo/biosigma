@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/app_settings.dart';
 import '../models/history_entry.dart';
 import '../models/local_threshold.dart';
+import '../models/quiz_attempt.dart';
 
 /// Persistance locale unique de BioSigma, via `shared_preferences`.
 ///
@@ -18,7 +19,9 @@ class AppStorageService {
   static const _historyKey = 'biosigma.history.v1';
   static const _favoritesKey = 'biosigma.favorites.v1';
   static const _thresholdsKey = 'biosigma.thresholds.v1';
+  static const _quizAttemptsKey = 'biosigma.quiz_attempts.v1';
   static const _maxHistoryEntries = 200;
+  static const _maxQuizAttempts = 200;
 
   final SharedPreferences _prefs;
 
@@ -107,14 +110,47 @@ class AppStorageService {
     );
   }
 
+  // --- Scores de quiz (formation) ---
+
+  List<QuizAttempt> loadQuizAttempts() {
+    final raw = _prefs.getString(_quizAttemptsKey);
+    if (raw == null) return const [];
+    try {
+      final list = jsonDecode(raw) as List;
+      return list
+          .map((e) => QuizAttempt.fromJson(e as Map<String, dynamic>))
+          .toList(growable: false);
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  Future<void> appendQuizAttempt(QuizAttempt attempt) async {
+    final current = loadQuizAttempts().toList();
+    current.insert(0, attempt);
+    final trimmed = current.length > _maxQuizAttempts
+        ? current.sublist(0, _maxQuizAttempts)
+        : current;
+    await _prefs.setString(
+      _quizAttemptsKey,
+      jsonEncode(trimmed.map((e) => e.toJson()).toList()),
+    );
+  }
+
+  Future<void> clearQuizAttempts() async {
+    await _prefs.remove(_quizAttemptsKey);
+  }
+
   // --- Suppression totale ---
 
   /// Supprime toutes les données locales de BioSigma (réglages, favoris,
-  /// historique, seuils) — action explicite depuis l'écran Paramètres.
+  /// historique, seuils, scores de quiz) — action explicite depuis l'écran
+  /// Paramètres.
   Future<void> clearAllLocalData() async {
     await _prefs.remove(_settingsKey);
     await _prefs.remove(_historyKey);
     await _prefs.remove(_favoritesKey);
     await _prefs.remove(_thresholdsKey);
+    await _prefs.remove(_quizAttemptsKey);
   }
 }
