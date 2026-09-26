@@ -6,7 +6,8 @@ enum CalculatorCategory {
   renal('Fonction rénale et urines'),
   metabolic('Glucides, insulinorésistance et cardiométabolisme'),
   ionogram('Ionogramme, gaz du sang et biochimie générale'),
-  hemostasis('Hémostase');
+  hemostasis('Hémostase'),
+  hematology('Hématologie — NFS et réticulocytes');
 
   const CalculatorCategory(this.label);
 

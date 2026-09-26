@@ -1,7 +1,12 @@
 import '../models/calculator_definition.dart';
+import 'calculator_registry_cardiovascular_risk.dart';
+import 'calculator_registry_hematology.dart';
 import 'calculator_registry_hemostasis.dart';
+import 'calculator_registry_hemostasis_additions.dart';
+import 'calculator_registry_hepatic_acidbase.dart';
 import 'calculator_registry_ionogram.dart';
 import 'calculator_registry_metabolic.dart';
+import 'calculator_registry_metabolic_additions.dart';
 import 'calculator_registry_renal.dart';
 
 /// Registre complet des calculateurs pilotés par l'écran générique
@@ -12,8 +17,13 @@ import 'calculator_registry_renal.dart';
 final List<CalculatorDefinition> allCalculators = [
   ...renalCalculators,
   ...metabolicCalculators,
+  ...metabolicAdditionsCalculators,
+  ...cardiovascularRiskCalculators,
   ...ionogramCalculators,
+  ...hepaticAcidBaseCalculators,
   ...hemostasisCalculators,
+  ...hemostasisAdditionsCalculators,
+  ...hematologyCalculators,
 ];
 
 CalculatorDefinition? findCalculatorDefinition(String id) {

@@ -24,6 +24,8 @@ export 'src/calculators/renal/urine_ratios.dart';
 export 'src/calculators/metabolic/insulin_resistance.dart';
 export 'src/calculators/metabolic/glycemic_conversions.dart';
 export 'src/calculators/metabolic/lipids.dart';
+export 'src/calculators/metabolic/anthropometric_and_ratios.dart';
+export 'src/calculators/metabolic/cardiovascular_risk_scores.dart';
 
 // Calculateurs — ionogramme / biochimie générale
 export 'src/calculators/ionogram/anion_gap.dart';
@@ -31,11 +33,19 @@ export 'src/calculators/ionogram/osmolality.dart';
 export 'src/calculators/ionogram/sodium_correction.dart';
 export 'src/calculators/ionogram/calcium_correction.dart';
 export 'src/calculators/ionogram/misc_biochemistry.dart';
+export 'src/calculators/ionogram/hepatic_scores.dart';
+export 'src/calculators/ionogram/acid_base_compensation.dart';
 
 // Calculateurs — hémostase
 export 'src/calculators/hemostasis/rosner_index.dart';
 export 'src/calculators/hemostasis/inr.dart';
 export 'src/calculators/hemostasis/isth_dic_score.dart';
 export 'src/calculators/hemostasis/four_ts_score.dart';
+export 'src/calculators/hemostasis/lupus_and_sepsis_coagulopathy.dart';
+
+// Calculateurs — hématologie (NFS, réticulocytes)
+export 'src/calculators/hematology/microcytic_indices.dart';
+export 'src/calculators/hematology/reticulocytes.dart';
+export 'src/calculators/hematology/inflammation_indices.dart';
 
 export 'src/catalog.dart';

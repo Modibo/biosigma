@@ -1,12 +1,20 @@
+import 'calculators/hematology/inflammation_indices.dart';
+import 'calculators/hematology/microcytic_indices.dart';
+import 'calculators/hematology/reticulocytes.dart';
 import 'calculators/hemostasis/four_ts_score.dart';
 import 'calculators/hemostasis/inr.dart';
 import 'calculators/hemostasis/isth_dic_score.dart';
+import 'calculators/hemostasis/lupus_and_sepsis_coagulopathy.dart';
 import 'calculators/hemostasis/rosner_index.dart';
+import 'calculators/ionogram/acid_base_compensation.dart';
 import 'calculators/ionogram/anion_gap.dart';
 import 'calculators/ionogram/calcium_correction.dart';
+import 'calculators/ionogram/hepatic_scores.dart';
 import 'calculators/ionogram/misc_biochemistry.dart';
 import 'calculators/ionogram/osmolality.dart';
 import 'calculators/ionogram/sodium_correction.dart';
+import 'calculators/metabolic/anthropometric_and_ratios.dart';
+import 'calculators/metabolic/cardiovascular_risk_scores.dart';
 import 'calculators/metabolic/glycemic_conversions.dart';
 import 'calculators/metabolic/insulin_resistance.dart';
 import 'calculators/metabolic/lipids.dart';
@@ -44,6 +52,12 @@ class CalculatorCatalog {
     estimatedAverageGlucoseAdagMeta,
     ldlPanelMeta,
     atherogenicIndexOfPlasmaMeta,
+    bmiMeta,
+    tygBmiMeta,
+    homaBetaMeta,
+    ctHdlRatioMeta,
+    apoBApoA1RatioMeta,
+    framinghamRiskScoreMeta,
 
     // Ionogramme et biochimie générale
     anionGapMeta,
@@ -57,6 +71,10 @@ class CalculatorCatalog {
     astAltRatioDeRitisMeta,
     fib4Meta,
     apriMeta,
+    meldNaMeta,
+    albiScoreMeta,
+    expectedAcidBaseCompensationMeta,
+    bicarbonateChlorideRatioMeta,
 
     // Hémostase
     rosnerIndexMeta,
@@ -65,6 +83,18 @@ class CalculatorCatalog {
     serialValueTrendMeta,
     isthDicScoreMeta,
     fourTsScoreMeta,
+    drvvtNormalizedRatioMeta,
+    sicScoreMeta,
+
+    // Hématologie (NFS, réticulocytes)
+    mentzerIndexMeta,
+    shineLalIndexMeta,
+    englandFraserIndexMeta,
+    greenKingIndexMeta,
+    rdwIndexMeta,
+    reticulocyteIndicesPanelMeta,
+    siiIndexMeta,
+    siriIndexMeta,
   ];
 
   static List<FormulaMeta> byCategory(CalculatorCategory category) =>

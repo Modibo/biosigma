@@ -200,3 +200,88 @@ Vérifications :
   les correctifs de cache nginx et la nouvelle architecture d'onglets soient effectifs sur
   `biosigma.komodi-labo.org` ; après déploiement, un rechargement forcé (ou navigation privée) reste
   nécessaire pour les navigateurs ayant déjà mis en cache l'ancienne version de `main.dart.js`.
+
+## 8. Livraison du 26/09/2026 — 21 nouveaux calculs (hématologie, hépatique, acido-basique, hémostase, Framingham)
+
+Demande utilisateur : ajouter le calcul de MELD-Na, ALBI, IMC, TyG-IMC, HOMA-β, compensation
+respiratoire attendue, rapports bicarbonates/chlorures, Mentzer, Shine-Lal, England-Fraser,
+Green-King, RDWI, nombre absolu de réticulocytes, réticulocytes corrigés/IPR, SII, SIRI, rapport
+normalisé dRVVT, score SIC, CT/HDL-C, ApoB/ApoA1, puis (message de suivi) SCORE2 et Framingham. Les
+« scores de risque hémorragique ou thrombotique » génériques (catégorie, pas une formule précise)
+ont été explicitement reportés à la demande de l'utilisateur, faute de score(s) nommé(s).
+
+### Méthode
+
+Quatre agents en arrière-plan, un par domaine, travaillant en parallèle sur des fichiers exclusifs
+(aucun fichier partagé — `catalog.dart`, `biosigma_core.dart`, `calculator_registry.dart` —
+touché par un agent), pour éviter tout conflit de fusion. Un cinquième agent, dédié et isolé, a
+suivi pour Framingham/SCORE2 avec une consigne de sécurité renforcée (voir plus bas). L'intégration
+finale (barrel export, catalogue, registre applicatif) a été faite manuellement, séquentiellement,
+après réception de tous les rapports.
+
+Nouveau domaine ajouté : `CalculatorCategory.hematology` (« Hématologie — NFS et réticulocytes »),
+apparaît automatiquement dans l'écran d'accueil et l'écran Références (ces deux écrans itèrent déjà
+génériquement sur `CalculatorCategory.values`, aucune modification d'UI nécessaire au-delà de
+l'ajout de la valeur d'énumération).
+
+### Formules ajoutées (21, catégorie entre parenthèses)
+
+- **Hématologie (nouveau domaine)** : indice de Mentzer, indice de Shine & Lal, indice
+  d'England & Fraser, indice de Green & King, RDWI, panel réticulocytaire (nombre absolu, CRC,
+  indice de production réticulocytaire), SII, SIRI.
+- **Cardiométabolique** : IMC, TyG-IMC, HOMA-β, rapport CT/HDL-C (indice de Castelli I), rapport
+  ApoB/ApoA1, score de Framingham (risque coronarien « hard CHD » à 10 ans, Wilson et al. 1998).
+- **Ionogramme / biochimie générale** : score MELD-Na, score ALBI, compensation acido-basique
+  attendue (6 variantes : acidose/alcalose métabolique, acidose/alcalose respiratoire aiguë et
+  chronique), rapport bicarbonates/chlorures.
+- **Hémostase** : rapport normalisé dRVVT (recherche d'anticoagulant lupique, critères ISTH
+  Pengo 2009), score SIC (coagulopathie induite par le sepsis, Iba et al. 2017).
+
+Aucune de ces formules ne rend de verdict/interprétation calculé : les seuils publiés (Mentzer 13,
+Shine-Lal 1760, ALBI grades, SIC ≥ 4, etc.) sont mentionnés uniquement à titre informatif dans
+`limitations`, jamais comme résultat calculé — cohérent avec la politique déjà en vigueur pour
+HOMA-IR/TyG/AIP/FIB4/APRI.
+
+### SCORE2 — non implémenté (décision volontaire)
+
+L'agent dédié a reçu une consigne de sécurité explicite : ne construire SCORE2 (ESC 2021, Hageman
+et al.) que s'il pouvait reconstituer l'intégralité des coefficients (âge, tabagisme, PAS,
+cholestérol non-HDL, termes d'interaction avec l'âge, par sexe), la fonction de survie de base à
+10 ans et les 4 facteurs de recalibration régionaux avec une **confiance élevée** — jamais une
+version approximative d'une équation de risque cardiovasculaire. L'agent a pu reconstituer la
+structure générale du modèle de Cox mais pas les coefficients numériques exacts avec une confiance
+suffisante ; conformément à la consigne, aucune entrée `score2_risk` n'a été créée (ni
+`FormulaMeta`, ni fonction, ni test, ni écran). **SCORE2 reste à faire** si l'utilisateur peut
+fournir les tables supplémentaires exactes de la publication d'origine.
+
+### Vérification
+
+- `dart analyze` (biosigma_core) : propre, aucune erreur ni avertissement.
+- `dart test` (biosigma_core) : **178/178 tests verts** (95 initiaux → 171 après la première vague
+  de 20 calculs → 178 après ajout de Framingham), dont pour chaque nouvelle formule au moins un cas
+  calculé indépendamment à la main (jamais dérivé du code Dart testé) et un cas d'erreur de
+  validation (division par zéro, hors bornes, etc.).
+- `flutter analyze` (app) : propre.
+- `flutter test` (app) : 9/9 verts (parcours bout en bout existants non affectés).
+- Vérification visuelle (navigateur, `flutter build web --release`) :
+  - IMC : 70 kg / 175 cm → 22,9 kg/m² (attendu 70/1,75² = 22,857) — conforme.
+  - Compensation acido-basique attendue, acidose métabolique, HCO3 15 mmol/L → PaCO2 attendue
+    30,5 mmHg (attendu 1,5×15+8 = 30,5) — conforme.
+  - Framingham, homme 55 ans, CT 240 mg/dL, HDL 45 mg/dL, PAS 145 mmHg non traité, non-fumeur →
+    14 points / 16 % (attendu : âge 8 + CT[50-59, 240-279] 4 + HDL[40-49] 1 + PAS[non traité,
+    140-159] 1 + tabac 0 = 14 → 16 %) — conforme.
+  - Recherche testée pour Mentzer, MELD-Na, compensation acido-basique, Framingham : chaque
+    formule apparaît avec son sous-titre source/version correct.
+  - Sélecteur d'énumération (trouble acido-basique primaire, 6 variantes) et champs conditionnels
+    (HCO3 vs PaCO2 selon le trouble choisi) vérifiés fonctionnels.
+
+### Non fait dans cette livraison
+
+- SCORE2 (voir ci-dessus).
+- Scores de risque hémorragique/thrombotique génériques (HAS-BLED, CHA₂DS₂-VASc, Padua, IMPROVE...)
+  — reportés à la demande de l'utilisateur.
+- Aucune question d'entraînement (quiz) n'a été ajoutée pour ces 21 nouvelles formules — non
+  demandé, la demande portait uniquement sur le calcul.
+- Mise à jour de `docs/tracabilite-scientifique.md` (table détaillée dédiée) : non faite pour ces
+  21 formules — leur traçabilité complète reste néanmoins disponible dans chaque `FormulaMeta` et
+  à l'écran « Références » de l'application, seule la table Markdown séparée n'a pas été étendue.
