@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'screens/home_screen.dart';
+import 'screens/root_tab_screen.dart';
 import 'theme/app_theme.dart';
+import 'widgets/update_checker.dart';
 
 class BioSigmaApp extends StatelessWidget {
   const BioSigmaApp({super.key});
@@ -32,7 +33,7 @@ class BioSigmaApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: const HomeScreen(),
+      home: const UpdateChecker(child: RootTabScreen()),
     );
   }
 }

@@ -56,8 +56,10 @@ class AboutScreen extends StatelessWidget {
                 "analyseurs — avec, pour chaque résultat, la formule exacte, les unités utilisées, "
                 "la version de l'équation, la source scientifique et les limites d'emploi. Jamais "
                 'un chiffre isolé sans son contexte.\n\n'
-                "Des modules de quiz de formation (culture scientifique, cas cliniques conceptuels, "
-                "vocabulaire) complètent l'application pour l'auto-évaluation.",
+                "L'onglet Entraînement complète l'application pour l'auto-évaluation : des séries "
+                'de 20 questions, essentiellement des cas cliniques et des questions '
+                "d'interprétation, tirées au hasard dans une banque qui s'enrichit "
+                'progressivement.',
               ),
             ),
             _Section(

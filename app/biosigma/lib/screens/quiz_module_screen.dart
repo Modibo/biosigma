@@ -6,10 +6,15 @@ import '../models/quiz_question.dart';
 import '../state/app_state.dart';
 import '../theme/app_theme.dart';
 
-/// Écran d'un module de quiz de formation : une question à la fois, choix
-/// unique, correction immédiate avec explication, score final sauvegardé
-/// localement. Outil d'auto-évaluation pédagogique — ne remplace jamais un
-/// jugement clinique ni une formation validante.
+/// Taille d'une série d'évaluation, tirée au hasard dans la banque du
+/// domaine à chaque lancement.
+const int kQuizSessionSize = 20;
+
+/// Écran d'une série d'entraînement : [kQuizSessionSize] questions tirées
+/// au hasard dans la banque du domaine (moins si la banque est plus
+/// petite), une à la fois, correction immédiate avec explication, score
+/// final sauvegardé localement. Outil d'auto-évaluation pédagogique — ne
+/// remplace jamais un jugement clinique ni une formation validante.
 class QuizModuleScreen extends StatefulWidget {
   const QuizModuleScreen({super.key, required this.module});
 
@@ -20,6 +25,7 @@ class QuizModuleScreen extends StatefulWidget {
 }
 
 class _QuizModuleScreenState extends State<QuizModuleScreen> {
+  late List<QuizQuestion> _session = widget.module.sampleSession(sessionSize: kQuizSessionSize);
   int _index = 0;
   int? _selected;
   bool _answered = false;
@@ -27,8 +33,8 @@ class _QuizModuleScreenState extends State<QuizModuleScreen> {
   bool _finished = false;
   bool _saved = false;
 
-  QuizQuestion get _question => widget.module.questions[_index];
-  bool get _isLast => _index == widget.module.questions.length - 1;
+  QuizQuestion get _question => _session[_index];
+  bool get _isLast => _index == _session.length - 1;
 
   void _validate() {
     if (_selected == null) return;
@@ -47,7 +53,7 @@ class _QuizModuleScreenState extends State<QuizModuleScreen> {
               moduleId: widget.module.id,
               timestamp: DateTime.now(),
               score: _correctCount,
-              totalQuestions: widget.module.questions.length,
+              totalQuestions: _session.length,
             ));
       }
       return;
@@ -61,6 +67,9 @@ class _QuizModuleScreenState extends State<QuizModuleScreen> {
 
   void _restart() {
     setState(() {
+      // Nouvelle série tirée au hasard : les questions ne sont pas figées
+      // d'une évaluation à l'autre.
+      _session = widget.module.sampleSession(sessionSize: kQuizSessionSize);
       _index = 0;
       _selected = null;
       _answered = false;
@@ -82,7 +91,7 @@ class _QuizModuleScreenState extends State<QuizModuleScreen> {
 
   Widget _buildQuestion(BuildContext context) {
     final theme = Theme.of(context);
-    final total = widget.module.questions.length;
+    final total = _session.length;
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -184,7 +193,7 @@ class _QuizModuleScreenState extends State<QuizModuleScreen> {
 
   Widget _buildResult(BuildContext context) {
     final theme = Theme.of(context);
-    final total = widget.module.questions.length;
+    final total = _session.length;
     final appState = context.watch<AppState>();
     final best = appState.bestAttemptFor(widget.module.id);
     return ListView(
@@ -213,12 +222,12 @@ class _QuizModuleScreenState extends State<QuizModuleScreen> {
         FilledButton.icon(
           onPressed: _restart,
           icon: const Icon(Icons.refresh),
-          label: const Text('Recommencer'),
+          label: const Text('Nouvelle série'),
         ),
         const SizedBox(height: 8),
         OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Retour à la formation'),
+          child: const Text('Retour à l\'entraînement'),
         ),
       ],
     );

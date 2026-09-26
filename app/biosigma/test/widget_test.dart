@@ -1,8 +1,19 @@
 // Test de parcours bout en bout : accueil -> recherche -> calculateur ->
-// résultat. Vérifie que l'application démarre, affiche le catalogue, et
-// qu'un calcul réel (QUICKI) produit un résultat affiché à l'écran.
+// résultat, et navigation entre les cinq onglets (Calcul, Entraînement,
+// Références, Réglages, À propos). Vérifie que l'application démarre,
+// affiche le catalogue, et qu'un calcul réel (QUICKI) produit un résultat
+// affiché à l'écran.
+//
+// Remarque sur les finders : le corps de l'écran racine est un
+// `IndexedStack` (les cinq onglets restent tous montés pour préserver leur
+// état) — un texte générique comme « Réglages » peut donc apparaître à la
+// fois dans l'étiquette de l'onglet et dans l'AppBar de l'écran
+// correspondant. Les taps de changement d'onglet sont donc scopés à la
+// `NavigationBar`, et les vérifications de contenu utilisent des textes
+// propres à l'écran visé plutôt que son seul titre.
 import 'package:biosigma/app.dart';
 import 'package:biosigma/data/quiz/quiz_renal.dart';
+import 'package:biosigma/screens/quiz_module_screen.dart';
 import 'package:biosigma/services/app_storage_service.dart';
 import 'package:biosigma/state/app_state.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +32,28 @@ Future<AppState> _pumpApp(WidgetTester tester) async {
   return appState;
 }
 
+Future<void> _tapTab(WidgetTester tester, String label) async {
+  final tabFinder = find.descendant(
+    of: find.byType(NavigationBar),
+    matching: find.text(label),
+  );
+  await tester.tap(tabFinder);
+  await tester.pumpAndSettle();
+}
+
 void main() {
-  testWidgets("L'accueil affiche le titre et la recherche", (tester) async {
+  testWidgets("L'onglet Calcul affiche le titre, la recherche et la barre d'onglets",
+      (tester) async {
     await _pumpApp(tester);
     expect(find.text('BioSigma'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
     expect(find.text('DFG — panel CKD-EPI'), findsOneWidget);
+    expect(find.byType(NavigationBar), findsOneWidget);
+    for (final label in ['Calcul', 'Entraînement', 'Références', 'Réglages', 'À propos']) {
+      expect(find.descendant(of: find.byType(NavigationBar), matching: find.text(label)),
+          findsOneWidget,
+          reason: 'onglet $label');
+    }
   });
 
   testWidgets('La recherche filtre le catalogue (QUICKI)', (tester) async {
@@ -48,7 +75,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Écran calculateur générique : "Outil d'aide au calcul" doit être visible.
-    expect(find.textContaining("Outil d'aide au calcul"), findsOneWidget);
+    expect(find.textContaining("Outil d'aide au calcul"), findsWidgets);
 
     final numericFields = find.byType(TextFormField);
     expect(numericFields, findsWidgets);
@@ -71,28 +98,23 @@ void main() {
     expect(find.text('Score incomplet'), findsNothing);
   });
 
-  testWidgets('Réglages : bascule décimale et retour', (tester) async {
+  testWidgets('Réglages : bascule décimale', (tester) async {
     await _pumpApp(tester);
-    await tester.tap(find.byTooltip('Réglages'));
-    await tester.pumpAndSettle();
-    expect(find.text('Réglages'), findsWidgets);
+    await _tapTab(tester, 'Réglages');
     expect(find.text('Point (1.50)'), findsOneWidget);
   });
 
   testWidgets('À propos : mission, avertissements, auteur et contact sont affichés',
       (tester) async {
     // Le contenu de l'écran À propos dépasse la petite fenêtre de test par
-    // défaut (même remarque que pour le quiz) : agrandir plutôt que de
-    // multiplier les finders skipOffstage.
+    // défaut : agrandir plutôt que de multiplier les finders skipOffstage.
     tester.view.physicalSize = const Size(800, 2400);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await _pumpApp(tester);
-    await tester.tap(find.byTooltip('À propos'));
-    await tester.pumpAndSettle();
-    expect(find.text('À propos'), findsOneWidget);
+    await _tapTab(tester, 'À propos');
     expect(find.textContaining('Dr Modibo Mouctar Coulibaly'), findsOneWidget);
     expect(find.textContaining('Sominé Dolo'), findsOneWidget);
     expect(find.text('coulibalymodibom@gmail.com'), findsOneWidget);
@@ -102,56 +124,75 @@ void main() {
     // dans ce harnais de test pour cette interaction précise.
   });
 
-  testWidgets('Références : la liste des formules est consultable hors connexion',
+  testWidgets('Références : la liste des formules affiche leur nom, la version et les limites',
       (tester) async {
     await _pumpApp(tester);
-    await tester.tap(find.byTooltip('Références et limites'));
-    await tester.pumpAndSettle();
-    expect(find.text('Références et limites'), findsOneWidget);
+    await _tapTab(tester, 'Références');
     expect(find.textContaining('Formule, version et limites'), findsWidgets);
+    // Le nom complet d'au moins une formule doit être visible au-dessus de
+    // sa fiche technique (pas seulement son titre générique).
+    expect(find.textContaining('CKD-EPI créatinine 2021'), findsWidgets);
   });
 
-  testWidgets('Quiz de formation : parcours complet avec toutes les bonnes réponses',
+  testWidgets('Entraînement : série de questions tirée de la banque rénale, score final',
       (tester) async {
-    // Fenêtre de test agrandie : le contenu d'une question (énoncé + 4
-    // options + explication + bouton) dépasse la taille par défaut, ce qui
-    // ferait défiler le bouton hors-écran (et donc hors des finders) entre
-    // deux questions. Un écran réel scrolle sans problème ; ceci évite
-    // simplement de coupler ce test à la logique de défilement.
+    // Le contenu d'une question (énoncé + 4 options + explication + bouton)
+    // dépasse la taille par défaut de la fenêtre de test, et la position de
+    // défilement change d'une question à l'autre : agrandir la fenêtre
+    // plutôt que de gérer le défilement, comme pour les autres écrans denses.
     tester.view.physicalSize = const Size(800, 2400);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await _pumpApp(tester);
+    await _tapTab(tester, 'Entraînement');
+
+    expect(find.textContaining('essentiellement des cas cliniques'), findsOneWidget);
 
     await tester.tap(find.widgetWithText(ListTile, quizRenal.title));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Auto-évaluation pédagogique'), findsOneWidget);
+    final quizScreen = find.byType(QuizModuleScreen);
+    expect(quizScreen, findsOneWidget);
+    expect(find.descendant(of: quizScreen, matching: find.textContaining('Auto-évaluation pédagogique')),
+        findsOneWidget);
 
-    for (final question in quizRenal.questions) {
-      expect(find.text(question.prompt), findsOneWidget, reason: 'prompt de ${question.id}');
-      final options = find.byType(RadioListTile<int>);
+    final sessionLength =
+        quizRenal.poolSize < kQuizSessionSize ? quizRenal.poolSize : kQuizSessionSize;
+    final byPrompt = {for (final q in quizRenal.questions) q.prompt: q};
+
+    for (var i = 0; i < sessionLength; i++) {
+      final promptTexts = tester
+          .widgetList<Text>(find.descendant(of: quizScreen, matching: find.byType(Text)))
+          .map((t) => t.data)
+          .whereType<String>()
+          .where(byPrompt.containsKey);
+      expect(promptTexts, hasLength(1), reason: 'question ${i + 1}/$sessionLength introuvable');
+      final question = byPrompt[promptTexts.first]!;
+
+      final options = find.descendant(of: quizScreen, matching: find.byType(RadioListTile<int>));
       expect(options, findsNWidgets(4), reason: 'options de ${question.id}');
       await tester.tap(options.at(question.correctIndex));
       await tester.pump();
 
-      await tester.tap(find.byType(FilledButton));
+      final actionButton = find.descendant(of: quizScreen, matching: find.byType(FilledButton));
+      await tester.tap(actionButton);
       await tester.pumpAndSettle();
-      expect(find.text('Correct.'), findsOneWidget, reason: 'correction de ${question.id}');
+      expect(find.descendant(of: quizScreen, matching: find.text('Correct.')), findsOneWidget,
+          reason: 'correction de ${question.id}');
 
-      await tester.tap(find.byType(FilledButton));
+      await tester.tap(find.descendant(of: quizScreen, matching: find.byType(FilledButton)));
       await tester.pumpAndSettle();
     }
 
     // Score final : toutes les réponses étaient correctes.
-    expect(find.text('${quizRenal.questions.length} / ${quizRenal.questions.length}'), findsOneWidget);
+    expect(find.text('$sessionLength / $sessionLength'), findsOneWidget);
 
-    await tester.tap(find.widgetWithText(OutlinedButton, 'Retour à la formation'));
+    await tester.tap(find.widgetWithText(OutlinedButton, "Retour à l'entraînement"));
     await tester.pumpAndSettle();
 
-    // Le score revient sur l'accueil sous forme de badge.
-    expect(find.text('${quizRenal.questions.length}/${quizRenal.questions.length}'), findsOneWidget);
+    // Le score revient sur l'écran Entraînement sous forme de badge.
+    expect(find.text('$sessionLength/$sessionLength'), findsOneWidget);
   });
 }

@@ -28,8 +28,17 @@ class ReferencesScreen extends StatelessWidget {
               ),
               for (final meta in byCategory[category]!)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: FormulaReferenceSection(meta: meta),
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4, left: 4),
+                        child: Text(meta.name, style: Theme.of(context).textTheme.titleSmall),
+                      ),
+                      FormulaReferenceSection(meta: meta),
+                    ],
+                  ),
                 ),
             ],
           ],

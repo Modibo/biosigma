@@ -16,7 +16,7 @@ connexion** : tous les calculs s'exécutent sur l'appareil, aucun compte ni serv
 - [Construire les paquets Android (APK) et iOS](#construire-les-paquets-android-apk-et-ios)
 - [Héberger la version web sur un sous-domaine](#héberger-la-version-web-sur-un-sous-domaine)
 - [Catalogue des calculs et sources scientifiques](#catalogue-des-calculs-et-sources-scientifiques)
-- [Modules de quiz de formation](#modules-de-quiz-de-formation)
+- [Onglet Entraînement](#onglet-entraînement)
 - [Décisions qui dépendent de la validation du laboratoire](#décisions-qui-dépendent-de-la-validation-du-laboratoire)
 - [Confidentialité](#confidentialité)
 - [État du projet : ce qui est construit et testé, ce qui reste à faire](#état-du-projet--ce-qui-est-construit-et-testé-ce-qui-reste-à-faire)
@@ -35,14 +35,20 @@ BioSigma/
     lib/src/catalog.dart    # Registre déclaratif des métadonnées (recherche, catégories)
     test/                   # 95 tests unitaires (dart test)
   app/biosigma/              # Application Flutter
-    lib/models/               Contrat déclaratif du formulaire (CalculatorDefinition, champs)
-    lib/data/                 Câblage des 32 calculateurs (formulaire ↔ fonction du moteur)
-    lib/screens/               accueil, calculateur générique, panel CKD-EPI, scores guidés
-                                (ISTH-CIVD, 4Ts), réglages, références
-    lib/services/              stockage local (réglages/historique/seuils), formatage des nombres
+    lib/models/               Contrat déclaratif du formulaire (CalculatorDefinition, champs),
+                               questions/tentatives d'entraînement
+    lib/data/                  Câblage des 32 calculateurs + banques de questions par domaine
+    lib/screens/               root_tab_screen (barre de navigation à 5 onglets), calculateur
+                                générique, panel CKD-EPI, scores guidés (ISTH-CIVD, 4Ts),
+                                entraînement, références, réglages, à propos
+    lib/services/              stockage local (réglages/historique/seuils/scores), formatage
+                                des nombres
     lib/state/                 état applicatif partagé (provider)
+    lib/widgets/update_checker.dart   vérification de nouvelle version (apps installées)
+    lib/app_version.dart       version affichée, à synchroniser avec pubspec.yaml et web/version.json
     test/                      tests widget (dart test / flutter test), parcours bout en bout
     android/ ios/               projets natifs générés par `flutter create`, prêts à compiler
+                                 (icônes + écran de démarrage déjà générés)
   docs/
     tracabilite-scientifique.md   Table complète : calcul → source → version → formule → limites
     rapport-de-tests.md           Résultats des analyses et tests exécutés dans cette session
@@ -63,6 +69,19 @@ dédiés existent pour les cas explicitement composés par le cahier des charges
 CKD-EPI (jusqu'à 3 équations côte à côte, jamais mélangées) et les modules guidés Score ISTH-CIVD
 et Score 4Ts (saisie pas à pas, jamais d'inférence d'une donnée manquante, interprétation masquée
 tant que le biologiste responsable n'a pas validé localement dans Réglages).
+
+**Navigation** : cinq onglets (`RootTabScreen`, `NavigationBar` Material 3) — Calcul, Entraînement,
+Références, Réglages, À propos — chacun gardant son propre `Scaffold`/`AppBar` ; un `IndexedStack`
+préserve l'état de chaque onglet (recherche en cours, position de défilement) au changement d'onglet.
+
+**Vérification de nouvelle version** (`lib/widgets/update_checker.dart`) : au démarrage, uniquement
+sur les applications installées (jamais sur le web, qui se met déjà à jour via son service worker),
+l'app interroge silencieusement `https://biosigma.komodi-labo.org/version.json` ; si une version plus
+récente que `kAppVersion` (`lib/app_version.dart`) y est publiée, un bandeau propose un lien de mise
+à jour. Échec réseau = silencieux, aucun blocage du lancement. **À chaque livraison**, mettre à jour
+ensemble `pubspec.yaml` (`version:`), `lib/app_version.dart` (`kAppVersion`) et
+`app/biosigma/web/version.json` (`latest`) — sinon l'application se croira à jour, ou à l'inverse
+proposera indéfiniment une « mise à jour » déjà installée.
 
 ## Prérequis
 
@@ -179,22 +198,29 @@ bedside, protéinurie des 24 h, QUICKI et TyG.
 Les références complètes (citations) sont embarquées dans le code (`FormulaMeta.sources`) et
 consultables hors connexion depuis l'écran « Références et limites » de l'application.
 
-## Modules de quiz de formation
+## Onglet Entraînement
 
-Un module de quiz par domaine (rénal, cardiométabolique, ionogramme, hémostase — 4 modules, 32
-questions), accessible depuis la section « Formation » de l'accueil (`lib/data/quiz/`). Trois types
-de question, sans jamais asserter un seuil clinique numérique comme une vérité universelle :
+Quatre banques de questions (une par domaine : rénal, cardiométabolique, ionogramme, hémostase —
+`lib/data/quiz/`), tirées par **séries de `kQuizSessionSize` (20) questions au hasard** à chaque
+lancement (`QuizModule.sampleSession`, `lib/screens/quiz_module_screen.dart`).
 
+**État actuel de la banque : 232 questions** (55 rénal, 55 cardiométabolique, 68 ionogramme,
+54 hémostase). Objectif visé à terme : ~1000 questions, en croissance progressive au fil des
+livraisons — essentiellement des **cas cliniques et questions d'interprétation**, complétées par de
+la culture scientifique et du vocabulaire, sans jamais asserter un seuil clinique numérique comme
+une vérité universelle :
+
+- **Cas clinique / interprétation** (majoritaire) : un bref contexte patient-laboratoire, puis une
+  question fermée dont la bonne réponse reprend fidèlement un fait déjà documenté dans le
+  `FormulaMeta` du calcul concerné (population d'application, condition interdite, condition
+  analytique, limite d'emploi) — jamais un fait inventé, jamais un seuil diagnostique non codé.
 - **Culture scientifique** : auteur, année, revue de la publication d'origine d'une formule.
-- **Cas clinique conceptuel** : reconnaître *quand* et *pourquoi* un outil s'applique (ou ne
-  s'applique pas), en reprenant les mêmes limites que celles déjà codées dans `FormulaMeta` —
-  jamais une réponse de type « le diagnostic est X à partir de tel chiffre ».
 - **Vocabulaire** : définition des acronymes utilisés dans l'application (IDMS, ISI, AIP…).
 
-Correction immédiate avec explication sourcée après chaque réponse ; score final sauvegardé
+Correction immédiate avec explication sourcée après chaque réponse ; score de la série sauvegardé
 localement uniquement (`AppStorageService`, jamais transmis en ligne), effaçable depuis Réglages.
 C'est un outil d'auto-évaluation pédagogique — il ne remplace ni une formation validante ni un
-jugement clinique, rappelé en bandeau sur chaque écran de quiz.
+jugement clinique, rappelé en bandeau sur chaque écran d'entraînement.
 
 ## Décisions qui dépendent de la validation du laboratoire
 
@@ -232,7 +258,10 @@ suivants nécessitent une décision et une validation propres à chaque laborato
 |---|---|
 | Moteur de calcul pur (32 calculs, conversions, métadonnées) | ✅ Construit, `dart analyze` propre, 95/95 tests verts |
 | Application Flutter (accueil, recherche, favoris, 32 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 8/8 tests widget verts, vérifiée visuellement (bureau et mobile) |
-| Modules de quiz de formation (4 modules, 32 questions : culture scientifique, cas cliniques conceptuels, vocabulaire) | ✅ Scores locaux uniquement, tests de contenu + parcours bout en bout verts, vérifiée visuellement (bonne et mauvaise réponse) |
+| Navigation par onglets (Calcul, Entraînement, Références, Réglages, À propos) | ✅ `NavigationBar` Material 3, testée (parcours bout en bout par onglet) |
+| Écran de démarrage (logo) | ✅ Généré pour Android et iOS (`flutter_native_splash`) |
+| Vérification de nouvelle version (apps installées, jamais sur le web) | ✅ `version.json` publié sur le site, bandeau in-app avec lien si une version plus récente existe |
+| Onglet Entraînement (4 banques, séries de 20 tirées au hasard, majorité cas cliniques/interprétation) | ✅ **232 questions** au total (55 rénal, 55 cardiométabolique, 68 ionogramme, 54 hémostase) ; scores locaux uniquement, tests de contenu + parcours bout en bout verts. Banque en expansion progressive vers l'objectif de ~1000 questions. |
 | Icône et identité visuelle (bleu nuit/cyan/corail, sigma + molécule + goutte) | ✅ Générée pour Android et iOS (`flutter_launcher_icons`) |
 | Table de traçabilité scientifique complète | ✅ `docs/tracabilite-scientifique.md` |
 | Build web de démonstration | ✅ `flutter build web` réussi, utilisé pour la vérification visuelle |

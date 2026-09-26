@@ -108,3 +108,42 @@ visuelle manuelle exigée par le cahier des charges.
 - **Revue scientifique par un biologiste responsable** des seuils et commentaires cliniques, et
   validation locale des seuils interprétatifs (cf. `README.md` § Décisions dépendant de la
   validation du laboratoire).
+
+## 6. Livraison du 26/09/2026 — navigation par onglets, entraînement, mise à jour
+
+Environnement identique (Flutter 3.47.5, mêmes limites de SDK). Changements :
+
+- **Navigation** : accueil restructuré en 5 onglets (`NavigationBar`, `RootTabScreen`), remplaçant
+  les icônes d'AppBar. Testé : présence des 5 onglets, navigation vers chacun, persistance des
+  onglets via `IndexedStack`.
+- **Écran de démarrage** : généré nativement (Android/iOS) via `flutter_native_splash`, logo sur
+  fond bleu nuit (#0F2245). Non testable automatiquement (rendu natif hors du moteur Flutter) —
+  fichiers générés vérifiés présents (`android/app/src/main/res/drawable*/splash.png` et
+  `android12splash.png`, `ios/Runner/Assets.xcassets/LaunchImage.imageset`).
+- **Vérification de nouvelle version** : `lib/widgets/update_checker.dart`, gardé par `kIsWeb`
+  (jamais actif sur le build web). Compilation vérifiée (`flutter analyze`), logique de comparaison
+  de version couverte par construction (`isNewerVersion`), mais l'appel réseau réel vers
+  `biosigma.komodi-labo.org/version.json` et l'ouverture du lien (`url_launcher`) n'ont pas pu être
+  exercés en tests automatisés (canaux de plateforme) — à vérifier manuellement sur un appareil réel
+  après publication d'une version supérieure à `kAppVersion`.
+- **Références et limites** : nom complet de chaque formule maintenant affiché au-dessus de sa fiche
+  technique. Vérifié par test et visuellement.
+- **Onglet Entraînement** : renommé (ex-« Formation »), restructuré en séries de
+  `kQuizSessionSize` = 20 questions tirées au hasard (`QuizModule.sampleSession`) dans une banque par
+  domaine, au lieu d'un jeu fixe. La banque est passée de 32 à **232 questions** dans cette
+  livraison (55 rénal, 55 cardiométabolique, 68 ionogramme, 54 hémostase), ajoutées par 4 agents en
+  parallèle (un par domaine), chacun contraint de n'ancrer ses questions `clinicalCase` que sur des
+  faits déjà présents dans les `FormulaMeta` du moteur (aucun seuil clinique inventé). Vérifications :
+  - `dart analyze` sur chaque fichier de banque : propre.
+  - `flutter test test/data/quiz_content_test.dart` : intégrité structurelle (4 options, index
+    valide, ids uniques) sur les 232 questions — vert.
+  - Contrôle manuel par échantillonnage (lecture directe d'extraits de chaque fichier, recherche de
+    prompts ou d'ids dupliqués sur l'ensemble des 4 fichiers) : aucun doublon, questions bien
+    ancrées dans les métadonnées déjà vérifiées du moteur.
+  - Test bout en bout (`widget_test.dart`) : ouvre une série réelle de 20 questions tirée de la
+    banque rénale (55 questions), répond correctement à chacune en découvrant dynamiquement la
+    question affichée (pas d'ordre supposé, compatible avec le tirage aléatoire), vérifie le score
+    final 20/20 et son report sur l'écran Entraînement — vert.
+  - **Non fait dans cette livraison** : revue clinique exhaustive des 200 nouvelles questions par un
+    biologiste responsable (seul un échantillon a été relu manuellement) ; poursuite de la banque
+    vers l'objectif de 1000 questions.
