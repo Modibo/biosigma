@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../data/quiz/quiz_registry.dart';
 import '../models/quiz_question.dart';
 import '../state/app_state.dart';
+import 'about_screen.dart';
 import 'calculator_router.dart';
 import 'quiz_module_screen.dart';
 import 'references_screen.dart';
@@ -39,6 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('BioSigma'),
         actions: [
+          IconButton(
+            tooltip: 'À propos',
+            icon: const Icon(Icons.info_outline),
+            onPressed: () =>
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AboutScreen())),
+          ),
           IconButton(
             tooltip: 'Références et limites',
             icon: const Icon(Icons.menu_book_outlined),

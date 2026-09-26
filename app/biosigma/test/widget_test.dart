@@ -79,6 +79,29 @@ void main() {
     expect(find.text('Point (1.50)'), findsOneWidget);
   });
 
+  testWidgets('À propos : mission, avertissements, auteur et contact sont affichés',
+      (tester) async {
+    // Le contenu de l'écran À propos dépasse la petite fenêtre de test par
+    // défaut (même remarque que pour le quiz) : agrandir plutôt que de
+    // multiplier les finders skipOffstage.
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await _pumpApp(tester);
+    await tester.tap(find.byTooltip('À propos'));
+    await tester.pumpAndSettle();
+    expect(find.text('À propos'), findsOneWidget);
+    expect(find.textContaining('Dr Modibo Mouctar Coulibaly'), findsOneWidget);
+    expect(find.textContaining('Sominé Dolo'), findsOneWidget);
+    expect(find.text('coulibalymodibom@gmail.com'), findsOneWidget);
+    expect(find.textContaining("pas un dispositif de diagnostic"), findsOneWidget);
+    // Le geste de copie (Clipboard.setData) est vérifié visuellement plutôt
+    // qu'ici : les canaux de plateforme ne sont pas simulés de façon fiable
+    // dans ce harnais de test pour cette interaction précise.
+  });
+
   testWidgets('Références : la liste des formules est consultable hors connexion',
       (tester) async {
     await _pumpApp(tester);

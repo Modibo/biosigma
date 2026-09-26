@@ -94,7 +94,7 @@ const FormulaMeta atherogenicIndexOfPlasmaMeta = FormulaMeta(
   limitations: [
     'Ne pas confondre avec le simple ratio TG/HDL en mg/dL (convention '
         "McLaughlin), numériquement différent car les deux analytes n'ont "
-        'pas le même facteur de conversion mg/dL→mmol/L.',
+        'pas le même facteur de conversion mg/dL vers mmol/L.',
   ],
   displayPrecision: 3,
 );
