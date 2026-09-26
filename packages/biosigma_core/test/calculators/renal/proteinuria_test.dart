@@ -27,6 +27,30 @@ void main() {
         result.warnings.any((w) => w.message.contains('incomplète')),
         isFalse,
       );
+      // 270 mg/24h = 0,27 g/24h : nettement sous le seuil néphrotique (3,5 g/24h).
+      expect(
+        result.warnings.any((w) => w.message.contains('non néphrotique')),
+        isTrue,
+      );
+    });
+
+    test('protéinurie de rang néphrotique (4 g/24h)', () {
+      final result = calculateProteinuria24h(
+        concentrationValue: 2000,
+        concentrationUnit: 'mg/L',
+        volumeValue: 2000,
+        volumeUnit: 'mL',
+        durationValue: 1440,
+        durationUnit: 'min',
+      );
+
+      // 2000 mg/L x 2 L = 4000 mg = 4 g/24h : au-dessus du seuil néphrotique.
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('rang néphrotique') &&
+            !w.message.contains('non néphrotique')),
+        isTrue,
+      );
     });
 
     test('collecte de 12h (720 min) : mesure 135 mg, extrapolation 270 mg, warning caution', () {

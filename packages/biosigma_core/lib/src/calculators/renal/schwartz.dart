@@ -5,6 +5,7 @@ import '../../models/result.dart';
 import '../../units/analyte.dart';
 import '../../units/unit_registry.dart';
 import '../../validation.dart';
+import 'ckd_epi.dart' show kdigoGfrStageWarning;
 
 /// DFG estimé — Schwartz bedside 2009 (pédiatrie).
 const FormulaMeta schwartzBedsidePediatricMeta = FormulaMeta(
@@ -21,6 +22,14 @@ const FormulaMeta schwartzBedsidePediatricMeta = FormulaMeta(
           'Estimate GFR in Children with CKD. J Am Soc Nephrol. '
           '2009;20(3):629-637.',
     ),
+    Reference(
+      citation:
+          'Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. '
+          'KDIGO 2012 Clinical Practice Guideline for the Evaluation and '
+          'Management of Chronic Kidney Disease. Kidney Int Suppl. '
+          '2013;3(1):1-150.',
+      note: 'stades du DFG G1-G5 (interprétation clinique, ≥ 2 ans)',
+    ),
   ],
   applicablePopulation:
       'Enfant et adolescent, 1 à 18 ans (zone de transition 18-25 ans à '
@@ -34,6 +43,12 @@ const FormulaMeta schwartzBedsidePediatricMeta = FormulaMeta(
     "Ne pas appliquer automatiquement CKD-EPI (adulte) chez l'enfant.",
     "La constante k historique de Schwartz était différente (0,55) pour une "
         "créatinine dosée par méthode de Jaffé non standardisée IDMS.",
+    "Les catégories KDIGO du DFG (G1-G5) sont établies chez l'enfant à "
+        "partir de 2 ans ; avant cet âge, le DFG physiologiquement plus bas "
+        "rend cette grille inadaptée.",
+    "Le diagnostic formel de maladie rénale chronique nécessite la "
+        "persistance de l'anomalie du DFG au-delà de 3 mois ; une valeur "
+        "isolée oriente sans permettre de conclure (KDIGO).",
   ],
   displayPrecision: 1,
 );
@@ -73,6 +88,16 @@ CalculationResult calculateSchwartzBedside({
     warnings.add(const CalculationWarning(
       "Zone de transition jeune adulte : envisager selon le contexte "
       "clinique l'équation CKD-EPI adulte.",
+      severity: WarningSeverity.caution,
+    ));
+  }
+
+  warnings.add(kdigoGfrStageWarning(egfr));
+  if (ageYears < 2) {
+    warnings.add(const CalculationWarning(
+      "Chez l'enfant de moins de 2 ans, le DFG physiologique est plus bas "
+      "et les catégories KDIGO ci-dessus (établies à partir de 2 ans) "
+      "doivent être interprétées avec prudence.",
       severity: WarningSeverity.caution,
     ));
   }

@@ -21,6 +21,10 @@ void main() {
         byLabel(result, 'Indice de production réticulocytaire (RPI)').value,
         closeTo(1.7777777777777777, 1e-6),
       );
+      expect(
+        result.warnings.single.message,
+        contains('réponse médullaire inadaptée'),
+      );
     });
 
     test('Hct 35 % (palier 1,5)', () {
@@ -37,6 +41,10 @@ void main() {
       expect(
         byLabel(result, 'Indice de production réticulocytaire (RPI)').value,
         closeTo(2.5925925925925926, 1e-6),
+      );
+      expect(
+        result.warnings.single.message,
+        contains('réponse médullaire compensatrice adaptée'),
       );
     });
 

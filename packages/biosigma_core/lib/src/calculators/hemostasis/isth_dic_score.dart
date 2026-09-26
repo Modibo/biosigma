@@ -45,8 +45,11 @@ const FormulaMeta isthDicScoreMeta = FormulaMeta(
     'Nécessite un contexte clinique évocateur préalable (case '
         'underlyingDisorderPresent) ; ne jamais appliquer hors de ce '
         'contexte.',
-    "L'interprétation clinique de ce score doit être validée localement "
-        'par le biologiste responsable avant toute utilisation en pratique.',
+    'Le résultat (score et interprétation) doit être confronté au contexte '
+        'clinique et validé par un professionnel compétent avant toute '
+        'décision — comme tout résultat de BioSigma ; ce score ne doit être '
+        'appliqué qu\'en présence d\'une pathologie associée à un risque de '
+        'CIVD.',
     'Le seuil "augmentation modérée/forte" du marqueur de fibrine dépend '
         'du test utilisé (D-dimères ou PDF) et du laboratoire.',
   ],
@@ -146,9 +149,12 @@ CalculationResult calculateIsthDicScore({
       CalculationWarning(
         total >= 5
             ? 'Score ≥ 5 : compatible avec une CIVD manifeste '
-                '(décompensée). À répéter quotidiennement.'
+                '(décompensée), seuil diagnostique défini par les critères '
+                "originaux de l'ISTH (Taylor et al. 2001). À répéter "
+                'quotidiennement.'
             : "Score < 5 : évocateur d'une CIVD non manifeste (non "
-                'décompensée). À répéter dans les 1 à 2 jours suivants.',
+                "décompensée) selon les mêmes critères ISTH (Taylor et al. "
+                '2001). À répéter dans les 1 à 2 jours suivants.',
         severity: WarningSeverity.info,
       ),
     ],

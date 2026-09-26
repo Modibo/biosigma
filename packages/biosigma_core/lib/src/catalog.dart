@@ -58,6 +58,7 @@ class CalculatorCatalog {
     ctHdlRatioMeta,
     apoBApoA1RatioMeta,
     framinghamRiskScoreMeta,
+    score2RiskMeta,
 
     // Ionogramme et biochimie générale
     anionGapMeta,

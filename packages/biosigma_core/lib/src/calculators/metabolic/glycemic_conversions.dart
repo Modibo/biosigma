@@ -22,6 +22,13 @@ const FormulaMeta estimatedAverageGlucoseAdagMeta = FormulaMeta(
           'A1C Assay Into Estimated Average Glucose Values. Diabetes Care. '
           '2008;31(8):1473-1478.',
     ),
+    Reference(
+      citation:
+          'American Diabetes Association Professional Practice Committee. '
+          'Standards of Medical Care in Diabetes (mise à jour annuelle) — '
+          'chapitre « Objectifs glycémiques et hypoglycémie ».',
+      note: "objectif d'HbA1c habituel < 7 %, à individualiser",
+    ),
   ],
   applicablePopulation: 'Adulte',
   forbiddenConditions: [
@@ -68,6 +75,20 @@ CalculationResult calculateEstimatedAverageGlucose({
     values: [
       ResultValue(label: 'eAG', value: eagMgDl, unit: 'mg/dL', precision: 1),
       ResultValue(label: 'eAG', value: eagMmolL, unit: 'mmol/L', precision: 2),
+    ],
+    warnings: const [
+      CalculationWarning(
+        "Objectif glycémique habituel selon l'American Diabetes Association "
+        '(ADA) : HbA1c < 7 % (< 53 mmol/mol) pour de nombreux adultes non '
+        'enceintes, ce qui correspond à une eAG ≈ 154 mg/dL (8,6 mmol/L) '
+        "d'après cette même équation. Cet objectif doit être individualisé "
+        "par le clinicien (ex. cible plus stricte < 6,5 % envisageable chez "
+        "certains patients ; cible plus souple < 8 % chez d'autres, en cas "
+        "de comorbidités, d'espérance de vie limitée ou de risque "
+        "hypoglycémique) : ne pas appliquer ce seuil de façon uniforme sans "
+        'tenir compte du contexte clinique.',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }

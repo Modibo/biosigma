@@ -58,6 +58,17 @@ const FormulaMeta ldlPanelMeta = FormulaMeta(
           'an Atherogenic Index. Clin Biochem. 2001;34(7):583-588.',
       note: 'pour le contexte des ratios lipidiques',
     ),
+    Reference(
+      citation:
+          'Mach F, Baigent C, Catapano AL, et al.; ESC Scientific Document '
+          'Group. 2019 ESC/EAS Guidelines for the management of '
+          'dyslipidaemias: lipid modification to reduce cardiovascular '
+          'risk. Eur Heart J. 2020;41(1):111-188.',
+      note:
+          'catégories descriptives du LDL-C en population générale (proches '
+          'du cadre historique NCEP ATP III) ; ne détermine pas la cible '
+          'thérapeutique individuelle',
+    ),
   ],
   applicablePopulation: 'Adulte',
   forbiddenConditions: [
@@ -89,6 +100,17 @@ const FormulaMeta atherogenicIndexOfPlasmaMeta = FormulaMeta(
           'and Esterification Rate in apoB-Lipoprotein-Depleted Plasma '
           '(FER_HDL). Clin Biochem. 2001;34(7):583-588.',
     ),
+    Reference(
+      citation:
+          'Dobiásová M, Frohlich J. The Plasma Parameter log (TG/HDL-C) as '
+          'an Atherogenic Index: Correlation With Lipoprotein Particle Size '
+          'and Esterification Rate in apoB-Lipoprotein-Depleted Plasma '
+          '(FER_HDL). Clin Biochem. 2001;34(7):583-588.',
+      note:
+          'catégories de risque proposées par les auteurs eux-mêmes '
+          '(< 0,11 faible ; 0,11-0,21 intermédiaire ; > 0,21 élevé), non '
+          "reprises formellement par une société savante (ESC/ADA)",
+    ),
   ],
   applicablePopulation: 'Adulte',
   limitations: [
@@ -100,6 +122,23 @@ const FormulaMeta atherogenicIndexOfPlasmaMeta = FormulaMeta(
 );
 
 double _log10(double x) => math.log(x) / math.ln10;
+
+/// Catégorie descriptive du LDL-C en population générale (mg/dL), cadre
+/// ESC/EAS 2019 (proche du cadre historique NCEP ATP III). Purement
+/// descriptif : ne détermine jamais, à lui seul, la cible thérapeutique
+/// individuelle, qui dépend de la catégorie de risque cardiovasculaire
+/// global du patient (ESC SCORE2, non calculé par ce panel).
+String _ldlDescriptiveCategoryMgDl(double ldlMgDl) {
+  if (ldlMgDl < 100) return 'optimal (< 100 mg/dL, soit < 2,6 mmol/L)';
+  if (ldlMgDl < 130) {
+    return 'quasi optimal (100-129 mg/dL, soit 2,6-3,3 mmol/L)';
+  }
+  if (ldlMgDl < 160) {
+    return 'limite haute (130-159 mg/dL, soit 3,4-4,1 mmol/L)';
+  }
+  if (ldlMgDl < 190) return 'haut (160-189 mg/dL, soit 4,1-4,9 mmol/L)';
+  return 'très haut (≥ 190 mg/dL, soit ≥ 4,9 mmol/L)';
+}
 
 /// Panel lipidique complet : LDL calculé (Friedewald ou Sampson au choix),
 /// non-HDL, ratio CT/HDL, ratio TG/HDL (mg/dL) et cholestérol résiduel.
@@ -168,6 +207,20 @@ CalculationResult calculateLdlPanel({
   final ctHdlRatio = tcMmolL / hdlMmolL;
   final tgHdlRatioMgDl = tgMgDl / hdlMgDl;
   final remnantCholesterol = ldlMmolL != null ? nonHdl - ldlMmolL : null;
+
+  if (ldlMgDl != null) {
+    final category = _ldlDescriptiveCategoryMgDl(ldlMgDl);
+    warnings.add(CalculationWarning(
+      'Catégorie descriptive du LDL-C en population générale, cadre '
+      'ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : $category. '
+      'Cette catégorie est purement descriptive : la cible thérapeutique '
+      'réelle dépend de la catégorie de risque cardiovasculaire global du '
+      'patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce '
+      'calculateur ne détermine pas — ne jamais lire cette catégorie comme '
+      'un objectif de traitement individualisé.',
+      severity: WarningSeverity.info,
+    ));
+  }
 
   return CalculationResult(
     formula: ldlPanelMeta,
@@ -248,6 +301,18 @@ CalculationResult calculateAtherogenicIndexOfPlasma({
     },
     values: [
       ResultValue(label: 'AIP', value: aip, unit: '', precision: 3),
+    ],
+    warnings: const [
+      CalculationWarning(
+        "Catégories proposées par les auteurs de l'indice (Dobiásová, "
+        'Frohlich) dans leurs travaux de validation, non formellement '
+        "reprises par une société savante (ESC/ADA) : risque "
+        'cardiovasculaire faible si AIP < 0,11 ; intermédiaire si 0,11 à '
+        '0,21 ; élevé si > 0,21 (log10[TG/HDL-C], TG et HDL-C exprimés en '
+        'mmol/L). À interpréter comme un repère de la littérature '
+        "d'origine, non comme une recommandation officielle.",
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }

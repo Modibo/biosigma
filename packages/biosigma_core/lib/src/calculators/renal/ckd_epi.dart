@@ -26,6 +26,14 @@ const FormulaMeta ckdEpiCreatinine2021Meta = FormulaMeta(
           'C-Based Equations to Estimate GFR without Race. N Engl J Med. '
           '2021;385(19):1737-1749.',
     ),
+    Reference(
+      citation:
+          'Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. '
+          'KDIGO 2012 Clinical Practice Guideline for the Evaluation and '
+          'Management of Chronic Kidney Disease. Kidney Int Suppl. '
+          '2013;3(1):1-150.',
+      note: 'stades du DFG G1-G5 (interprétation clinique)',
+    ),
   ],
   applicablePopulation: 'Adulte ≥ 18 ans',
   forbiddenConditions: ['Âge < 18 ans'],
@@ -36,6 +44,9 @@ const FormulaMeta ckdEpiCreatinine2021Meta = FormulaMeta(
         "complémentation en créatine.",
     "Ne remplace pas une mesure de clairance lorsque celle-ci est "
         "cliniquement indiquée.",
+    "Le diagnostic formel de maladie rénale chronique nécessite la "
+        "persistance de l'anomalie du DFG au-delà de 3 mois ; une valeur "
+        "isolée oriente sans permettre de conclure (KDIGO).",
   ],
   displayPrecision: 1,
 );
@@ -57,6 +68,14 @@ const FormulaMeta ckdEpiCystatinC2012Meta = FormulaMeta(
           'Filtration Rate from Serum Creatinine and Cystatin C. N Engl J '
           'Med. 2012;367(1):20-29.',
     ),
+    Reference(
+      citation:
+          'Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. '
+          'KDIGO 2012 Clinical Practice Guideline for the Evaluation and '
+          'Management of Chronic Kidney Disease. Kidney Int Suppl. '
+          '2013;3(1):1-150.',
+      note: 'stades du DFG G1-G5 (interprétation clinique)',
+    ),
   ],
   applicablePopulation: 'Adulte ≥ 18 ans',
   forbiddenConditions: ['Âge < 18 ans'],
@@ -65,6 +84,9 @@ const FormulaMeta ckdEpiCystatinC2012Meta = FormulaMeta(
     "Équations pédiatriques de cystatine C non implémentées ici.",
     "La cystatine C peut être modifiée par l'inflammation, la corticothérapie, "
         "les dysthyroïdies et l'obésité, indépendamment du DFG.",
+    "Le diagnostic formel de maladie rénale chronique nécessite la "
+        "persistance de l'anomalie du DFG au-delà de 3 mois ; une valeur "
+        "isolée oriente sans permettre de conclure (KDIGO).",
   ],
   displayPrecision: 1,
 );
@@ -86,6 +108,14 @@ const FormulaMeta ckdEpiCreatinineCystatinC2021Meta = FormulaMeta(
           'C-Based Equations to Estimate GFR without Race. N Engl J Med. '
           '2021;385(19):1737-1749.',
     ),
+    Reference(
+      citation:
+          'Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. '
+          'KDIGO 2012 Clinical Practice Guideline for the Evaluation and '
+          'Management of Chronic Kidney Disease. Kidney Int Suppl. '
+          '2013;3(1):1-150.',
+      note: 'stades du DFG G1-G5 (interprétation clinique)',
+    ),
   ],
   applicablePopulation: 'Adulte ≥ 18 ans',
   forbiddenConditions: ['Âge < 18 ans'],
@@ -99,9 +129,50 @@ const FormulaMeta ckdEpiCreatinineCystatinC2021Meta = FormulaMeta(
         "complémentation en créatine.",
     "Ne remplace pas une mesure de clairance lorsque celle-ci est "
         "cliniquement indiquée.",
+    "Le diagnostic formel de maladie rénale chronique nécessite la "
+        "persistance de l'anomalie du DFG au-delà de 3 mois ; une valeur "
+        "isolée oriente sans permettre de conclure (KDIGO).",
   ],
   displayPrecision: 1,
 );
+
+/// Interprétation du DFG selon les catégories KDIGO (stades G1 à G5),
+/// communes aux trois équations CKD-EPI de ce fichier.
+///
+/// Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO
+/// 2012 Clinical Practice Guideline for the Evaluation and Management of
+/// Chronic Kidney Disease. Kidney Int Suppl. 2013;3(1):1-150.
+CalculationWarning kdigoGfrStageWarning(double egfr) {
+  final String stage;
+  final String description;
+  if (egfr >= 90) {
+    stage = 'G1';
+    description = 'normal ou élevé';
+  } else if (egfr >= 60) {
+    stage = 'G2';
+    description = 'légèrement diminué';
+  } else if (egfr >= 45) {
+    stage = 'G3a';
+    description = 'modérément diminué';
+  } else if (egfr >= 30) {
+    stage = 'G3b';
+    description = 'modérément à sévèrement diminué';
+  } else if (egfr >= 15) {
+    stage = 'G4';
+    description = 'sévèrement diminué';
+  } else {
+    stage = 'G5';
+    description = 'insuffisance rénale terminale (ou proche)';
+  }
+  return CalculationWarning(
+    'Stade KDIGO $stage : DFG $description (grille KDIGO — G1 ≥ 90, '
+    'G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). '
+    "Une seule mesure oriente vers une maladie rénale chronique sans la "
+    "diagnostiquer formellement : le diagnostic de MRC exige la "
+    "persistance de l'anomalie au-delà de 3 mois.",
+    severity: WarningSeverity.info,
+  );
+}
 
 String _formatCreatinineEchoed(double value, String unit, double canonicalUmolL, double mgDl) {
   if (unit == 'mg/dL') {
@@ -174,6 +245,7 @@ CalculationResult calculateCkdEpiCreatinine2021({
         precision: 1,
       ),
     ],
+    warnings: [kdigoGfrStageWarning(egfr.toDouble())],
   );
 }
 
@@ -227,6 +299,7 @@ CalculationResult calculateCkdEpiCystatinC2012({
         precision: 1,
       ),
     ],
+    warnings: [kdigoGfrStageWarning(egfr.toDouble())],
   );
 }
 
@@ -305,5 +378,6 @@ CalculationResult calculateCkdEpiCreatinineCystatinC2021({
         precision: 1,
       ),
     ],
+    warnings: [kdigoGfrStageWarning(egfr.toDouble())],
   );
 }

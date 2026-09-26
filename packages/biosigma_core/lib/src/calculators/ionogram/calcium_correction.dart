@@ -60,6 +60,15 @@ CalculationResult calculateCorrectedCalcium({
   final correctedMmolL =
       UnitRegistry.convert(Analyte.calcium, correctedMgDl, fromUnit: 'mg/dL', toUnit: 'mmol/L');
 
+  final String category;
+  if (correctedMgDl < 8.5) {
+    category = 'hypocalcémie';
+  } else if (correctedMgDl <= 10.5) {
+    category = 'normal';
+  } else {
+    category = 'hypercalcémie';
+  }
+
   return CalculationResult(
     formula: correctedCalciumAlbuminMeta,
     echoedInputs: {
@@ -80,6 +89,16 @@ CalculationResult calculateCorrectedCalcium({
         label: "Calcium corrigé pour l'albuminémie",
         value: correctedMmolL,
         unit: 'mmol/L',
+      ),
+    ],
+    warnings: [
+      CalculationWarning(
+        'Calcium corrigé : $category (repères usuels de biochimie '
+        'clinique standard, appliqués à la valeur corrigée : '
+        'hypocalcémie < 8,5 mg/dL [< 2,10 mmol/L] ; normal '
+        '8,5-10,5 mg/dL [2,10-2,55 mmol/L] ; hypercalcémie > 10,5 mg/dL '
+        '[> 2,55 mmol/L]).',
+        severity: WarningSeverity.info,
       ),
     ],
   );

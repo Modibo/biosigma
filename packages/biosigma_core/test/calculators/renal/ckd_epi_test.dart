@@ -36,6 +36,8 @@ void main() {
         idmsConfirmed: true,
       );
       expect(result.values.single.value, closeTo(45.83344299705897, 1e-6));
+      // DFG ~45.8 mL/min/1,73 m² : stade KDIGO G3a (45-59).
+      expect(result.warnings.any((w) => w.message.contains('G3a')), isTrue);
     });
 
     test('homme 70 ans, Scr 2.0 mg/dL', () {
@@ -47,6 +49,8 @@ void main() {
         idmsConfirmed: true,
       );
       expect(result.values.single.value, closeTo(35.24299672901596, 1e-6));
+      // DFG ~35.2 mL/min/1,73 m² : stade KDIGO G3b (30-44).
+      expect(result.warnings.any((w) => w.message.contains('G3b')), isTrue);
     });
 
     test('âge < 18 ans lève une exception', () {
@@ -95,6 +99,8 @@ void main() {
         cystatinCUnit: 'mg/L',
       );
       expect(result.values.single.value, closeTo(108.84752593992127, 1e-6));
+      // DFG ~108.8 mL/min/1,73 m² : stade KDIGO G1 (≥ 90).
+      expect(result.warnings.any((w) => w.message.contains('G1')), isTrue);
     });
 
     test('âge < 18 ans lève une exception', () {
@@ -135,6 +141,8 @@ void main() {
         idmsConfirmed: true,
       );
       expect(result.values.single.value, closeTo(79.6706544530851, 1e-6));
+      // DFG ~79.7 mL/min/1,73 m² : stade KDIGO G2 (60-89).
+      expect(result.warnings.any((w) => w.message.contains('G2')), isTrue);
     });
   });
 }

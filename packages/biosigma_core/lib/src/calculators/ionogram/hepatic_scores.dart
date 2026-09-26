@@ -58,6 +58,14 @@ const FormulaMeta meldNaMeta = FormulaMeta(
           'Med. 2008;359(10):1018-1026.',
       note: 'MELD-Na',
     ),
+    Reference(
+      citation:
+          'Wiesner R, Edwards E, Freeman R, et al. Model for End-Stage '
+          'Liver Disease (MELD) and Allocation of Donor Livers. '
+          'Gastroenterology. 2003;124(1):91-96.',
+      note: 'corrélation approximative avec la mortalité à court terme '
+          '(adoption UNOS/OPTN)',
+    ),
   ],
   applicablePopulation: 'Adulte ≥ 18 ans',
   forbiddenConditions: [
@@ -144,6 +152,19 @@ CalculationResult calculateMeldNa({
   }
   meldNa = meldNa.clamp(6.0, 40.0);
 
+  final String riskBand;
+  if (meldNa < 10) {
+    riskBand = 'risque de mortalité à court terme (≈ 90 jours) faible';
+  } else if (meldNa < 20) {
+    riskBand = 'risque de mortalité à court terme (≈ 90 jours) modéré';
+  } else if (meldNa < 30) {
+    riskBand = 'risque de mortalité à court terme (≈ 90 jours) important';
+  } else if (meldNa < 40) {
+    riskBand = 'risque de mortalité à court terme (≈ 90 jours) élevé';
+  } else {
+    riskBand = 'risque de mortalité à court terme (≈ 90 jours) très élevé';
+  }
+
   return CalculationResult(
     formula: meldNaMeta,
     echoedInputs: {
@@ -172,6 +193,18 @@ CalculationResult calculateMeldNa({
         value: meldNa,
         unit: '',
         precision: 1,
+      ),
+    ],
+    warnings: [
+      CalculationWarning(
+        'MELD-Na ≈ ${meldNa.toStringAsFixed(1)} : $riskBand, par '
+        'corrélation approximative rapportée dans la littérature de '
+        'validation du score (Kamath et al. 2001 ; adoption UNOS/OPTN, '
+        'Wiesner et al. 2003) — bandes qualitatives indicatives (< 10 '
+        'faible ; 10-19 modéré ; 20-29 important ; 30-39 élevé ; ≥ 40 très '
+        'élevé), à ne jamais interpréter comme un pourcentage de mortalité '
+        "individuel précis pour un patient donné.",
+        severity: WarningSeverity.info,
       ),
     ],
   );
@@ -237,6 +270,15 @@ CalculationResult calculateAlbiScore({
 
   final albi = (_log10(bilirubinUmolL) * 0.66) + (albuminGL * -0.0852);
 
+  final String grade;
+  if (albi <= -2.60) {
+    grade = 'Grade ALBI 1 (ALBI ≤ −2,60)';
+  } else if (albi <= -1.39) {
+    grade = 'Grade ALBI 2 (−2,60 < ALBI ≤ −1,39)';
+  } else {
+    grade = 'Grade ALBI 3 (ALBI > −1,39)';
+  }
+
   return CalculationResult(
     formula: albiScoreMeta,
     echoedInputs: {
@@ -251,6 +293,13 @@ CalculationResult calculateAlbiScore({
         value: albi,
         unit: '',
         precision: 2,
+      ),
+    ],
+    warnings: [
+      CalculationWarning(
+        '$grade — grades publiés par Johnson et al. 2015, fournis ici à '
+        'titre informatif.',
+        severity: WarningSeverity.info,
       ),
     ],
   );

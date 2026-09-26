@@ -33,11 +33,15 @@ enum PrimaryAcidBaseDisorder {
 // ---------------------------------------------------------------------------
 
 /// Compensation acido-basique attendue pour un trouble primaire simple
-/// supposé unique. Calcule uniquement la valeur attendue (PaCO2 pour un
-/// trouble métabolique primaire, HCO3 pour un trouble respiratoire
-/// primaire) et sa fourchette de tolérance publiée ; ne compare jamais à
-/// une valeur mesurée et n'émet aucun verdict — la comparaison et
-/// l'interprétation (trouble simple vs mixte) reviennent au clinicien.
+/// supposé unique. Calcule la valeur attendue (PaCO2 pour un trouble
+/// métabolique primaire, HCO3 pour un trouble respiratoire primaire) et sa
+/// fourchette de tolérance publiée. Si la valeur compensatoire réellement
+/// mesurée est fournie (paramètre optionnel [measuredCompensatoryValue] de
+/// [calculateExpectedAcidBaseCompensation]), une comparaison purement
+/// descriptive à la fourchette attendue est ajoutée sous forme
+/// d'avertissement informatif ; en son absence, aucune comparaison n'est
+/// effectuée. Dans tous les cas, l'interprétation clinique définitive
+/// (trouble simple vs mixte) reste du ressort du clinicien.
 const FormulaMeta expectedAcidBaseCompensationMeta = FormulaMeta(
   id: 'expected_acid_base_compensation',
   name: 'Compensation acido-basique attendue',
@@ -76,9 +80,12 @@ const FormulaMeta expectedAcidBaseCompensationMeta = FormulaMeta(
   ],
   limitations: [
     "Une valeur mesurée hors de cette fourchette attendue peut suggérer un "
-        "trouble acido-basique surajouté (mixte) ; l'interprétation revient "
-        'au clinicien — BioSigma ne compare pas à une valeur mesurée et ne '
-        'produit aucun verdict.',
+        "trouble acido-basique surajouté (mixte) ; l'interprétation "
+        "définitive revient toujours au clinicien. Si la valeur "
+        "compensatoire réellement mesurée est renseignée (paramètre "
+        "optionnel), BioSigma indique seulement si elle est compatible ou "
+        "non avec la fourchette attendue, sans jamais produire de verdict "
+        "diagnostique ni nommer un second trouble présumé.",
     "Les règles de compensation aiguë/chronique pour un trouble "
         "respiratoire dépendent du délai réel d'installation, souvent "
         'incertain en pratique clinique.',
@@ -86,15 +93,29 @@ const FormulaMeta expectedAcidBaseCompensationMeta = FormulaMeta(
   helpText:
       'Choisir le trouble primaire, puis saisir la donnée correspondante : '
       'HCO3 mesuré (mmol/L) pour un trouble métabolique, PaCO2 mesurée '
-      '(mmHg) pour un trouble respiratoire.',
+      '(mmHg) pour un trouble respiratoire. La valeur compensatoire '
+      'réellement mesurée (PaCO2 pour un trouble métabolique, HCO3 pour un '
+      'trouble respiratoire) peut être renseignée en plus, à titre '
+      'optionnel, pour obtenir une comparaison descriptive à la fourchette '
+      'attendue.',
 );
 
 /// Compensation acido-basique attendue pour le [disorder] primaire
 /// supposé. [measuredValue] est le HCO3 mesuré (mmol/L) pour un trouble
-/// métabolique, ou la PaCO2 mesurée (mmHg) pour un trouble respiratoire.
+/// métabolique, ou la PaCO2 mesurée (mmHg) pour un trouble respiratoire —
+/// c'est la donnée qui déclenche le calcul de la valeur attendue.
+///
+/// [measuredCompensatoryValue] est un paramètre optionnel, distinct du
+/// précédent : il s'agit de la valeur compensatoire réellement mesurée chez
+/// le patient (PaCO2 mesurée si [disorder] est métabolique, HCO3 mesuré si
+/// [disorder] est respiratoire), permettant une comparaison purement
+/// descriptive à la fourchette attendue. Lorsqu'il est omis (`null`, valeur
+/// par défaut), le comportement est strictement identique à avant
+/// l'introduction de ce paramètre : aucune comparaison n'est effectuée.
 CalculationResult calculateExpectedAcidBaseCompensation({
   required PrimaryAcidBaseDisorder disorder,
   required double measuredValue,
+  double? measuredCompensatoryValue,
 }) {
   final fieldLabel = disorder.isMetabolic ? 'HCO3 mesuré' : 'PaCO2 mesurée';
   Validation.raiseIfAny([
@@ -144,12 +165,35 @@ CalculationResult calculateExpectedAcidBaseCompensation({
       resultUnit = 'mmol/L';
   }
 
+  final echoedInputs = <String, String>{
+    'Trouble primaire supposé': disorder.label,
+    fieldLabel: '${measuredValue.toStringAsFixed(1)} ${disorder.isMetabolic ? "mmol/L" : "mmHg"}',
+  };
+
+  final warnings = <CalculationWarning>[];
+
+  if (measuredCompensatoryValue != null) {
+    final compensatoryFieldLabel = disorder.isMetabolic ? 'PaCO2 mesurée' : 'HCO3 mesuré';
+    echoedInputs[compensatoryFieldLabel] =
+        '${measuredCompensatoryValue.toStringAsFixed(1)} $resultUnit';
+
+    final withinRange = measuredCompensatoryValue >= (central - halfRange) &&
+        measuredCompensatoryValue <= (central + halfRange);
+
+    warnings.add(CalculationWarning(
+      withinRange
+          ? 'La valeur mesurée est compatible avec une compensation '
+              'attendue.'
+          : "La valeur mesurée est hors de la fourchette attendue, ce qui "
+              'peut suggérer un trouble acido-basique surajouté (mixte) — '
+              'à corréler cliniquement.',
+      severity: WarningSeverity.info,
+    ));
+  }
+
   return CalculationResult(
     formula: expectedAcidBaseCompensationMeta,
-    echoedInputs: {
-      'Trouble primaire supposé': disorder.label,
-      fieldLabel: '${measuredValue.toStringAsFixed(1)} ${disorder.isMetabolic ? "mmol/L" : "mmHg"}',
-    },
+    echoedInputs: echoedInputs,
     values: [
       ResultValue(
         label: '$resultLabel (valeur centrale)',
@@ -164,6 +208,7 @@ CalculationResult calculateExpectedAcidBaseCompensation({
         precision: 0,
       ),
     ],
+    warnings: warnings,
   );
 }
 
@@ -221,6 +266,17 @@ CalculationResult calculateBicarbonateChlorideRatio({
         value: ratio,
         unit: '',
         precision: 2,
+      ),
+    ],
+    warnings: const [
+      CalculationWarning(
+        "Aucun seuil consensuel établi par une société savante n'existe "
+        "pour ce rapport simple : il s'agit d'un repère rapide non "
+        'spécifique, à ne jamais interpréter isolément — une valeur basse '
+        'peut orienter vers une acidose hyperchlorémique, mais seuls le '
+        "trou anionique et l'analyse acido-basique complète (gaz du sang, "
+        'contexte clinique) permettent une interprétation fiable.',
+        severity: WarningSeverity.info,
       ),
     ],
   );

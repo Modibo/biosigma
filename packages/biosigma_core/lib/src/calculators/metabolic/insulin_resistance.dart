@@ -99,6 +99,44 @@ const FormulaMeta homaIrMeta = FormulaMeta(
 
 double _log10(double x) => math.log(x) / math.ln10;
 
+/// Avertissement honnête d'absence de seuil consensuel de société savante
+/// pour les indices d'insulinorésistance/sensibilité (QUICKI, TyG, HOMA-IR) :
+/// voir la RÈGLE DE SÉCURITÉ CRITIQUE — ne jamais présenter un seuil publié
+/// dans une étude de population comme une recommandation d'une société
+/// savante (ADA/EASD/IDF) pour ces indices.
+const CalculationWarning _noConsensusThresholdQuicki = CalculationWarning(
+  "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une "
+  'société savante (ADA/EASD/IDF) pour le QUICKI ; à titre purement '
+  "informatif, des seuils ont été proposés dans certaines études de "
+  'population (ex. QUICKI < 0,33-0,35 évocateur d\'une insulinorésistance), '
+  "mais ce sont des seuils de recherche spécifiques à leur population "
+  "d'étude, à ne pas généraliser ni utiliser comme seuil diagnostique "
+  'universel.',
+  severity: WarningSeverity.info,
+);
+
+const CalculationWarning _noConsensusThresholdTyg = CalculationWarning(
+  "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une "
+  "société savante (ADA/EASD/IDF) pour l'indice TyG ; à titre purement "
+  'informatif, des seuils ont été proposés dans certaines études de '
+  "population (ex. TyG > 4,5 évocateur d'une insulinorésistance), mais ce "
+  "sont des seuils de recherche spécifiques à leur population d'étude (et à "
+  "la convention de notation utilisée), à ne pas généraliser ni utiliser "
+  'comme seuil diagnostique universel.',
+  severity: WarningSeverity.info,
+);
+
+const CalculationWarning _noConsensusThresholdHomaIr = CalculationWarning(
+  "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une "
+  "société savante (ADA/EASD/IDF) pour le HOMA-IR ; à titre purement "
+  'informatif, des seuils ont été proposés dans certaines études de '
+  "population (ex. HOMA-IR > 2,5), mais ce sont des seuils de recherche "
+  "spécifiques à leur population d'étude et à la méthode de dosage de "
+  "l'insuline, à ne pas généraliser ni utiliser comme seuil diagnostique "
+  'universel.',
+  severity: WarningSeverity.info,
+);
+
 void _checkFastingConfirmed(bool fastingConfirmed) {
   if (!fastingConfirmed) {
     throw CalculationInputException([
@@ -146,6 +184,7 @@ CalculationResult calculateQuicki({
     values: [
       ResultValue(label: 'QUICKI', value: quicki, unit: '', precision: 4),
     ],
+    warnings: const [_noConsensusThresholdQuicki],
   );
 }
 
@@ -186,6 +225,7 @@ CalculationResult calculateTyg({
     values: [
       ResultValue(label: 'Indice TyG', value: tyg, unit: '', precision: 3),
     ],
+    warnings: const [_noConsensusThresholdTyg],
   );
 }
 
@@ -224,5 +264,6 @@ CalculationResult calculateHomaIr({
     values: [
       ResultValue(label: 'HOMA-IR', value: homaIr, unit: '', precision: 2),
     ],
+    warnings: const [_noConsensusThresholdHomaIr],
   );
 }

@@ -1,4 +1,5 @@
 import 'package:biosigma_core/src/calculators/hemostasis/four_ts_score.dart';
+import 'package:biosigma_core/src/models/result.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -12,6 +13,13 @@ void main() {
       );
       expect(result.isComplete, isTrue);
       expect(result.values.single.value, closeTo(8.0, 1e-9));
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains('probabilité clinique élevée') &&
+            w.message.contains('Lo et al. (2006)')),
+        isTrue,
+      );
     });
 
     test('cas limite : otherCauses manquant -> incomplet', () {

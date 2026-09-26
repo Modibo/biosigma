@@ -84,14 +84,111 @@ final CalculatorDefinition framinghamRiskScoreDefinition = CalculatorDefinition(
   },
 );
 
+/// SCORE2 — risque cardiovasculaire (fatal et non fatal) à 10 ans (SCORE2
+/// working group et ESC Cardiovascular risk collaboration, 2021), adulte
+/// de 40 à 69 ans apparemment en bonne santé, sans maladie cardiovasculaire
+/// athéroscléreuse ni diabète connus.
+final CalculatorDefinition score2RiskDefinition = CalculatorDefinition(
+  meta: score2RiskMeta,
+  fields: [
+    const CalculatorFieldSpec(
+      id: 'age',
+      label: 'Âge',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: 'ans',
+      helpText: "Âge en années révolues. SCORE2 n'est validé qu'entre 40 et 69 ans.",
+    ),
+    const CalculatorFieldSpec(
+      id: 'sex',
+      label: 'Sexe',
+      kind: FieldKind.enumSelect,
+      enumOptions: [
+        EnumFieldOption(value: Sex.female, label: 'Femme'),
+        EnumFieldOption(value: Sex.male, label: 'Homme'),
+      ],
+    ),
+    CalculatorFieldSpec(
+      id: 'region',
+      label: 'Région de risque européenne',
+      kind: FieldKind.enumSelect,
+      helpText:
+          "Aucune région ne couvre l'Afrique subsaharienne : ce choix reste "
+          'une approximation nécessaire, à interpréter avec prudence.',
+      enumOptions: [
+        EnumFieldOption(
+          value: RiskRegion.low,
+          label: RiskRegion.low.label,
+          description: RiskRegion.low.helpText,
+        ),
+        EnumFieldOption(
+          value: RiskRegion.moderate,
+          label: RiskRegion.moderate.label,
+          description: RiskRegion.moderate.helpText,
+        ),
+        EnumFieldOption(
+          value: RiskRegion.high,
+          label: RiskRegion.high.label,
+          description: RiskRegion.high.helpText,
+        ),
+        EnumFieldOption(
+          value: RiskRegion.veryHigh,
+          label: RiskRegion.veryHigh.label,
+          description: RiskRegion.veryHigh.helpText,
+        ),
+      ],
+    ),
+    const CalculatorFieldSpec(
+      id: 'totalCholesterol',
+      label: 'Cholestérol total',
+      kind: FieldKind.numberWithUnit,
+      analyte: Analyte.cholesterol,
+      helpText: 'Ne nécessite pas de prélèvement à jeun.',
+    ),
+    const CalculatorFieldSpec(
+      id: 'hdl',
+      label: 'HDL-cholestérol',
+      kind: FieldKind.numberWithUnit,
+      analyte: Analyte.cholesterol,
+      helpText: 'Ne nécessite pas de prélèvement à jeun.',
+    ),
+    const CalculatorFieldSpec(
+      id: 'systolicBloodPressure',
+      label: 'Pression artérielle systolique',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: 'mmHg',
+      helpText: 'Pression artérielle systolique mesurée, en mmHg.',
+    ),
+    const CalculatorFieldSpec(
+      id: 'currentSmoker',
+      label: 'Tabagisme actif',
+      kind: FieldKind.boolean,
+      helpText: 'À cocher si le patient est fumeur actif au moment du calcul.',
+    ),
+  ],
+  compute: (values) {
+    final age = (values['age'] as NumericEntry).value!;
+    final sex = values['sex'] as Sex;
+    final region = values['region'] as RiskRegion;
+    final totalCholesterol = values['totalCholesterol'] as NumericEntry;
+    final hdl = values['hdl'] as NumericEntry;
+    final systolicBloodPressure = (values['systolicBloodPressure'] as NumericEntry).value!;
+    final currentSmoker = values['currentSmoker'] as bool;
+    return calculateScore2Risk(
+      age: age,
+      sex: sex,
+      currentSmoker: currentSmoker,
+      systolicBloodPressure: systolicBloodPressure,
+      totalCholesterolValue: totalCholesterol.value!,
+      totalCholesterolUnit: totalCholesterol.unit,
+      hdlValue: hdl.value!,
+      hdlUnit: hdl.unit,
+      region: region,
+    );
+  },
+);
+
 /// Catalogue des calculateurs de risque cardiovasculaire de BioSigma.
-///
-/// SCORE2 (ESC 2021) n'est volontairement pas implémenté dans cette version :
-/// les coefficients de Cox, les termes d'interaction avec l'âge, les
-/// constantes de survie de base et les facteurs d'échelle de
-/// recalibration régionale n'ont pas pu être reconstitués avec une
-/// confiance suffisante pour un score cardiovasculaire — voir le rapport
-/// de la tâche d'implémentation initiale pour le détail.
 final List<CalculatorDefinition> cardiovascularRiskCalculators = [
   framinghamRiskScoreDefinition,
+  score2RiskDefinition,
 ];

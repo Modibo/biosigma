@@ -67,6 +67,15 @@ CalculationResult calculateRosnerIndex({
   final index =
       (mixTimeSeconds - normalPlasmaTimeSeconds) / patientPlasmaTimeSeconds * 100;
 
+  final interpretation = index < 15
+      ? "Indice de Rosner < 15 % : évocateur d'une correction du TCA par le "
+          'mélange, en faveur d\'un déficit en facteur de coagulation '
+          'plutôt que d\'un inhibiteur circulant.'
+      : "Indice de Rosner ≥ 15 % : évocateur d'une absence de correction du "
+          'TCA par le mélange, en faveur de la présence d\'un inhibiteur '
+          'circulant (anticoagulant lupique ou inhibiteur spécifique d\'un '
+          'facteur).';
+
   return CalculationResult(
     formula: rosnerIndexMeta,
     echoedInputs: {
@@ -80,6 +89,20 @@ CalculationResult calculateRosnerIndex({
         label: 'Indice de Rosner — ${phase.label}',
         value: index,
         unit: '%',
+      ),
+    ],
+    warnings: [
+      CalculationWarning(
+        '$interpretation Ce seuil de 15 % correspond à la convention '
+        "interprétative classiquement enseignée à partir des travaux de "
+        'Rosner et al. (1987) ; il s\'agit d\'un principe interprétatif '
+        "général et non d'une valeur absolue : le seuil exact varie selon "
+        'le réactif, le protocole (mélange immédiat ou après incubation) '
+        'et la validation locale du laboratoire. Dans tous les cas, des '
+        "explorations spécifiques complémentaires (recherche d'anticoagulant "
+        'lupique, dosage de facteurs) restent nécessaires pour confirmer '
+        "l'hypothèse d'un déficit ou d'un inhibiteur.",
+        severity: WarningSeverity.info,
       ),
     ],
   );

@@ -1,5 +1,6 @@
 import 'package:biosigma_core/src/calculators/metabolic/cardiovascular_risk_scores.dart';
 import 'package:biosigma_core/src/models/errors.dart';
+import 'package:biosigma_core/src/models/result.dart';
 import 'package:biosigma_core/src/models/sex.dart';
 import 'package:test/test.dart';
 
@@ -29,6 +30,15 @@ void main() {
       );
       expect(result.values[0].value, closeTo(13, 1e-9));
       expect(result.values[1].value, closeTo(12, 1e-9));
+      // Risque à 12 % -> catégorie ATP III intermédiaire (10-20 %),
+      // toujours affichée en avertissement informatif.
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('NCEP ATP III') &&
+            w.message.contains('intermédiaire') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('femme 60 ans, cas complet calculé point par point', () {
@@ -163,6 +173,162 @@ void main() {
       expect(result.values[0].value, closeTo(25, 1e-9));
       expect(result.values[1].value, closeTo(30, 1e-9));
       expect(result.values[1].label, contains('≥'));
+    });
+  });
+
+  group('calculateScore2Risk', () {
+    // Les 4 cas ci-dessous reproduisent l'exemple chiffré donné dans le
+    // texte intégral de l'article source lui-même (Hageman et al. 2021,
+    // Eur Heart J. 2021;42(25):2439-2454, consulté via
+    // https://pmc.ncbi.nlm.nih.gov/articles/PMC8248998/) :
+    //   « the estimated 10-year CVD risk for a 50-year-old male smoker and
+    //   with a systolic blood pressure of 140 mmHg, total cholesterol of
+    //   5.5 mmol/L and HDL-cholesterol of 1.3 mmol/L, ranged from 5.9% in
+    //   low-risk countries to 14.0% in very high-risk countries. Similarly,
+    //   the 10-year risk for a 50-year-old woman with the same risk factor
+    //   profile ranged from 4.2% in low-risk countries to 13.7% in very
+    //   high-risk countries. »
+    // C'est la vérification la plus forte disponible : le résultat du
+    // calculateur est comparé directement aux valeurs publiées par les
+    // auteurs eux-mêmes, et non recalculé à partir des coefficients bruts
+    // (ce qui reviendrait à se vérifier soi-même).
+    //
+    // Calcul détaillé à la main pour le premier cas (homme, région à
+    // risque faible), en suivant exactement la formule SCORE2 :
+    //   Centrage : (âge−60)/5 = (50−60)/5 = −2 ; (PAS−120)/20 = 1 ;
+    //              (CT−6)/1 = −0,5 ; (HDL−1,3)/0,5 = 0
+    //   LP = 0,3742×(−2) + 0,6012×1 + 0,2777×1 + 0,1458×(−0,5) + (−0,2698)×0
+    //        + (−0,0755)×(−2)×1 + (−0,0255)×(−2)×1 + (−0,0281)×(−2)×(−0,5)
+    //        + 0,0426×(−2)×0
+    //      = −0,7484 + 0,6012 + 0,2777 − 0,0729 + 0 + 0,1510 + 0,0510
+    //        − 0,0281 + 0
+    //      = 0,2315
+    //   x (risque non calibré) = 1 − 0,9605^exp(0,2315) = 1 − 0,9605^1,2605
+    //                          ≈ 0,04953
+    //   Région faible (homme) : scale1 = −0,5699 ; scale2 = 0,7476
+    //   risque = 1 − exp(−exp(−0,5699 + 0,7476×ln(−ln(1−0,04953))))
+    //          ≈ 0,05913 → 5,9 % (arrondi à 1 décimale, conforme au texte)
+    test('homme 50 ans fumeur, région à risque faible — exemple publié de '
+        "l'article original (5,9 %)", () {
+      final result = calculateScore2Risk(
+        age: 50,
+        sex: Sex.male,
+        currentSmoker: true,
+        systolicBloodPressure: 140,
+        totalCholesterolValue: 5.5,
+        totalCholesterolUnit: 'mmol/L',
+        hdlValue: 1.3,
+        hdlUnit: 'mmol/L',
+        region: RiskRegion.low,
+      );
+      expect(result.values.single.value, closeTo(5.9, 0.05));
+    });
+
+    test('homme 50 ans fumeur, région à risque très élevé — exemple publié '
+        "de l'article original (14,0 %)", () {
+      final result = calculateScore2Risk(
+        age: 50,
+        sex: Sex.male,
+        currentSmoker: true,
+        systolicBloodPressure: 140,
+        totalCholesterolValue: 5.5,
+        totalCholesterolUnit: 'mmol/L',
+        hdlValue: 1.3,
+        hdlUnit: 'mmol/L',
+        region: RiskRegion.veryHigh,
+      );
+      expect(result.values.single.value, closeTo(14.0, 0.06));
+      // Risque ≥ 10 % chez une femme/homme de 50-69 ans -> « très élevé »
+      // selon les recommandations ESC 2021 (bande d'âge 50-69 ans).
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('très élevé') && w.severity == WarningSeverity.info),
+        isTrue,
+      );
+    });
+
+    test('femme 50 ans fumeuse, région à risque faible — exemple publié de '
+        "l'article original (4,2 %)", () {
+      final result = calculateScore2Risk(
+        age: 50,
+        sex: Sex.female,
+        currentSmoker: true,
+        systolicBloodPressure: 140,
+        totalCholesterolValue: 5.5,
+        totalCholesterolUnit: 'mmol/L',
+        hdlValue: 1.3,
+        hdlUnit: 'mmol/L',
+        region: RiskRegion.low,
+      );
+      expect(result.values.single.value, closeTo(4.2, 0.05));
+    });
+
+    test('femme 50 ans fumeuse, région à risque très élevé — exemple publié '
+        "de l'article original (13,7 %)", () {
+      final result = calculateScore2Risk(
+        age: 50,
+        sex: Sex.female,
+        currentSmoker: true,
+        systolicBloodPressure: 140,
+        totalCholesterolValue: 5.5,
+        totalCholesterolUnit: 'mmol/L',
+        hdlValue: 1.3,
+        hdlUnit: 'mmol/L',
+        region: RiskRegion.veryHigh,
+      );
+      expect(result.values.single.value, closeTo(13.7, 0.05));
+    });
+
+    test('âge en dessous du domaine de validité (< 40 ans) lève une exception', () {
+      expect(
+        () => calculateScore2Risk(
+          age: 39,
+          sex: Sex.male,
+          currentSmoker: false,
+          systolicBloodPressure: 130,
+          totalCholesterolValue: 5.0,
+          totalCholesterolUnit: 'mmol/L',
+          hdlValue: 1.3,
+          hdlUnit: 'mmol/L',
+          region: RiskRegion.moderate,
+        ),
+        throwsA(isA<CalculationInputException>()),
+      );
+    });
+
+    test('âge au-dessus du domaine de validité (> 69 ans) lève une exception', () {
+      expect(
+        () => calculateScore2Risk(
+          age: 70,
+          sex: Sex.female,
+          currentSmoker: false,
+          systolicBloodPressure: 130,
+          totalCholesterolValue: 5.0,
+          totalCholesterolUnit: 'mmol/L',
+          hdlValue: 1.3,
+          hdlUnit: 'mmol/L',
+          region: RiskRegion.moderate,
+        ),
+        throwsA(isA<CalculationInputException>()),
+      );
+    });
+
+    test('HDL-cholestérol supérieur ou égal au cholestérol total lève une '
+        'exception', () {
+      expect(
+        () => calculateScore2Risk(
+          age: 55,
+          sex: Sex.male,
+          currentSmoker: false,
+          systolicBloodPressure: 130,
+          totalCholesterolValue: 1.2,
+          totalCholesterolUnit: 'mmol/L',
+          hdlValue: 1.3,
+          hdlUnit: 'mmol/L',
+          region: RiskRegion.moderate,
+        ),
+        throwsA(isA<CalculationInputException>()),
+      );
     });
   });
 }

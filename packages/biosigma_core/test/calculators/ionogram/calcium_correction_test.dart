@@ -17,6 +17,21 @@ void main() {
       // 9.1 mg/dL converti via UnitRegistry (facteur 0,2495 mg/dL -> mmol/L
       // du registre du paquet) = 2,27045 mmol/L.
       expect(mmolL.value, closeTo(2.27045, 1e-9));
+      // 9,1 mg/dL est dans la bande normale (8,5-10,5 mg/dL).
+      expect(result.warnings, hasLength(1));
+      expect(result.warnings.single.severity, WarningSeverity.info);
+      expect(result.warnings.single.message, contains('normal'));
+    });
+
+    test('calcium corrigé bas déclenche une interprétation hypocalcémie', () {
+      final result = calculateCorrectedCalcium(
+        calciumValue: 6.5,
+        calciumUnit: 'mg/dL',
+        albuminValue: 4.0,
+        albuminUnit: 'g/dL',
+      );
+      // Pas de correction (albumine=4,0) : corrigé = 6,5 mg/dL < 8,5.
+      expect(result.warnings.single.message, contains('hypocalcémie'));
     });
 
     test('Calcium=2.0 mmol/L, Albumine=20 g/L (=2.0 g/dL)', () {

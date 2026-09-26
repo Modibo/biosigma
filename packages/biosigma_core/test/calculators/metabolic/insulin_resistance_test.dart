@@ -13,6 +13,15 @@ void main() {
       );
       expect(result.values.single.value, closeTo(0.3194547527373662, 1e-9));
       expect(result.formula.id, 'quicki');
+      // Aucune société savante (ADA/EASD/IDF) n'a publié de seuil
+      // diagnostique officiel pour le QUICKI : l'interprétation doit le
+      // dire honnêtement plutôt que d'inventer une recommandation.
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('Aucun seuil diagnostique consensuel') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('insuline=5 µU/mL, glycémie=80 mg/dL', () {
@@ -77,6 +86,12 @@ void main() {
       );
       expect(result.values.single.value, closeTo(8.817297783866575, 1e-9));
       expect(result.formula.id, 'tyg_index');
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('Aucun seuil diagnostique consensuel') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('TG=200 mg/dL, Glu=110 mg/dL', () {
@@ -128,6 +143,12 @@ void main() {
       );
       expect(result.values.single.value, closeTo(3.3333333333333335, 0.01));
       expect(result.formula.id, 'homa_ir');
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('Aucun seuil diagnostique consensuel') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('insuline=15 µU/mL, glycémie=5.0 mmol/L saisie directement', () {

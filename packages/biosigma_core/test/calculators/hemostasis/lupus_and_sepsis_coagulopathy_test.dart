@@ -1,5 +1,6 @@
 import 'package:biosigma_core/src/calculators/hemostasis/lupus_and_sepsis_coagulopathy.dart';
 import 'package:biosigma_core/src/models/errors.dart';
+import 'package:biosigma_core/src/models/result.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -21,6 +22,14 @@ void main() {
       expect(result.values[1].value, closeTo(1.1515151515151516, 1e-9));
       expect(result.values[2].value, closeTo(1.1165413533834586, 1e-9));
       expect(result.values[3].value, closeTo(10.437710437710438, 1e-9));
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains('intervalle de référence propre au '
+                'laboratoire') &&
+            w.message.contains('Pengo et al. 2009')),
+        isTrue,
+      );
     });
 
     test('patient dépistage=50 s, normal dépistage=30 s, patient '
@@ -88,6 +97,29 @@ void main() {
       expect(
         result.echoedInputs['Sous-score SOFA respiratoire + cardiovasculaire'],
         contains('2 points'),
+      );
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains('compatible avec une coagulopathie induite '
+                'par le sepsis') &&
+            w.message.contains('Iba et al. 2017')),
+        isTrue,
+      );
+    });
+
+    test('score < 4 (total=0) -> interprétation "ne répond pas au seuil"', () {
+      final result = calculateSicScore(
+        plateletCountGL: 150,
+        inr: 1.2,
+        sofaRespiratoryCardiovascularSubscore: 0,
+      );
+      expect(result.values.single.value, closeTo(0, 1e-9));
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains('ne répond pas au seuil')),
+        isTrue,
       );
     });
 

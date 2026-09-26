@@ -75,8 +75,9 @@ const FormulaMeta fourTsScoreMeta = FormulaMeta(
       "Patient sous héparine (ou récemment exposé) présentant une "
       'thrombopénie',
   limitations: [
-    "L'interprétation clinique de ce score doit être validée localement "
-        'par le biologiste responsable avant toute utilisation en pratique.',
+    'Le résultat (score et interprétation) doit être confronté au contexte '
+        'clinique et validé par un professionnel compétent avant toute '
+        'décision — comme tout résultat de BioSigma.',
     'Score de probabilité clinique pré-test, ne remplace pas la recherche '
         'biologique d\'anticorps anti-PF4/héparine quand celle-ci est '
         'indiquée.',
@@ -135,10 +136,13 @@ CalculationResult calculateFourTsScore({
       CalculationWarning(
         total >= 6
             ? "Score 6-8 : probabilité clinique élevée de thrombopénie "
-                "induite par l'héparine (TIH)."
+                "induite par l'héparine (TIH), selon les catégories de "
+                'probabilité pré-test de Lo et al. (2006).'
             : (total >= 4
-                ? 'Score 4-5 : probabilité clinique intermédiaire de TIH.'
-                : 'Score 0-3 : probabilité clinique faible de TIH.'),
+                ? 'Score 4-5 : probabilité clinique intermédiaire de TIH, '
+                    'selon Lo et al. (2006).'
+                : 'Score 0-3 : probabilité clinique faible de TIH, selon '
+                    'Lo et al. (2006).'),
         severity: WarningSeverity.info,
       ),
     ],

@@ -11,6 +11,15 @@ void main() {
       // Calcul indépendant (Python) : 70 / (1.70^2) = 24.221453287197235
       expect(result.values.single.value, closeTo(24.221453287197235, 1e-6));
       expect(result.formula.id, 'bmi');
+      // Classification OMS 2000, universellement reconnue : toujours
+      // affichée en avertissement informatif.
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('OMS 2000') &&
+            w.message.contains('poids normal') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('poids=55 kg, taille=160 cm', () {
@@ -52,6 +61,12 @@ void main() {
       final tygBmi = _byLabel(result, 'TyG-IMC');
       expect(tygBmi, closeTo(213.56776639123194, 1e-6));
       expect(result.formula.id, 'tyg_bmi');
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('Aucun seuil diagnostique consensuel') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
 
       final tygComponent = _byLabel(result, 'Indice TyG (composante)');
       expect(tygComponent, closeTo(8.817297783866575, 1e-6));
@@ -121,6 +136,12 @@ void main() {
       // Calcul indépendant (Python) : (20*15)/(5.0-3.5) = 200.0
       expect(result.values.single.value, closeTo(200.0, 1e-6));
       expect(result.formula.id, 'homa_beta');
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains("Aucun seuil consensuel") &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('insuline=8 µU/mL, glycémie=4.5 mmol/L', () {
@@ -200,6 +221,16 @@ void main() {
       // Calcul indépendant (Python) : 5.0/1.2 = 4.166666666666667
       expect(result.values.single.value, closeTo(4.166666666666667, 1e-6));
       expect(result.formula.id, 'ct_hdl_ratio');
+      // Repère informel légué par l'ère NCEP, explicitement non retenu par
+      // les recommandations actuelles (ESC/EAS, ADA) comme critère de
+      // première ligne.
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('ESC/EAS') &&
+            w.message.contains('repère informel') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('conversion unité — cholestérol saisi en g/L au lieu de mmol/L', () {
@@ -234,6 +265,15 @@ void main() {
       // Calcul indépendant (Python) : 1.1/1.5 = 0.7333333333333334
       expect(result.values.single.value, closeTo(0.7333333333333334, 1e-6));
       expect(result.formula.id, 'apob_apoa1_ratio');
+      // Pas de seuil unique consensuel ESC/AHA ; mentionné en ESC/EAS 2019
+      // comme outil d'affinement du risque dans des situations spécifiques.
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('ESC/EAS 2019') &&
+            w.message.contains("affinement du risque") &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('ApoB=0,9 g/L, ApoA1=1,6 g/L', () {

@@ -30,6 +30,9 @@ const FormulaMeta proteinuria24hMeta = FormulaMeta(
     "La précision dépend de l'exactitude du recueil (durée réelle, volume "
         "total réellement collecté) déclaré par le patient ou le service de "
         "soins.",
+    "Le seuil de 3,5 g/24h retenu pour qualifier une protéinurie de rang "
+        "néphrotique est un repère classique de la pratique néphrologique, "
+        "non formalisé par une grille de société savante particulière.",
   ],
   displayPrecision: 1,
 );
@@ -112,6 +115,23 @@ CalculationResult calculateProteinuria24h({
       severity: WarningSeverity.caution,
     ));
   }
+
+  // Équivalent ramené à 24 h, à seule fin d'interprétation (identique à la
+  // valeur mesurée lorsque le recueil dure exactement 24 h).
+  final mgPer24hEquivalent = massMg * (1440 / durationMinCanonical);
+  final gPer24hLabel = isExactly24h
+      ? '${(mgPer24hEquivalent / 1000).toStringAsFixed(2)} g/24h'
+      : '${(mgPer24hEquivalent / 1000).toStringAsFixed(2)} g/24h (estimation '
+          'ramenée à 24 h)';
+  warnings.add(CalculationWarning(
+    mgPer24hEquivalent >= 3500
+        ? 'Protéinurie de rang néphrotique ($gPer24hLabel) : seuil '
+            "classiquement retenu en pratique néphrologique (≥ 3,5 g/24h)."
+        : 'Protéinurie non néphrotique ($gPer24hLabel) : en dessous du '
+            "seuil classiquement retenu en pratique néphrologique pour une "
+            "protéinurie de rang néphrotique (≥ 3,5 g/24h).",
+    severity: WarningSeverity.info,
+  ));
 
   return CalculationResult(
     formula: proteinuria24hMeta,

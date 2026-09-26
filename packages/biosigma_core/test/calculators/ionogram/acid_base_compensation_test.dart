@@ -98,6 +98,39 @@ void main() {
         throwsA(isA<CalculationInputException>()),
       );
     });
+
+    test('measuredCompensatoryValue omis (null) : comportement inchangé, aucun avertissement', () {
+      final result = calculateExpectedAcidBaseCompensation(
+        disorder: PrimaryAcidBaseDisorder.acidoseMetabolique,
+        measuredValue: 10,
+      );
+      expect(result.warnings, isEmpty);
+    });
+
+    test('measuredCompensatoryValue dans la fourchette attendue : compatible', () {
+      // HCO3 = 10 -> PaCO2 attendue = 23 ± 2 (soit [21 ; 25]).
+      final result = calculateExpectedAcidBaseCompensation(
+        disorder: PrimaryAcidBaseDisorder.acidoseMetabolique,
+        measuredValue: 10,
+        measuredCompensatoryValue: 22,
+      );
+      expect(result.warnings, hasLength(1));
+      expect(result.warnings.single.severity, WarningSeverity.info);
+      expect(result.warnings.single.message, contains('compatible avec une compensation'));
+    });
+
+    test('measuredCompensatoryValue hors de la fourchette attendue : suggère un trouble mixte', () {
+      // HCO3 = 10 -> PaCO2 attendue = 23 ± 2 (soit [21 ; 25]) ; 35 est hors fourchette.
+      final result = calculateExpectedAcidBaseCompensation(
+        disorder: PrimaryAcidBaseDisorder.acidoseMetabolique,
+        measuredValue: 10,
+        measuredCompensatoryValue: 35,
+      );
+      expect(result.warnings, hasLength(1));
+      expect(result.warnings.single.severity, WarningSeverity.info);
+      expect(result.warnings.single.message, contains('hors de la fourchette attendue'));
+      expect(result.warnings.single.message, contains('mixte'));
+    });
   });
 
   group('calculateBicarbonateChlorideRatio', () {
@@ -108,6 +141,10 @@ void main() {
         chlorideValue: 100,
       );
       expect(result.values.single.value, closeTo(0.24, 1e-9));
+      // Aucun seuil consensuel : avertissement honnête toujours présent.
+      expect(result.warnings, hasLength(1));
+      expect(result.warnings.single.severity, WarningSeverity.info);
+      expect(result.warnings.single.message, contains('Aucun seuil consensuel'));
     });
 
     test('rejette un chlore nul (division par zéro)', () {

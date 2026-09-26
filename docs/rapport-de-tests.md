@@ -285,3 +285,137 @@ fournir les tables supplémentaires exactes de la publication d'origine.
 - Mise à jour de `docs/tracabilite-scientifique.md` (table détaillée dédiée) : non faite pour ces
   21 formules — leur traçabilité complète reste néanmoins disponible dans chaque `FormulaMeta` et
   à l'écran « Références » de l'application, seule la table Markdown séparée n'a pas été étendue.
+
+## 9. Livraison du 26/09/2026 — SCORE2 + interprétations sourcées sur l'ensemble des 53 calculs existants
+
+Demande utilisateur : « Ajouter le SCORE2, et les interprétations des résultats de l'ensemble des
+paramètres calculés selon les recommandations actuelles des sociétés savantes correspondants. »
+Clarifiée par question ciblée : affichage **toujours visible, sans blocage** (réponse explicite de
+l'utilisateur), et catégorie SCORE2/Framingham rangée dans le domaine cardiométabolique existant
+(réponse explicite à une question antérieure).
+
+### Constat de départ
+
+Le mécanisme d'affichage nécessaire existait déjà, sans le savoir explicitement documenté :
+`CalculationResult.warnings` (sévérité `info`/`caution`/`blocking`) est rendu **sans aucune
+condition** par `WarningList` côté application — confirmé en lisant le code, pas supposé. Le score
+ISTH-CIVD avait déjà une interprétation ainsi affichée. Aucune infrastructure de « validation
+locale masquant l'interprétation » n'a jamais existé dans le code, malgré du texte affirmant le
+contraire dans `limitations` (ISTH-CIVD, 4Ts) et dans l'onglet À propos — corrigé dans cette
+livraison (voir plus bas). Conséquence pratique : aucun changement de modèle de données ni d'UI
+n'a été nécessaire ; tout le travail consiste à ajouter, calcul par calcul, un `CalculationWarning`
+d'interprétation sourcée.
+
+### Méthode
+
+Six agents en arrière-plan, exécutés en parallèle :
+- Cinq agents « domaine » (rénal, cardiométabolique, ionogramme/hépatique/acido-basique, hémostase,
+  hématologie), chacun scopé strictement à son propre dossier `calculators/<domaine>/` — aucun
+  fichier partagé (`catalog.dart`, `biosigma_core.dart`, registres applicatifs) touché par ces
+  agents, pour éviter tout conflit de fusion pendant l'exécution parallèle.
+- Un agent dédié SCORE2, équipé cette fois d'outils de recherche web (`WebSearch`/`WebFetch`),
+  contrairement à la tentative précédente (session du 26/09/2026 plus tôt) qui avait été
+  correctement abandonnée faute de coefficients vérifiables en mémoire.
+
+Consigne de sécurité commune à tous les agents (répétée dans chaque brief) : n'attribuer une
+interprétation à une société savante que si une source réelle, vérifiable et actuellement en
+vigueur l'endosse explicitement pour ce marqueur précis. Quand aucun consensus de société savante
+n'existe (cas fréquent en recherche biologique — indices dérivés d'une seule étude de cohorte),
+l'interprétation doit le dire explicitement plutôt que d'inventer ou d'emprunter un seuil à une
+publication isolée présentée comme une recommandation officielle. Cette réponse honnête est un
+résultat correct et attendu, pas un échec de la tâche.
+
+### SCORE2 — implémenté avec succès cette fois
+
+L'agent a recherché et lu en ligne : le texte intégral de l'article original (Hageman et al., Eur
+Heart J. 2021;42(25):2439-2454, via PMC), un package R open-source (`RiskScorescvd`) et une
+implémentation indépendante en C# (`CVDRiskScores`), le manuel utilisateur d'un dispositif médical
+marqué CE reprenant SCORE2 (Evidencio, v5, juillet 2025), et la page officielle ESC HeartScore pour
+la table pays→région. **Vérification la plus forte** : l'implémentation reproduit exactement les
+deux exemples chiffrés publiés dans l'article original (homme 50 ans fumeur, PAS 140, CT 5,5 mmol/L,
+HDL 1,3 mmol/L → 5,9 % en région à faible risque et 14,0 % en région à très haut risque ; femme
+équivalente → 4,2 % et 13,7 % — valeurs reproduites par le code au dixième de point près). Le
+sélecteur de région de risque (`RiskRegion`, 4 valeurs) affiche un avertissement honnête : aucune
+région ESC ne couvre l'Afrique subsaharienne, le choix reste une approximation — pertinent pour le
+public malien de l'application.
+
+### Interprétations ajoutées — vue d'ensemble par domaine
+
+- **Rénal** : stadification KDIGO G1-G5 (CKD-EPI ×3, Schwartz, clairance créatinine minutée en
+  approximation explicitement caveatée) et catégories d'albuminurie A1-A3 (UACR) ; seuils prérénal/
+  nécrose tubulaire aiguë classiques pour FeNa (Espinel 1976) et FeUrée (Carvounis 2002) ; seuil
+  néphrotique (≥3,5 g/24h) pour la protéinurie, honnêtement présenté comme un repère de pratique et
+  non une recommandation d'une société nommée.
+- **Cardiométabolique** : classification IMC OMS 2000 (directe, universelle) ; bandes ESC/EAS 2019
+  pour le LDL/non-HDL (explicitement descriptives, la cible thérapeutique réelle dépendant du
+  risque CV global) ; catégories ATP III pour Framingham ; catégories ESC 2021 par tranche d'âge
+  pour SCORE2. **Absence de seuil honnêtement signalée** pour HOMA-IR, QUICKI, TyG, TyG-IMC,
+  HOMA-β (aucune société ADA/EASD/IDF n'endosse de seuil diagnostique universel pour ces index).
+- **Ionogramme / hépatique / acido-basique** : seuils WHO 2016/2018 (APRI, cirrhose) et
+  Sterling 2006/EASL 2021 (FIB-4) pour la fibrose hépatique ; seuil AASLD 2011 pour la saturation
+  de la transferrine ; grades ALBI (Johnson 2015, déjà documentés, promus en avertissement actif) ;
+  bandes de mortalité approximatives pour MELD-Na (Kamath 2001/Wiesner 2003) ; plages de référence
+  standard pour trou anionique, natrémie/calcémie corrigées, trou osmolaire. La **compensation
+  acido-basique attendue** gagne un paramètre optionnel `measuredCompensatoryValue` : si fournie,
+  la valeur mesurée est comparée à la fourchette attendue et le résultat indique « compatible » ou
+  « hors fourchette — trouble acido-basique mixte possible », sans jamais nommer un second
+  diagnostic précis. Rapport bicarbonates/chlorures : honnêtement signalé comme sans seuil
+  consensuel.
+- **Hémostase** : score ISTH-CIVD et score 4Ts (déjà interprétés, texte de `limitations` corrigé
+  pour ne plus laisser croire à un mécanisme de masquage/validation locale qui n'a jamais existé
+  dans le code) ; score SIC (seuil ≥4 promu de `limitations` vers un avertissement actif) ; INR et
+  ratio TCA : cadre honnête dépendant de l'indication clinique et du réactif local, sans verdict
+  unique inventé ; indice de Rosner : convention interprétative classique (Rosner et al. 1987) ;
+  rapport normalisé dRVVT : positivité nécessitant l'intervalle de référence local du laboratoire
+  (ISTH 2009), aucun seuil universel appliqué par l'application.
+- **Hématologie** : les cinq indices discriminants microcytaires (Mentzer, Shine-Lal,
+  England-Fraser, Green-King, RDWI) affichent désormais leur seuil de littérature avec la mise en
+  garde explicite qu'aucune société savante d'hématologie ne l'endosse formellement — outils de
+  dépistage, jamais un diagnostic isolé. RPI : interprétation classique (hypoprolifératif/adapté)
+  selon la méthodologie Hillman. **SII et SIRI : absence de seuil honnêtement signalée** (marqueurs
+  de recherche pronostique oncologique sans seuil clinique reconnu par une société savante).
+
+### Correction de texte obsolète
+
+L'onglet À propos affirmait auparavant qu'aucun seuil interprétatif n'était jamais imposé et que
+l'interprétation d'ISTH-CIVD/4Ts restait masquée jusqu'à validation locale — les deux affirmations
+ne correspondaient déjà plus (la seconde n'avait en réalité jamais été vraie dans le code). Le
+texte a été réécrit pour refléter fidèlement le nouveau comportement : interprétations toujours
+affichées quand une classification reconnue existe, absence de seuil signalée honnêtement sinon,
+seuils propres au laboratoire toujours réglables dans Réglages > Seuils locaux. Le même correctif a
+été appliqué au texte `limitations` d'ISTH-CIVD et 4Ts dans le moteur de calcul.
+
+### Vérification
+
+- `dart analyze` (biosigma_core) : propre.
+- `dart test` (biosigma_core) : **206/206 tests verts** (178 avant cette livraison → 206), incluant
+  au moins un cas représentatif par formule confirmant le texte d'interprétation (ou l'honnêteté de
+  l'absence de seuil) et les cas d'erreur de validation existants, tous préservés.
+- `flutter analyze` (app) : propre.
+- `flutter test` (app) : 9/9 verts après correction d'un test devenu ambigu (`find.textContaining('0,3')`
+  sur l'écran QUICKI correspondait à la fois au résultat et à un extrait du nouveau texte
+  d'interprétation « no consensus » qui contient aussi « 0,3x » — resserré sur la valeur exacte
+  affichée, `find.text('0,3194')`).
+- Vérification visuelle (navigateur, `flutter build web --release`) :
+  - CKD-EPI créatinine 2021, 60 ans, F, créatinine 70 µmol/L, IDMS confirmé → 85,4 mL/min/1,73 m²
+    (valeur déjà vérifiée en session précédente) + avertissement « Stade KDIGO G2 : DFG légèrement
+    diminué » avec la grille complète G1-G5 et la mise en garde des 3 mois — conforme.
+  - SCORE2 : écran ouvert, sélecteur de région et mise en garde Afrique subsaharienne confirmés
+    affichés.
+  - Recherche testée pour SCORE2 : apparaît avec son sous-titre source (« SCORE2 working group et
+    ESC Cardiovascular risk collaboration, 2021 »).
+
+### Non fait / signalé pour suite
+
+- Confiance mitigée sur la citation précise des seuils APRI de fibrose significative (0,5/1,5) :
+  attribués à Wai et al. 2003 (source primaire déjà en place) plutôt qu'au document WHO lui-même,
+  par prudence — seul le seuil de cirrhose (2,0) est attribué avec confiance à WHO 2016/2018. À
+  vérifier contre le PDF WHO si une citation irréprochable est requise.
+- `docs/tracabilite-scientifique.md` non mise à jour avec le détail des nouvelles interprétations
+  (même limite que pour la livraison précédente) — traçabilité complète disponible dans chaque
+  `FormulaMeta` et à l'écran Références.
+- Le score SIC et le score ISTH-CIVD/4Ts affichent maintenant tous leur interprétation de la même
+  façon (toujours visible), ce qui **annule l'ancien comportement documenté (mais jamais codé) de
+  masquage derrière une validation locale** décrit dans le cahier des charges initial — changement
+  demandé explicitement par l'utilisateur dans cette session, signalé ici pour traçabilité de la
+  décision.

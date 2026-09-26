@@ -68,6 +68,29 @@ CalculationResult calculateAnionGap({
 
   final agSansK = sodiumValue - (chlorideValue + bicarbonateValue);
 
+  final String agCategory;
+  if (agSansK < 8) {
+    agCategory = 'bas';
+  } else if (agSansK <= 12) {
+    agCategory = 'normal';
+  } else {
+    agCategory = 'élevé';
+  }
+  final warnings = <CalculationWarning>[
+    CalculationWarning(
+      'Trou anionique (sans potassium) : $agCategory (repère habituel '
+      '≈ 8-12 mmol/L, enseignement classique de biochimie clinique — '
+      'Emmett & Narins 1977). Un trou anionique élevé oriente vers une '
+      'acidose métabolique à trou anionique augmenté et impose une '
+      'recherche étiologique (ex. lactates, cétones, toxiques '
+      '[méthanol, éthylène glycol, salicylés], insuffisance rénale — '
+      "catégories classiquement résumées par l'acronyme MUDPILES) ; un "
+      'trou anionique bas a peu de valeur diagnostique isolée (à '
+      "évoquer notamment en cas d'hypoalbuminémie).",
+      severity: WarningSeverity.info,
+    ),
+  ];
+
   final echoedInputs = <String, String>{
     'Sodium': '${sodiumValue.toStringAsFixed(1)} mmol/L',
     'Chlore': '${chlorideValue.toStringAsFixed(1)} mmol/L',
@@ -106,11 +129,19 @@ CalculationResult calculateAnionGap({
       value: agCorrige,
       unit: 'mmol/L',
     ));
+    warnings.add(const CalculationWarning(
+      "La correction pour l'albuminémie vise à démasquer un trou "
+      'anionique élevé faussement normalisé par une hypoalbuminémie ; le '
+      'même repère habituel (≈ 8-12 mmol/L) est usuellement appliqué à '
+      'la valeur corrigée.',
+      severity: WarningSeverity.info,
+    ));
   }
 
   return CalculationResult(
     formula: anionGapMeta,
     echoedInputs: echoedInputs,
     values: values,
+    warnings: warnings,
   );
 }

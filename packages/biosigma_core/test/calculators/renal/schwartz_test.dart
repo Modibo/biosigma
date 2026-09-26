@@ -13,7 +13,13 @@ void main() {
         creatinineUnit: 'mg/dL',
       );
       expect(result.values.single.value, closeTo(82.6, 1e-6));
-      expect(result.warnings, isEmpty);
+      // Pas de zone de transition jeune adulte à cet âge.
+      expect(
+        result.warnings.any((w) => w.severity == WarningSeverity.caution),
+        isFalse,
+      );
+      // DFG ~82.6 mL/min/1,73 m² : stade KDIGO G2 (60-89).
+      expect(result.warnings.any((w) => w.message.contains('G2')), isTrue);
     });
 
     test('12 ans, taille 120 cm, Scr 0.4 mg/dL', () {
@@ -24,6 +30,8 @@ void main() {
         creatinineUnit: 'mg/dL',
       );
       expect(result.values.single.value, closeTo(123.89999999999998, 1e-6));
+      // DFG ~123.9 mL/min/1,73 m² : stade KDIGO G1 (≥ 90).
+      expect(result.warnings.any((w) => w.message.contains('G1')), isTrue);
     });
 
     test('âge = 30 ans lève une exception (hors domaine)', () {

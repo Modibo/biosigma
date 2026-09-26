@@ -25,6 +25,17 @@ const FormulaMeta inrMeta = FormulaMeta(
           'Standardization. Guidelines for Thromboplastins and Plasma Used '
           'to Control Oral Anticoagulant Therapy.',
     ),
+    Reference(
+      citation:
+          'January CT, Wann LS, Calkins H, et al. 2019 AHA/ACC/HRS Focused '
+          'Update of the 2014 AHA/ACC/HRS Guideline for the Management of '
+          'Patients With Atrial Fibrillation. Circulation. '
+          '2019;140(2):e125-e151.',
+      note:
+          "Cible INR 2,0-3,0 pour la fibrillation atriale, à titre "
+          "d'exemple parmi les indications possibles ; la cible thérapeutique "
+          "réelle dépend de l'indication clinique et doit être individualisée.",
+    ),
   ],
   applicablePopulation: "Patient sous surveillance du temps de prothrombine",
   analyticalConditions: [
@@ -63,6 +74,21 @@ CalculationResult calculateInr({
     },
     values: [
       ResultValue(label: 'INR', value: inr, unit: ''),
+    ],
+    warnings: const [
+      CalculationWarning(
+        "La cible thérapeutique de l'INR dépend entièrement de l'indication "
+        'clinique et ne peut pas être résumée par une valeur unique. En '
+        "l'absence de traitement anticoagulant, la valeur de référence est "
+        'proche de 0,8-1,2. Sous antivitamine K, la cible usuelle est '
+        "généralement de 2,0 à 3,0 pour la plupart des indications "
+        '(fibrillation atriale, traitement d\'une maladie thromboembolique '
+        'veineuse), et de 2,5 à 3,5 pour certaines valves cardiaques '
+        'mécaniques à haut risque thrombotique — à individualiser selon '
+        "l'indication précise et les recommandations en vigueur (par "
+        'exemple ACC/AHA/HRS pour la fibrillation atriale).',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }
@@ -115,6 +141,20 @@ CalculationResult calculateAptRatio({
     },
     values: [
       ResultValue(label: 'Ratio TCA patient/témoin', value: ratio, unit: ''),
+    ],
+    warnings: const [
+      CalculationWarning(
+        "Il n'existe pas de seuil universel pour le ratio TCA : la plage "
+        'normale dépend du réactif et de l\'analyseur du laboratoire, et '
+        "l'intervalle thérapeutique visé lors de la surveillance d'un "
+        'traitement par héparine non fractionnée est spécifique à chaque '
+        "réactif — il doit être établi localement par étalonnage vis-à-vis "
+        "de l'activité anti-Xa. Cette application ne peut donc pas fournir "
+        'une plage de référence ou thérapeutique unique valable pour tous '
+        'les laboratoires ; se référer aux valeurs établies par le '
+        'laboratoire réalisant le dosage.',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }
@@ -170,6 +210,18 @@ CalculationResult calculateSerialTrend({
   if (previousValue != 0) {
     final percentChange = (currentValue - previousValue) / previousValue * 100;
     values.add(ResultValue(label: 'Variation relative', value: percentChange, unit: '%'));
+
+    final direction = percentChange > 0
+        ? 'en hausse'
+        : (percentChange < 0 ? 'en baisse' : 'stable');
+    warnings.add(CalculationWarning(
+      'Tendance $direction par rapport à la valeur précédente '
+      '(${percentChange.toStringAsFixed(1)} %). Cette observation est '
+      'purement descriptive : elle ne constitue pas une interprétation '
+      'clinique et doit être replacée dans le contexte du patient, de '
+      "l'analyte suivi et de la variabilité analytique du test utilisé.",
+      severity: WarningSeverity.info,
+    ));
   } else {
     values.add(const ResultValue(label: 'Variation relative', value: null, unit: '%'));
     warnings.add(const CalculationWarning(

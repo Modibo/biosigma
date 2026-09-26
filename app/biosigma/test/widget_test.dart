@@ -94,7 +94,12 @@ void main() {
     await tester.pumpAndSettle();
 
     // QUICKI(15 µU/mL, 90 mg/dL) ≈ 0,3195 — affiché avec la précision de la formule.
-    expect(find.textContaining('0,3'), findsOneWidget);
+    // Recherche la valeur exacte affichée (et non un simple "contient 0,3") : le
+    // QUICKI n'ayant aucun seuil consensuel reconnu par une société savante,
+    // l'interprétation toujours affichée à côté du résultat mentionne aussi des
+    // valeurs "0,3x" à titre informatif, ce qui rendrait un finder trop large
+    // ambigu (plusieurs correspondances).
+    expect(find.text('0,3194'), findsOneWidget);
     expect(find.text('Score incomplet'), findsNothing);
   });
 

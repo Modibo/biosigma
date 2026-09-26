@@ -4,6 +4,7 @@ import '../../models/result.dart';
 import '../../units/analyte.dart';
 import '../../units/unit_registry.dart';
 import '../../validation.dart';
+import 'ckd_epi.dart' show kdigoGfrStageWarning;
 
 /// Rapport albumine/créatinine urinaire.
 const FormulaMeta urineAlbuminCreatinineRatioMeta = FormulaMeta(
@@ -20,6 +21,8 @@ const FormulaMeta urineAlbuminCreatinineRatioMeta = FormulaMeta(
           'KDIGO 2012 Clinical Practice Guideline for the Evaluation and '
           'Management of Chronic Kidney Disease. Kidney Int Suppl. '
           '2013;3(1):1-150.',
+      note: "contexte clinique ; catégories A1-A3 de l'albuminurie "
+          '(interprétation)',
     ),
   ],
   applicablePopulation: 'Tout âge',
@@ -51,6 +54,10 @@ const FormulaMeta urineProteinCreatinineRatioMeta = FormulaMeta(
   limitations: [
     "Moins précis que la protéinurie des 24 h en cas de variation "
         "importante du débit urinaire (nycthéméral, hydratation).",
+    "Contrairement à l'ACR, le PCR ne fait l'objet d'aucune catégorisation "
+        "KDIGO formelle ; la correspondance avec le rang néphrotique "
+        "(≥ 3000-3500 mg/g) est une approximation d'usage clinique, non "
+        "un seuil de société savante.",
   ],
   displayPrecision: 1,
 );
@@ -70,12 +77,24 @@ const FormulaMeta creatinineClearanceTimedMeta = FormulaMeta(
           'and Clinical Practice Recommendations.',
       note: 'formule classique de bilan de masse pour la clairance urinaire mesurée',
     ),
+    Reference(
+      citation:
+          'Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. '
+          'KDIGO 2012 Clinical Practice Guideline for the Evaluation and '
+          'Management of Chronic Kidney Disease. Kidney Int Suppl. '
+          '2013;3(1):1-150.',
+      note: 'grille de stades du DFG G1-G5 appliquée par analogie, à titre '
+          'informatif',
+    ),
   ],
   applicablePopulation: 'Tout âge',
   limitations: [
     'Ne corrige pas pour la surface corporelle.',
     'Surestime le DFG réel du fait de la sécrétion tubulaire de créatinine, '
         "notamment aux stades avancés d'insuffisance rénale chronique.",
+    "Le positionnement dans les catégories KDIGO ci-dessous est une "
+        "approximation informative : la clairance mesurée n'est pas "
+        "strictement équivalente au DFG estimé.",
   ],
   displayPrecision: 1,
 );
@@ -93,12 +112,16 @@ const FormulaMeta fractionalExcretionSodiumMeta = FormulaMeta(
       citation:
           'Espinel CH. The FENa Test. Use in the Differential Diagnosis of '
           'Acute Renal Failure. JAMA. 1976;236(6):579-581.',
+      note: "formule et seuils classiques d'interprétation (< 1 % / > 2 %)",
     ),
   ],
   applicablePopulation: 'Adulte, insuffisance rénale aiguë',
   limitations: [
     'Non interprétable sous diurétiques, en particulier les diurétiques de '
         "l'anse récents ; utiliser alors la fraction excrétée de l'urée.",
+    "Peu fiable également en cas d'insuffisance rénale chronique "
+        "préexistante, de néphropathie aux produits de contraste, de "
+        "glycosurie ou de protéinurie abondante préexistante.",
   ],
   helpText: 'Sodium en mmol/L (valeurs brutes, sans conversion d\'unité).',
   displayPrecision: 2,
@@ -118,6 +141,7 @@ const FormulaMeta fractionalExcretionUreaMeta = FormulaMeta(
           'Carvounis CP, Nisar S, Guro-Razuman S. Significance of the '
           'Fractional Excretion of Urea in the Differential Diagnosis of '
           'Acute Renal Failure. Kidney Int. 2002;62(6):2223-2229.',
+      note: "formule et seuils classiques d'interprétation (< 35 % / > 50 %)",
     ),
   ],
   applicablePopulation: 'Adulte, insuffisance rénale aiguë, notamment sous diurétiques de l\'anse',
@@ -136,6 +160,51 @@ String _echoCreatinine(double value, String unit, double canonicalUmolL) {
       : '${value.toStringAsFixed(2)} $unit (${canonicalUmolL.toStringAsFixed(1)} µmol/L)';
 }
 
+/// Catégories KDIGO de l'albuminurie (A1 à A3), sur le rapport
+/// albumine/créatinine urinaire.
+///
+/// Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO
+/// 2012 Clinical Practice Guideline for the Evaluation and Management of
+/// Chronic Kidney Disease. Kidney Int Suppl. 2013;3(1):1-150.
+List<CalculationWarning> _uacrKdigoCategoryWarnings(double ratioMgG, double ratioMgMmol) {
+  final String category;
+  final String description;
+  if (ratioMgG < 30) {
+    category = 'A1';
+    description = 'normale à légèrement augmentée';
+  } else if (ratioMgG <= 300) {
+    category = 'A2';
+    description = 'modérément augmentée';
+  } else {
+    category = 'A3';
+    description = 'sévèrement augmentée';
+  }
+  return [
+    CalculationWarning(
+      'Catégorie KDIGO $category : albuminurie $description (grille KDIGO '
+      '— A1 < 30 mg/g [< 3 mg/mmol], A2 30-300 mg/g [3-30 mg/mmol], A3 '
+      '> 300 mg/g [> 30 mg/mmol]).',
+      severity: WarningSeverity.info,
+    ),
+  ];
+}
+
+/// Correspondance informelle du PCR avec le rang néphrotique : le PCR ne
+/// fait l'objet d'aucune catégorisation KDIGO officielle (contrairement à
+/// l'ACR) — repère de pratique clinique uniquement.
+List<CalculationWarning> _upcrInformalNephroticRangeWarnings(double ratioMgG, double ratioMgMmol) {
+  return [
+    CalculationWarning(
+      "Il n'existe pas de catégorisation KDIGO formelle du rapport "
+      "protéines/créatinine (contrairement à l'ACR). Par correspondance "
+      "approximative d'usage clinique, un PCR ≥ 3000-3500 mg/g (soit ≥ "
+      "300-350 mg/mmol) est évocateur d'une protéinurie de rang "
+      "néphrotique.",
+      severity: WarningSeverity.info,
+    ),
+  ];
+}
+
 CalculationResult _calculateRatio({
   required FormulaMeta formula,
   required String analyteLabel,
@@ -144,6 +213,7 @@ CalculationResult _calculateRatio({
   required String analyteUnit,
   required double creatinineValue,
   required String creatinineUnit,
+  List<CalculationWarning> Function(double ratioMgG, double ratioMgMmol)? interpret,
 }) {
   final analyteError = Validation.checkPositive(analyteValue, 'analyteValue', analyteLabel);
   final creatinineError =
@@ -173,6 +243,7 @@ CalculationResult _calculateRatio({
       ResultValue(label: resultLabel, value: ratioMgG, unit: 'mg/g', precision: 1),
       ResultValue(label: resultLabel, value: ratioMgMmol, unit: 'mg/mmol', precision: 2),
     ],
+    warnings: interpret == null ? const [] : interpret(ratioMgG, ratioMgMmol),
   );
 }
 
@@ -191,6 +262,7 @@ CalculationResult calculateAlbuminCreatinineRatio({
     analyteUnit: albuminUnit,
     creatinineValue: creatinineValue,
     creatinineUnit: creatinineUnit,
+    interpret: _uacrKdigoCategoryWarnings,
   );
 }
 
@@ -209,6 +281,7 @@ CalculationResult calculateProteinCreatinineRatio({
     analyteUnit: proteinUnit,
     creatinineValue: creatinineValue,
     creatinineUnit: creatinineUnit,
+    interpret: _upcrInformalNephroticRangeWarnings,
   );
 }
 
@@ -262,6 +335,17 @@ CalculationResult calculateTimedCreatinineClearance({
         precision: 1,
       ),
     ],
+    warnings: [
+      kdigoGfrStageWarning(crCl),
+      const CalculationWarning(
+        "Approximation informative : la clairance mesurée de la créatinine "
+        "n'est pas strictement équivalente au DFG estimé (elle le "
+        "surestime, notamment par sécrétion tubulaire de la créatinine) ; "
+        "son positionnement dans les catégories KDIGO ci-dessus est donné "
+        "à titre indicatif.",
+        severity: WarningSeverity.info,
+      ),
+    ],
   );
 }
 
@@ -300,6 +384,32 @@ CalculationResult calculateFeNa({
     values: [
       ResultValue(label: 'Fraction excrétée du sodium (FeNa)', value: feNa, unit: '%', precision: 2),
     ],
+    warnings: [_feNaInterpretationWarning(feNa)],
+  );
+}
+
+/// Interprétation classique de la FeNa dans le bilan étiologique d'une
+/// insuffisance rénale aiguë (prérénale vs nécrose tubulaire aiguë).
+///
+/// Espinel CH. The FENa Test. Use in the Differential Diagnosis of Acute
+/// Renal Failure. JAMA. 1976;236(6):579-581.
+CalculationWarning _feNaInterpretationWarning(double feNa) {
+  final String interpretation;
+  if (feNa < 1) {
+    interpretation = "évocatrice d'une cause prérénale (hypoperfusion "
+        "rénale) plutôt que d'une nécrose tubulaire aiguë";
+  } else if (feNa > 2) {
+    interpretation = "évocatrice d'une cause rénale intrinsèque (nécrose "
+        "tubulaire aiguë) plutôt que d'une cause prérénale";
+  } else {
+    interpretation = "dans la zone intermédiaire (1-2 %), peu discriminante "
+        "entre cause prérénale et nécrose tubulaire aiguë";
+  }
+  return CalculationWarning(
+    'FeNa $interpretation (repères classiques : < 1 % prérénal, > 2 % '
+    "nécrose tubulaire aiguë). Non interprétable sous diurétiques ; utiliser "
+    "alors la fraction excrétée de l'urée.",
+    severity: WarningSeverity.info,
   );
 }
 
@@ -338,5 +448,31 @@ CalculationResult calculateFeUrea({
     values: [
       ResultValue(label: "Fraction excrétée de l'urée (FeUrée)", value: feUrea, unit: '%', precision: 2),
     ],
+    warnings: [_feUreaInterpretationWarning(feUrea)],
+  );
+}
+
+/// Interprétation classique de la FeUrée, utilisée notamment lorsque les
+/// diurétiques rendent la FeNa ininterprétable.
+///
+/// Carvounis CP, Nisar S, Guro-Razuman S. Significance of the Fractional
+/// Excretion of Urea in the Differential Diagnosis of Acute Renal Failure.
+/// Kidney Int. 2002;62(6):2223-2229.
+CalculationWarning _feUreaInterpretationWarning(double feUrea) {
+  final String interpretation;
+  if (feUrea < 35) {
+    interpretation = "évocatrice d'une cause prérénale";
+  } else if (feUrea > 50) {
+    interpretation = "évocatrice d'une cause rénale intrinsèque (nécrose "
+        "tubulaire aiguë)";
+  } else {
+    interpretation = "dans la zone intermédiaire (35-50 %), peu "
+        "discriminante";
+  }
+  return CalculationWarning(
+    'FeUrée $interpretation (repères classiques, utiles notamment sous '
+    "diurétiques quand la FeNa n'est pas interprétable : < 35 % prérénal, "
+    "> 50 % nécrose tubulaire aiguë).",
+    severity: WarningSeverity.info,
   );
 }

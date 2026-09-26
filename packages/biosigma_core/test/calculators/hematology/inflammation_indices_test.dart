@@ -10,6 +10,10 @@ void main() {
         lymphocytesGL: 2,
       );
       expect(result.values.single.value, closeTo(750.0, 1e-6));
+      expect(
+        result.warnings.single.message,
+        contains("Aucun seuil clinique consensuel"),
+      );
     });
 
     test('Plaquettes 180,5, Neutrophiles 4,2, Lymphocytes 1,5 (×10⁹/L)', () {
@@ -44,6 +48,10 @@ void main() {
         lymphocytesGL: 2,
       );
       expect(result.values.single.value, closeTo(2.4000000000000004, 1e-6));
+      expect(
+        result.warnings.single.message,
+        contains("Aucun seuil clinique consensuel"),
+      );
     });
 
     test('Neutrophiles 4,5, Monocytes 0,6, Lymphocytes 1,2 (×10⁹/L)', () {

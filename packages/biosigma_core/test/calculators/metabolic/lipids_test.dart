@@ -27,6 +27,17 @@ void main() {
       );
       expect(ldlMgDl, closeTo(130.0, 1e-6));
       expect(result.hasBlockingWarning, isFalse);
+      // Catégorie descriptive ESC/EAS 2019, toujours affichée, avec le
+      // rappel explicite que la cible thérapeutique dépend du risque CV
+      // global (non déterminé par ce calculateur).
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('ESC/EAS 2019') &&
+            w.message.contains('limite haute') &&
+            w.message.contains('risque cardiovasculaire global') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
 
     test('TC=180 mg/dL, HDL=45 mg/dL, TG=150 mg/dL -> LDL 105.0 mg/dL', () {
@@ -176,6 +187,15 @@ void main() {
       );
       expect(result.values.single.value, closeTo(0.15126767533064914, 1e-9));
       expect(result.formula.id, 'atherogenic_index_of_plasma');
+      // Catégories de Dobiásová/Frohlich, honnêtement présentées comme non
+      // reprises formellement par une société savante.
+      expect(
+        result.warnings.any((w) =>
+            w.message.contains('non formellement') &&
+            w.message.contains('0,11') &&
+            w.severity == WarningSeverity.info),
+        isTrue,
+      );
     });
   });
 }

@@ -10,9 +10,12 @@ import '../../validation.dart';
 
 /// Indice de masse corporelle (IMC / BMI).
 ///
-/// Ne calcule et n'affiche qu'une valeur numérique : les bandes de
-/// classification de l'OMS ne sont mentionnées qu'à titre informatif dans
-/// [limitations], jamais rendues comme un verdict automatique.
+/// La classification OMS 2000 est une classification universellement
+/// reconnue (à la différence des autres indices composites de ce fichier) :
+/// elle est donc affichée systématiquement, sous forme d'avertissement
+/// informatif (`WarningSeverity.info`) accompagnant le résultat, sans jamais
+/// constituer un verdict diagnostique automatique — voir [limitations] pour
+/// les réserves (populations, masse grasse/maigre, seuils ethniques).
 const FormulaMeta bmiMeta = FormulaMeta(
   id: 'bmi',
   name: 'Indice de masse corporelle (IMC)',
@@ -41,11 +44,11 @@ const FormulaMeta bmiMeta = FormulaMeta(
       'qui nécessitent des courbes de croissance IMC-pour-âge spécifiques).',
   limitations: [
     "Les bandes de l'OMS (maigreur < 18,5 ; poids normal 18,5–24,9 ; "
-        'surpoids 25,0–29,9 ; obésité ≥ 30,0 kg/m²) sont indicatives et '
-        "fournies à titre informatif uniquement : l'application ne calcule "
-        'ni n\'affiche de verdict automatique (« obèse », « à risque »…) — '
-        "seule la valeur numérique de l'IMC est produite ; l'interprétation "
-        'clinique relève du biologiste ou du clinicien.',
+        'surpoids 25,0–29,9 ; obésité ≥ 30,0 kg/m²) sont affichées à titre '
+        "informatif (avertissement de sévérité « info ») ; elles ne "
+        "constituent jamais un verdict diagnostique automatique — "
+        "l'interprétation clinique individuelle relève du biologiste ou du "
+        'clinicien.',
     'Ne distingue pas la masse grasse de la masse maigre : peu fiable chez '
         'le sportif très musclé, la personne âgée sarcopénique, la femme '
         "enceinte ou en cas d'œdèmes/ascite.",
@@ -187,6 +190,16 @@ const FormulaMeta apoBApoA1RatioMeta = FormulaMeta(
           'Lipid-Lowering Therapy--a Review of the Evidence. J Intern Med. '
           '2006;259(5):493-519.',
     ),
+    Reference(
+      citation:
+          'Mach F, Baigent C, Catapano AL, et al.; ESC Scientific Document '
+          'Group. 2019 ESC/EAS Guidelines for the management of '
+          'dyslipidaemias: lipid modification to reduce cardiovascular '
+          'risk. Eur Heart J. 2020;41(1):111-188.',
+      note:
+          "mention du rapport ApoB/ApoA1 comme outil d'affinement du risque "
+          'dans des situations spécifiques, sans seuil unique consensuel',
+    ),
   ],
   applicablePopulation: 'Adulte',
   limitations: [
@@ -204,6 +217,57 @@ double _bmiFromWeightHeight(double weightKg, double heightCm) {
   final heightM = heightCm / 100;
   return weightKg / (heightM * heightM);
 }
+
+/// Classification OMS 2000 (WHO Technical Report Series 894) de l'IMC —
+/// classification universellement reconnue, à la différence des autres
+/// indices composites de ce fichier.
+String _whoBmiCategory(double bmi) {
+  if (bmi < 18.5) return 'maigreur (< 18,5 kg/m²)';
+  if (bmi < 25.0) return 'poids normal (18,5-24,9 kg/m²)';
+  if (bmi < 30.0) return 'surpoids (25,0-29,9 kg/m²)';
+  if (bmi < 35.0) return 'obésité classe I (30,0-34,9 kg/m²)';
+  if (bmi < 40.0) return 'obésité classe II (35,0-39,9 kg/m²)';
+  return 'obésité classe III (≥ 40,0 kg/m²)';
+}
+
+const CalculationWarning _noConsensusThresholdTygBmi = CalculationWarning(
+  "Aucun seuil diagnostique consensuel n'est actuellement recommandé par "
+  "une société savante (ADA/EASD/IDF) pour l'indice TyG-IMC ; les seuils "
+  "publiés dans la littérature proviennent d'une cohorte d'étude "
+  "spécifique et ne doivent pas être généralisés ni utilisés comme seuil "
+  'diagnostique universel.',
+  severity: WarningSeverity.info,
+);
+
+const CalculationWarning _noConsensusThresholdHomaBeta = CalculationWarning(
+  "Aucun seuil consensuel de société savante (ADA/EASD/IDF) n'existe pour "
+  'interpréter le HOMA-β en pratique clinique courante ; les valeurs de '
+  'référence publiées varient selon la population et la méthode de '
+  "dosage de l'insuline utilisée, à ne pas généraliser.",
+  severity: WarningSeverity.info,
+);
+
+const CalculationWarning _legacyCtHdlRatioInterpretation = CalculationWarning(
+  "Seuils descriptifs souvent cités dans l'enseignement (héritage de "
+  "l'ère NCEP) : < 4 souhaitable, ≥ 5 risque élevé. Ce ratio n'est "
+  "toutefois pas retenu comme critère de première ligne par les "
+  'recommandations actuelles (ESC/EAS, ADA), qui privilégient les valeurs '
+  'absolues de LDL-C, de cholestérol non-HDL ou d\'ApoB comme cibles '
+  'thérapeutiques ; à considérer comme un repère informel et non comme '
+  'une cible de traitement actuelle.',
+  severity: WarningSeverity.info,
+);
+
+const CalculationWarning _apoBApoA1RiskRefinementInterpretation =
+    CalculationWarning(
+  "Aucun seuil diagnostique unique consensuel n'est actuellement "
+  'recommandé par une société savante (ESC/AHA) pour ce rapport. Il est '
+  'mentionné dans les recommandations ESC/EAS 2019 comme outil '
+  "d'affinement du risque cardiovasculaire dans certaines situations "
+  "spécifiques (ex. hypertriglycéridémie, diabète, obésité), sans seuil "
+  'unique universel de décision thérapeutique.',
+  severity: WarningSeverity.info,
+);
 
 void _checkFastingConfirmed(bool fastingConfirmed) {
   if (!fastingConfirmed) {
@@ -239,6 +303,18 @@ CalculationResult calculateBmi({
     },
     values: [
       ResultValue(label: 'IMC', value: bmi, unit: 'kg/m²', precision: 1),
+    ],
+    warnings: [
+      CalculationWarning(
+        'Classification OMS 2000 (WHO Technical Report Series 894) : '
+        '${_whoBmiCategory(bmi)}. Catégorie de population générale, '
+        'informative : les seuils de surpoids/obésité diffèrent selon '
+        "certaines recommandations ethniques (ex. seuils abaissés proposés "
+        "pour les populations asiatiques), et l'IMC ne distingue pas la "
+        "masse grasse de la masse maigre — l'interprétation clinique "
+        'individuelle relève du biologiste ou du clinicien.',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }
@@ -298,6 +374,7 @@ CalculationResult calculateTygBmi({
       ResultValue(label: 'Indice TyG (composante)', value: tyg, unit: '', precision: 3),
       ResultValue(label: 'IMC (composante)', value: bmi, unit: 'kg/m²', precision: 1),
     ],
+    warnings: const [_noConsensusThresholdTygBmi],
   );
 }
 
@@ -347,6 +424,7 @@ CalculationResult calculateHomaBeta({
     values: [
       ResultValue(label: 'HOMA-β', value: homaBeta, unit: '%', precision: 1),
     ],
+    warnings: const [_noConsensusThresholdHomaBeta],
   );
 }
 
@@ -386,6 +464,7 @@ CalculationResult calculateCtHdlRatio({
         precision: 2,
       ),
     ],
+    warnings: const [_legacyCtHdlRatioInterpretation],
   );
 }
 
@@ -416,5 +495,6 @@ CalculationResult calculateApoBApoA1Ratio({
         precision: 2,
       ),
     ],
+    warnings: const [_apoBApoA1RiskRefinementInterpretation],
   );
 }

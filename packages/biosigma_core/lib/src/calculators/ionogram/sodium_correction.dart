@@ -60,6 +60,12 @@ CalculationResult calculateCorrectedSodium({
   final correctionKatz = sodiumValue + 1.6 * (glucoseMgDl - 100) / 100;
   final correctionHillier = sodiumValue + 2.4 * (glucoseMgDl - 100) / 100;
 
+  String categorize(double value) {
+    if (value < 135) return 'hyponatrémie';
+    if (value <= 145) return 'normal';
+    return 'hypernatrémie';
+  }
+
   final warnings = <CalculationWarning>[];
   if (glucoseMgDl <= 100) {
     warnings.add(const CalculationWarning(
@@ -67,6 +73,16 @@ CalculationResult calculateCorrectedSodium({
       severity: WarningSeverity.info,
     ));
   }
+  warnings.add(CalculationWarning(
+    'Repères habituels (mêmes bandes que le sodium non corrigé, biochimie '
+    'clinique standard) : < 135 mmol/L hyponatrémie, 135-145 mmol/L '
+    'normal, > 145 mmol/L hypernatrémie — appliqués ici à la valeur '
+    'corrigée. Coefficient de Katz (1,6) : ${categorize(correctionKatz)} '
+    '(${correctionKatz.toStringAsFixed(1)} mmol/L). Coefficient de '
+    'Hillier (2,4) : ${categorize(correctionHillier)} '
+    '(${correctionHillier.toStringAsFixed(1)} mmol/L).',
+    severity: WarningSeverity.info,
+  ));
 
   return CalculationResult(
     formula: correctedSodiumHyperglycemiaMeta,

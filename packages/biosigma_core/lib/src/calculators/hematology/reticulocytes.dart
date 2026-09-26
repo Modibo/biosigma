@@ -125,5 +125,27 @@ CalculationResult calculateReticulocyteIndicesPanel({
         precision: 2,
       ),
     ],
+    warnings: [
+      CalculationWarning(
+        rpi < 2
+            ? 'RPI < 2 : évocateur d\'une réponse médullaire inadaptée '
+                '(hypoproliférative), compatible par exemple avec une '
+                'insuffisance médullaire, une carence nutritionnelle ou '
+                "une anémie par défaut de production. Interprétation "
+                "d'enseignement classique en hématologie clinique, fondée "
+                'sur la méthode de Hillman (1969) déjà citée pour ce '
+                "panel, et non sur une recommandation formelle d'une "
+                'société savante nommée.'
+            : 'RPI ≥ 2 (typiquement 2 à 3 ou plus) : évocateur d\'une '
+                'réponse médullaire compensatrice adaptée à l\'anémie, '
+                'compatible par exemple avec une hémolyse active ou une '
+                'hémorragie avec réponse médullaire appropriée. '
+                "Interprétation d'enseignement classique en hématologie "
+                'clinique, fondée sur la méthode de Hillman (1969) déjà '
+                "citée pour ce panel, et non sur une recommandation "
+                "formelle d'une société savante nommée.",
+        severity: WarningSeverity.info,
+      ),
+    ],
   );
 }

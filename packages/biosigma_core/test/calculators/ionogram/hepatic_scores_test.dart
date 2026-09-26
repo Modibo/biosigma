@@ -26,6 +26,10 @@ void main() {
       // MELD ≤ 11 : pas d'ajustement sodique, MELD-Na == MELD.
       expect(meldNa.value, closeTo(meld.value!, 1e-9));
       expect(meldNa.value, closeTo(9.050096, 1e-4));
+      // MELD-Na ≈ 9,05 -> bande de risque "faible".
+      expect(result.warnings, hasLength(1));
+      expect(result.warnings.single.severity, WarningSeverity.info);
+      expect(result.warnings.single.message, contains('faible'));
     });
 
     test('MELD > 11 : ajustement sodique appliqué (MELD-Na ≠ MELD)', () {
@@ -113,6 +117,10 @@ void main() {
         albuminUnit: 'g/L',
       );
       expect(result.values.single.value, closeTo(-1.236, 1e-6));
+      // ALBI = -1,236 > -1,39 -> grade 3.
+      expect(result.warnings, hasLength(1));
+      expect(result.warnings.single.severity, WarningSeverity.info);
+      expect(result.warnings.single.message, contains('Grade ALBI 3'));
     });
 
     test('albumine saisie en g/dL, convertie en interne', () {

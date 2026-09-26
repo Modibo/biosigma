@@ -15,6 +15,20 @@ void main() {
       final mgMmol = result.values.firstWhere((v) => v.unit == 'mg/mmol');
       expect(mgG.value, closeTo(56.841428571428565, 1e-6));
       expect(mgMmol.value, closeTo(6.428571428571429, 1e-6));
+      // ACR ~56.8 mg/g : catégorie KDIGO A2 (30-300 mg/g).
+      expect(result.warnings.any((w) => w.message.contains('A2')), isTrue);
+    });
+
+    test('albumine 10 mg/L, créatinine 10000 µmol/L (catégorie A1)', () {
+      final result = calculateAlbuminCreatinineRatio(
+        albuminValue: 10,
+        albuminUnit: 'mg/L',
+        creatinineValue: 10000,
+        creatinineUnit: 'µmol/L',
+      );
+
+      // ACR très bas : catégorie KDIGO A1 (< 30 mg/g).
+      expect(result.warnings.any((w) => w.message.contains('A1')), isTrue);
     });
   });
 
@@ -31,6 +45,12 @@ void main() {
       final mgMmol = result.values.firstWhere((v) => v.unit == 'mg/mmol');
       expect(mgG.value, closeTo(56.841428571428565, 1e-6));
       expect(mgMmol.value, closeTo(6.428571428571429, 1e-6));
+      // Le PCR n'est pas formellement staged par KDIGO ; vérifie que la
+      // mise en garde/correspondance informelle est bien présente.
+      expect(
+        result.warnings.any((w) => w.message.contains('KDIGO formelle')),
+        isTrue,
+      );
     });
   });
 
@@ -47,6 +67,8 @@ void main() {
         durationUnit: 'min',
       );
       expect(result.values.single.value, closeTo(101.85185185185185, 1e-6));
+      // Clairance ~101.9 mL/min : zone du stade KDIGO G1 (≥ 90), à titre approximatif.
+      expect(result.warnings.any((w) => w.message.contains('G1')), isTrue);
     });
   });
 
@@ -61,6 +83,24 @@ void main() {
         serumCreatinineUnit: 'mg/dL',
       );
       expect(result.values.single.value, closeTo(0.9523809523809524, 1e-6));
+      // FeNa < 1 % : évocateur d'une cause prérénale.
+      expect(result.warnings.any((w) => w.message.contains('prérénale')), isTrue);
+    });
+
+    test('UNa 40, PNa 140, PCr 2.0 mg/dL, UCr 20 mg/dL (FeNa > 2 %)', () {
+      final result = calculateFeNa(
+        urineSodiumValue: 40,
+        serumSodiumValue: 140,
+        urineCreatinineValue: 20,
+        urineCreatinineUnit: 'mg/dL',
+        serumCreatinineValue: 2.0,
+        serumCreatinineUnit: 'mg/dL',
+      );
+      // FeNa élevée : évocateur d'une nécrose tubulaire aiguë.
+      expect(
+        result.warnings.any((w) => w.message.contains('nécrose tubulaire aiguë')),
+        isTrue,
+      );
     });
   });
 
@@ -75,6 +115,8 @@ void main() {
         serumCreatinineUnit: 'µmol/L',
       );
       expect(result.values.single.value, closeTo(25.568181818181817, 1e-6));
+      // FeUrée < 35 % : évocateur d'une cause prérénale.
+      expect(result.warnings.any((w) => w.message.contains('prérénale')), isTrue);
     });
   });
 }

@@ -35,6 +35,22 @@ void main() {
       final trou = result.values
           .firstWhere((v) => v.label == 'Trou osmolaire (osmolalité mesurée − osmolarité calculée)');
       expect(trou.value, closeTo(14.5, 1e-9));
+      // Trou osmolaire = 14,5 mOsm/kg > 10 -> interprétation "élevé".
+      expect(result.warnings, hasLength(1));
+      expect(result.warnings.single.severity, WarningSeverity.info);
+      expect(result.warnings.single.message, contains('élevé'));
+    });
+
+    test('trou osmolaire non élevé (≤ 10 mOsm/kg)', () {
+      final result = calculateCalculatedOsmolarity(
+        sodiumValue: 140,
+        glucoseValue: 5.5,
+        glucoseUnit: 'mmol/L',
+        ureaValue: 5.0,
+        measuredOsmolalityValue: 295,
+      );
+      // Trou = 295 - 290,5 = 4,5 mOsm/kg <= 10 -> "non élevé".
+      expect(result.warnings.single.message, contains('non élevé'));
     });
   });
 }

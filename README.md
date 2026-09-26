@@ -30,14 +30,14 @@ BioSigma/
   packages/biosigma_core/   # Moteur de calcul PUR — aucune dépendance Flutter
     lib/src/models/         # Quantity, CalculationResult, FormulaMeta, Reference, erreurs
     lib/src/units/          # Bibliothèque centrale de conversion d'unités (Analyte, UnitRegistry)
-    lib/src/calculators/    # 53 fonctions de calcul pures, groupées par domaine :
+    lib/src/calculators/    # 54 fonctions de calcul pures, groupées par domaine :
       renal/  metabolic/  ionogram/  hemostasis/  hematology/
     lib/src/catalog.dart    # Registre déclaratif des métadonnées (recherche, catégories)
-    test/                   # 178 tests unitaires (dart test)
+    test/                   # 206 tests unitaires (dart test)
   app/biosigma/              # Application Flutter
     lib/models/               Contrat déclaratif du formulaire (CalculatorDefinition, champs),
                                questions/tentatives d'entraînement
-    lib/data/                  Câblage des 53 calculateurs + banques de questions par domaine
+    lib/data/                  Câblage des 54 calculateurs + banques de questions par domaine
     lib/screens/               root_tab_screen (barre de navigation à 5 onglets), calculateur
                                 générique, panel CKD-EPI, scores guidés (ISTH-CIVD, 4Ts),
                                 entraînement, références, réglages, à propos
@@ -67,8 +67,15 @@ saisie à la fonction du moteur. Un seul écran générique (`calculator_screen.
 saisie, le résultat, les unités utilisées, la formule, la version et les limites. Trois écrans
 dédiés existent pour les cas explicitement composés par le cahier des charges : le panel DFG
 CKD-EPI (jusqu'à 3 équations côte à côte, jamais mélangées) et les modules guidés Score ISTH-CIVD
-et Score 4Ts (saisie pas à pas, jamais d'inférence d'une donnée manquante, interprétation masquée
-tant que le biologiste responsable n'a pas validé localement dans Réglages).
+et Score 4Ts (saisie pas à pas, jamais d'inférence d'une donnée manquante).
+
+**Interprétations toujours affichées, sourcées par société savante** : chaque résultat est
+accompagné, quand une classification reconnue existe (KDIGO, ESC/EAS, ADA, AASLD, WHO, ISTH...),
+d'un avertissement `info` (`CalculationWarning`, toujours rendu par `WarningList`, jamais masqué)
+donnant l'interprétation courante — ex. stade KDIGO pour le DFG, grade ALBI, catégorie de risque
+Framingham/SCORE2. Quand aucun seuil consensuel n'est reconnu par une société savante pour un
+paramètre (HOMA-IR, QUICKI, TyG, SII, SIRI...), l'application le signale explicitement plutôt que
+d'inventer un seuil — c'est une réponse honnête attendue, pas une lacune.
 
 **Navigation** : cinq onglets en haut de l'écran (`RootTabScreen`, `TabBar` défilant sous une
 `AppBar` unique et partagée) — Calcul, Entraînement, Références, Réglages, À propos. L'AppBar
@@ -110,7 +117,7 @@ dans `app/biosigma/pubspec.yaml` : aucune publication sur pub.dev n'est nécessa
 ## Exécuter les tests
 
 ```bash
-# Moteur de calcul pur (178 tests) :
+# Moteur de calcul pur (206 tests) :
 cd BioSigma/packages/biosigma_core
 dart analyze
 dart test
@@ -122,7 +129,7 @@ flutter test
 ```
 
 Résultats obtenus dans cette session : voir [`docs/rapport-de-tests.md`](docs/rapport-de-tests.md)
-— `dart analyze` et `flutter analyze` sans aucun problème, 178/178 puis 9/9 tests verts.
+— `dart analyze` et `flutter analyze` sans aucun problème, 206/206 puis 9/9 tests verts.
 
 ## Construire les paquets Android (APK) et iOS
 
@@ -195,12 +202,12 @@ prochaine visite en ligne.
 
 Voir [`docs/tracabilite-scientifique.md`](docs/tracabilite-scientifique.md) pour la table des 32
 premiers calculs (source primaire → version → formule → unités → population → cas interdits →
-limites) ; les 21 calculs ajoutés ultérieurement (MELD-Na, ALBI, IMC, TyG-IMC, HOMA-β, CT/HDL-C,
+limites) ; les 22 calculs ajoutés ultérieurement (MELD-Na, ALBI, IMC, TyG-IMC, HOMA-β, CT/HDL-C,
 ApoB/ApoA1, compensation acido-basique attendue, rapport bicarbonates/chlorures, indices de Mentzer,
 Shine-Lal, England-Fraser, Green-King et RDWI, panel réticulocytaire, SII, SIRI, rapport normalisé
-dRVVT, score SIC et score de Framingham) suivent la même exigence de traçabilité, documentée directement dans leur
-`FormulaMeta` (source, équation, population, limites) et consultable hors connexion depuis l'écran
-« Références ». Les 8 ajouts initialement requis sont présents et testés : indice de Rosner, les
+dRVVT, score SIC, score de Framingham et SCORE2) suivent la même exigence de traçabilité, documentée
+directement dans leur `FormulaMeta` (source, équation, population, limites) et consultable hors
+connexion depuis l'écran « Références ». Les 8 ajouts initialement requis sont présents et testés : indice de Rosner, les
 trois équations CKD-EPI (créatinine 2021, cystatine C 2012, créatinine-cystatine C 2021), Schwartz
 bedside, protéinurie des 24 h, QUICKI et TyG.
 
@@ -265,9 +272,11 @@ suivants nécessitent une décision et une validation propres à chaque laborato
 
 | Élément | État |
 |---|---|
-| Moteur de calcul pur (53 calculs, conversions, métadonnées, 5 domaines dont hématologie) | ✅ Construit, `dart analyze` propre, 178/178 tests verts |
-| Application Flutter (accueil, recherche, favoris, 53 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 9/9 tests widget verts, vérifiée visuellement (bureau et mobile) |
+| Moteur de calcul pur (54 calculs, conversions, métadonnées, 5 domaines dont hématologie, interprétations sourcées) | ✅ Construit, `dart analyze` propre, 206/206 tests verts |
+| Application Flutter (accueil, recherche, favoris, 54 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 9/9 tests widget verts, vérifiée visuellement (bureau et mobile) |
 | Navigation par onglets, en haut de l'écran (Calcul, Entraînement, Références, Réglages, À propos) | ✅ `TabBar` sous une `AppBar` partagée (logo visible en permanence, y compris à l'ouverture de chaque onglet), testée (parcours bout en bout par onglet) |
+| Interprétations toujours affichées, sourcées par société savante (KDIGO, ESC/EAS, ADA, AASLD, WHO, ISTH...) ; honnêtement signalées comme non consensuelles quand aucune n'existe (SII, SIRI, HOMA-IR, QUICKI, TyG...) | ✅ `CalculationWarning` (sévérité `info`) sur chaque calculateur concerné, jamais masqué |
+| SCORE2 (risque cardiovasculaire ESC 2021, 4 régions européennes) | ✅ Coefficients vérifiés par recherche web contre le papier original et deux implémentations indépendantes (résultats reproduits au dixième de %) |
 | Écran de démarrage (logo) | ✅ Généré pour Android et iOS (`flutter_native_splash`) ; équivalent HTML/CSS ajouté pour le web (retiré au premier rendu Flutter) |
 | Vérification de nouvelle version (apps installées, jamais sur le web) | ✅ `version.json` publié sur le site, bandeau in-app avec lien si une version plus récente existe |
 | Onglet Entraînement (4 banques, séries de 20 tirées au hasard, majorité cas cliniques/interprétation) | ✅ **232 questions** au total (55 rénal, 55 cardiométabolique, 68 ionogramme, 54 hémostase) ; scores locaux uniquement, tests de contenu + parcours bout en bout verts. Banque en expansion progressive vers l'objectif de ~1000 questions. |

@@ -46,8 +46,10 @@ const FormulaMeta mentzerIndexMeta = FormulaMeta(
         "l'électrophorèse/HPLC de l'hémoglobine.",
     'Un seuil indicatif de 13 a été proposé par Mentzer (valeur < 13 '
         'évocatrice de trait thalassémique, > 13 évocatrice de carence '
-        'martiale) ; ce seuil est purement informatif et n\'est appliqué '
-        'par aucun calcul automatique de cette application.',
+        'martiale) ; ce seuil est repris ci-dessous à titre d\'aide au '
+        'dépistage (interprétation informative), non comme un seuil '
+        "validé par une société savante d'hématologie — il ne remplace "
+        "jamais l'électrophorèse/HPLC de l'hémoglobine ni le bilan martial.",
   ],
   helpText: 'VGM en fL, numération des globules rouges (GR) en ×10¹²/L.',
 );
@@ -65,6 +67,14 @@ CalculationResult calculateMentzerIndex({
 
   final index = mcvFl / rbcTeraL;
 
+  final directional = index < 13
+      ? "Indice de Mentzer < 13 : profil plutôt évocateur d'un trait "
+          "thalassémique qu'une carence martiale (seuil de 13 proposé par "
+          'Mentzer, 1973).'
+      : "Indice de Mentzer ≥ 13 : profil plutôt évocateur d'une carence "
+          "martiale qu'un trait thalassémique (seuil de 13 proposé par "
+          'Mentzer, 1973).';
+
   return CalculationResult(
     formula: mentzerIndexMeta,
     echoedInputs: {
@@ -73,6 +83,18 @@ CalculationResult calculateMentzerIndex({
     },
     values: [
       ResultValue(label: 'Indice de Mentzer', value: index, unit: '', precision: 2),
+    ],
+    warnings: [
+      CalculationWarning(
+        '$directional Seuil habituellement cité dans la littérature '
+        "comparant les indices discriminants de la microcytose, non "
+        "formellement validé par une société savante d'hématologie (ex. "
+        "ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC "
+        "de l'hémoglobine et bilan martial (ferritine, coefficient de "
+        "saturation de la transferrine) — aucun indice discriminant n'est "
+        'individuellement fiable et ne doit être utilisé seul.',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }
@@ -108,8 +130,10 @@ const FormulaMeta shineLalIndexMeta = FormulaMeta(
         "l'électrophorèse/HPLC de l'hémoglobine.",
     'Un seuil indicatif de 1760 a été proposé par les auteurs (valeur '
         '< 1760 évocatrice de trait thalassémique) ; ce seuil est '
-        "purement informatif et n'est appliqué par aucun calcul "
-        'automatique de cette application.',
+        "repris ci-dessous à titre d'aide au dépistage (interprétation "
+        "informative), non comme un seuil validé par une société savante "
+        "d'hématologie — il ne remplace jamais l'électrophorèse/HPLC de "
+        "l'hémoglobine ni le bilan martial.",
   ],
   helpText: 'VGM en fL, TCMH (teneur corpusculaire moyenne en hémoglobine) en pg.',
   displayPrecision: 1,
@@ -127,6 +151,14 @@ CalculationResult calculateShineLalIndex({
 
   final index = (mcvFl * mcvFl * mchPg) / 100;
 
+  final directional = index < 1760
+      ? "Indice de Shine & Lal < 1760 : profil plutôt évocateur d'un "
+          'trait thalassémique (seuil de 1760 proposé par Shine & Lal, '
+          '1977).'
+      : "Indice de Shine & Lal ≥ 1760 : profil plutôt évocateur d'une "
+          "carence martiale qu'un trait thalassémique (seuil de 1760 "
+          'proposé par Shine & Lal, 1977).';
+
   return CalculationResult(
     formula: shineLalIndexMeta,
     echoedInputs: {
@@ -135,6 +167,18 @@ CalculationResult calculateShineLalIndex({
     },
     values: [
       ResultValue(label: 'Indice de Shine & Lal', value: index, unit: '', precision: 1),
+    ],
+    warnings: [
+      CalculationWarning(
+        '$directional Seuil habituellement cité dans la littérature '
+        "comparant les indices discriminants de la microcytose, non "
+        "formellement validé par une société savante d'hématologie (ex. "
+        "ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC "
+        "de l'hémoglobine et bilan martial (ferritine, coefficient de "
+        "saturation de la transferrine) — aucun indice discriminant n'est "
+        'individuellement fiable et ne doit être utilisé seul.',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }
@@ -173,8 +217,11 @@ const FormulaMeta englandFraserIndexMeta = FormulaMeta(
         "l'électrophorèse/HPLC de l'hémoglobine.",
     'Un résultat positif a été proposé par les auteurs comme évocateur de '
         "carence martiale et un résultat négatif comme évocateur de trait "
-        "thalassémique ; cette lecture est purement informative et n'est "
-        'appliquée par aucun calcul automatique de cette application.',
+        "thalassémique ; cette lecture est reprise ci-dessous à titre "
+        "d'aide au dépistage (interprétation informative), non comme un "
+        "seuil validé par une société savante d'hématologie — elle ne "
+        "remplace jamais l'électrophorèse/HPLC de l'hémoglobine ni le "
+        'bilan martial.',
   ],
   helpText: 'VGM en fL, GR en ×10¹²/L, hémoglobine (Hb) en g/dL.',
 );
@@ -194,6 +241,14 @@ CalculationResult calculateEnglandFraserIndex({
 
   final index = mcvFl - rbcTeraL - (5 * hbGDl) - 3.4;
 
+  final directional = index < 0
+      ? "Indice d'England & Fraser négatif : profil plutôt évocateur "
+          "d'un trait thalassémique (lecture proposée par England & "
+          'Fraser, 1973).'
+      : "Indice d'England & Fraser positif : profil plutôt évocateur "
+          "d'une carence martiale (lecture proposée par England & "
+          'Fraser, 1973).';
+
   return CalculationResult(
     formula: englandFraserIndexMeta,
     echoedInputs: {
@@ -207,6 +262,18 @@ CalculationResult calculateEnglandFraserIndex({
         value: index,
         unit: '',
         precision: 1,
+      ),
+    ],
+    warnings: [
+      CalculationWarning(
+        '$directional Seuil habituellement cité dans la littérature '
+        "comparant les indices discriminants de la microcytose, non "
+        "formellement validé par une société savante d'hématologie (ex. "
+        "ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC "
+        "de l'hémoglobine et bilan martial (ferritine, coefficient de "
+        "saturation de la transferrine) — aucun indice discriminant n'est "
+        'individuellement fiable et ne doit être utilisé seul.',
+        severity: WarningSeverity.info,
       ),
     ],
   );
@@ -244,9 +311,11 @@ const FormulaMeta greenKingIndexMeta = FormulaMeta(
         'sur la cohorte originale, mais reste imparfait ; ne remplace ni '
         "le bilan martial ni l'électrophorèse/HPLC de l'hémoglobine.",
     'Un seuil indicatif de 72 a été proposé par les auteurs (valeur ≤ 72 '
-        "évocatrice de trait thalassémique) ; ce seuil est purement "
-        "informatif et n'est appliqué par aucun calcul automatique de "
-        'cette application.',
+        "évocatrice de trait thalassémique) ; ce seuil est repris "
+        "ci-dessous à titre d'aide au dépistage (interprétation "
+        "informative), non comme un seuil validé par une société savante "
+        "d'hématologie — il ne remplace jamais l'électrophorèse/HPLC de "
+        "l'hémoglobine ni le bilan martial.",
   ],
   helpText: "VGM en fL, IDR (indice de dispersion des GR, RDW) en %, Hb en g/dL.",
 );
@@ -265,6 +334,14 @@ CalculationResult calculateGreenKingIndex({
 
   final index = (mcvFl * mcvFl * rdwPercent) / (hbGDl * 100);
 
+  final directional = index <= 72
+      ? "Indice de Green & King ≤ 72 : profil plutôt évocateur d'un "
+          'trait thalassémique (seuil de 72 proposé par Green & King, '
+          '1989).'
+      : "Indice de Green & King > 72 : profil plutôt évocateur d'une "
+          "carence martiale (seuil de 72 proposé par Green & King, "
+          '1989).';
+
   return CalculationResult(
     formula: greenKingIndexMeta,
     echoedInputs: {
@@ -274,6 +351,18 @@ CalculationResult calculateGreenKingIndex({
     },
     values: [
       ResultValue(label: 'Indice de Green & King', value: index, unit: '', precision: 1),
+    ],
+    warnings: [
+      CalculationWarning(
+        '$directional Seuil habituellement cité dans la littérature '
+        "comparant les indices discriminants de la microcytose, non "
+        "formellement validé par une société savante d'hématologie (ex. "
+        "ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC "
+        "de l'hémoglobine et bilan martial (ferritine, coefficient de "
+        "saturation de la transferrine) — aucun indice discriminant n'est "
+        'individuellement fiable et ne doit être utilisé seul.',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }
@@ -327,8 +416,10 @@ const FormulaMeta rdwIndexMeta = FormulaMeta(
         "varient selon les études de validation ultérieures.",
     'Un seuil indicatif de 220 a été proposé (valeur > 220 évocatrice de '
         'carence martiale, < 220 évocatrice de trait thalassémique) ; ce '
-        "seuil est purement informatif et n'est appliqué par aucun calcul "
-        'automatique de cette application.',
+        "seuil est repris ci-dessous à titre d'aide au dépistage "
+        "(interprétation informative), non comme un seuil validé par une "
+        "société savante d'hématologie — il ne remplace jamais "
+        "l'électrophorèse/HPLC de l'hémoglobine ni le bilan martial.",
   ],
   helpText: 'VGM en fL, IDR (RDW) en %, GR en ×10¹²/L.',
   displayPrecision: 1,
@@ -348,6 +439,12 @@ CalculationResult calculateRdwIndex({
 
   final index = (mcvFl * rdwPercent) / rbcTeraL;
 
+  final directional = index >= 220
+      ? "RDWI ≥ 220 : profil plutôt évocateur d'une carence martiale "
+          '(seuil de 220 rapporté par Jayabose et al., 1999).'
+      : "RDWI < 220 : profil plutôt évocateur d'un trait thalassémique "
+          '(seuil de 220 rapporté par Jayabose et al., 1999).';
+
   return CalculationResult(
     formula: rdwIndexMeta,
     echoedInputs: {
@@ -357,6 +454,18 @@ CalculationResult calculateRdwIndex({
     },
     values: [
       ResultValue(label: 'RDWI', value: index, unit: '', precision: 1),
+    ],
+    warnings: [
+      CalculationWarning(
+        '$directional Seuil habituellement cité dans la littérature '
+        "comparant les indices discriminants de la microcytose, non "
+        "formellement validé par une société savante d'hématologie (ex. "
+        "ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC "
+        "de l'hémoglobine et bilan martial (ferritine, coefficient de "
+        "saturation de la transferrine) — aucun indice discriminant n'est "
+        'individuellement fiable et ne doit être utilisé seul.',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }

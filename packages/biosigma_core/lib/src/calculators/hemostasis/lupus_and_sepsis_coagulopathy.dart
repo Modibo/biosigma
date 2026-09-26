@@ -92,6 +92,18 @@ CalculationResult calculateDrvvtNormalizedRatio({
       ResultValue(
           label: 'Pourcentage de correction', value: percentCorrection, unit: '%', precision: 1),
     ],
+    warnings: const [
+      CalculationWarning(
+        'Un rapport normalisé dRVVT élevé est évocateur d\'un anticoagulant '
+        'lupique, mais sa positivité se définit par un dépassement de '
+        "l'intervalle de référence propre au laboratoire (99e percentile "
+        "d'une population normale locale, typiquement), conformément aux "
+        'critères ISTH (Pengo et al. 2009) — aucun seuil numérique '
+        "universel ne peut être appliqué automatiquement par cette "
+        'application.',
+        severity: WarningSeverity.info,
+      ),
+    ],
   );
 }
 
@@ -126,9 +138,9 @@ const FormulaMeta sicScoreMeta = FormulaMeta(
   ],
   limitations: [
     'Un score total ≥ 4 définit la coagulopathie induite par le sepsis '
-        'selon les critères originaux (Iba et al.) ; cette information est '
-        "purement indicative — l'application ne calcule ni n'affiche "
-        'automatiquement une conclusion positive/négative.',
+        'selon les critères originaux (Iba et al. 2017) ; ce résultat doit '
+        'être confronté au contexte clinique et validé par le clinicien '
+        'responsable avant toute décision.',
     "Ce score n'a été validé que chez des patients répondant aux critères "
         'de sepsis ; il ne doit pas être utilisé comme outil de dépistage '
         'en dehors de ce contexte.',
@@ -193,6 +205,18 @@ CalculationResult calculateSicScore({
         value: total.toDouble(),
         unit: 'points',
         precision: 0,
+      ),
+    ],
+    warnings: [
+      CalculationWarning(
+        total >= 4
+            ? 'Score ≥ 4 : compatible avec une coagulopathie induite par '
+                'le sepsis (SIC) selon les critères originaux (Iba et al. '
+                '2017).'
+            : 'Score < 4 : ne répond pas au seuil de coagulopathie induite '
+                'par le sepsis (SIC) selon les critères originaux (Iba et '
+                'al. 2017).',
+        severity: WarningSeverity.info,
       ),
     ],
   );

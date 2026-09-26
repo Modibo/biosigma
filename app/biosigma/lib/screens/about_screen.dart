@@ -70,11 +70,16 @@ class AboutScreen extends StatelessWidget {
               "BioSigma est un outil d'aide au calcul, pas un dispositif de diagnostic. Chaque "
               'résultat doit être confronté aux données analytiques et cliniques du patient, puis '
               'validé par un professionnel compétent avant toute décision.\n\n'
-              "Aucun seuil interprétatif clinique n'est imposé par l'application : les seuils "
-              'rapportés dans la littérature sont indicatifs, à valider et documenter localement '
-              'par le biologiste responsable (Réglages, section Seuils locaux). Les scores ISTH-CIVD et '
-              '4Ts se calculent toujours, mais leur texte d\'interprétation reste masqué tant '
-              "qu'il n'a pas été validé localement.\n\n"
+              "Chaque résultat est accompagné, quand une classification reconnue existe, d'une "
+              'interprétation basée sur les recommandations actuelles des sociétés savantes '
+              'correspondantes (KDIGO, ESC/EAS, ADA, AASLD, WHO, ISTH…), toujours affichée et '
+              'systématiquement sourcée. Quand aucun seuil consensuel n\'est reconnu par une '
+              "société savante pour un paramètre donné (certains indices de recherche ou "
+              "marqueurs sans cible diagnostique établie), l'application le signale explicitement "
+              "plutôt que d'inventer un seuil. Ces interprétations restent des repères généraux, "
+              'à individualiser : elles ne remplacent ni le contexte clinique du patient, ni le '
+              "jugement du professionnel compétent. Les seuils propres au laboratoire (méthode de "
+              "dosage, population locale) restent réglables dans Réglages, section Seuils locaux.\n\n"
               'BioSigma ne collecte aucune donnée nominative, ne nécessite aucune connexion pour '
               "calculer, et n'envoie rien en dehors de l'appareil.",
             ),

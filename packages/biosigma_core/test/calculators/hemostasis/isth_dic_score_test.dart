@@ -1,4 +1,5 @@
 import 'package:biosigma_core/src/calculators/hemostasis/isth_dic_score.dart';
+import 'package:biosigma_core/src/models/result.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -14,6 +15,31 @@ void main() {
       );
       expect(result.isComplete, isTrue);
       expect(result.values.single.value, closeTo(5.0, 1e-9));
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains('CIVD manifeste') &&
+            w.message.contains('Taylor et al. 2001')),
+        isTrue,
+      );
+    });
+
+    test('score < 5 : interprétation "non manifeste"', () {
+      final result = calculateIsthDicScore(
+        underlyingDisorderPresent: true,
+        plateletCountGL: 120,
+        fibrinMarkerIncrease: FibrinMarkerIncrease.none,
+        ptProlongationSeconds: 1,
+        fibrinogenValue: 2.0,
+        fibrinogenUnit: 'g/L',
+      );
+      expect(result.values.single.value, closeTo(0.0, 1e-9));
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains('CIVD non manifeste')),
+        isTrue,
+      );
     });
 
     test('cas limite : fibrinogène manquant -> incomplet', () {

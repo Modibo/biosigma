@@ -75,6 +75,8 @@ CalculationResult calculateCalculatedOsmolarity({
     ),
   ];
 
+  final warnings = <CalculationWarning>[];
+
   final echoedInputs = <String, String>{
     'Sodium': '${sodiumValue.toStringAsFixed(1)} mmol/L',
     'Glycémie': glucoseUnit == 'mmol/L'
@@ -92,11 +94,25 @@ CalculationResult calculateCalculatedOsmolarity({
       unit: 'mOsm/kg',
       precision: 1,
     ));
+
+    final gapCategory = trouOsmolaire > 10 ? 'élevé' : 'non élevé';
+    warnings.add(CalculationWarning(
+      'Trou osmolaire : $gapCategory (seuil classiquement enseigné en '
+      'toxicologie clinique : > 10 mOsm/kg considéré comme élevé — nous '
+      "n'avons pas identifié une guideline unique formellement à l'origine "
+      'de ce seuil, largement repris dans les manuels de toxicologie et de '
+      "médecine d'urgence). Un trou osmolaire élevé doit faire rechercher "
+      'des solutés osmotiquement actifs non mesurés (ex. alcools toxiques : '
+      "méthanol, éthylène glycol, isopropanol), à corréler impérativement "
+      'au contexte clinique.',
+      severity: WarningSeverity.info,
+    ));
   }
 
   return CalculationResult(
     formula: calculatedOsmolarityOsmolarGapMeta,
     echoedInputs: echoedInputs,
     values: values,
+    warnings: warnings,
   );
 }

@@ -11,6 +11,12 @@ void main() {
         isi: 1.0,
       );
       expect(result.values.single.value, closeTo(2.3333333333333335, 1e-9));
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains("dépend entièrement de l'indication")),
+        isTrue,
+      );
     });
 
     test('PT patient=28 s, PT moyen normal=12 s, ISI=1.2', () {
@@ -30,6 +36,12 @@ void main() {
         controlAptSeconds: 30,
       );
       expect(result.values.single.value, closeTo(1.5, 1e-9));
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains('pas de seuil universel')),
+        isTrue,
+      );
     });
   });
 
@@ -45,7 +57,13 @@ void main() {
       final relative = result.values.firstWhere((v) => v.label == 'Variation relative');
       expect(absolute.value, closeTo(1.5, 1e-9));
       expect(relative.value, closeTo(75.0, 1e-9));
-      expect(result.warnings, isEmpty);
+      expect(
+        result.warnings.any((w) =>
+            w.severity == WarningSeverity.info &&
+            w.message.contains('en hausse') &&
+            w.message.contains('purement descriptive')),
+        isTrue,
+      );
     });
 
     test('cas limite : previous=0, current=1.0', () {

@@ -74,6 +74,17 @@ CalculationResult calculateSiiIndex({
     values: [
       ResultValue(label: 'SII', value: sii, unit: '', precision: 1),
     ],
+    warnings: const [
+      CalculationWarning(
+        "Aucun seuil clinique consensuel n'est actuellement recommandé "
+        "par une société savante d'hématologie ou d'oncologie pour cet "
+        'index ; les seuils rapportés dans la littérature (principalement '
+        'en recherche pronostique oncologique) varient fortement selon la '
+        'pathologie et la cohorte étudiées, et ne doivent pas être '
+        'généralisés à la pratique clinique courante.',
+        severity: WarningSeverity.info,
+      ),
+    ],
   );
 }
 
@@ -144,6 +155,17 @@ CalculationResult calculateSiriIndex({
     },
     values: [
       ResultValue(label: 'SIRI', value: siri, unit: '', precision: 2),
+    ],
+    warnings: const [
+      CalculationWarning(
+        "Aucun seuil clinique consensuel n'est actuellement recommandé "
+        "par une société savante d'hématologie ou d'oncologie pour cet "
+        'index ; les seuils rapportés dans la littérature (principalement '
+        'en recherche pronostique oncologique) varient fortement selon la '
+        'pathologie et la cohorte étudiées, et ne doivent pas être '
+        'généralisés à la pratique clinique courante.',
+        severity: WarningSeverity.info,
+      ),
     ],
   );
 }
