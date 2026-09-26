@@ -15,16 +15,19 @@ class ReferencesScreen extends StatelessWidget {
       for (final category in CalculatorCategory.values)
         category: CalculatorCatalog.byCategory(category),
     };
-    return Scaffold(
-      appBar: AppBar(title: const Text('Références et limites')),
-      body: ListView(
+    return SafeArea(
+      top: false,
+      child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           for (final category in CalculatorCategory.values) ...[
             if (byCategory[category]!.isNotEmpty) ...[
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(category.label, style: Theme.of(context).textTheme.titleMedium),
+                child: Text(
+                  category.label,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
               for (final meta in byCategory[category]!)
                 Padding(
@@ -34,7 +37,10 @@ class ReferencesScreen extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 4, left: 4),
-                        child: Text(meta.name, style: Theme.of(context).textTheme.titleSmall),
+                        child: Text(
+                          meta.name,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
                       ),
                       FormulaReferenceSection(meta: meta),
                     ],

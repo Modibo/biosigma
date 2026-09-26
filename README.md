@@ -70,9 +70,13 @@ CKD-EPI (jusqu'à 3 équations côte à côte, jamais mélangées) et les module
 et Score 4Ts (saisie pas à pas, jamais d'inférence d'une donnée manquante, interprétation masquée
 tant que le biologiste responsable n'a pas validé localement dans Réglages).
 
-**Navigation** : cinq onglets (`RootTabScreen`, `NavigationBar` Material 3) — Calcul, Entraînement,
-Références, Réglages, À propos — chacun gardant son propre `Scaffold`/`AppBar` ; un `IndexedStack`
-préserve l'état de chaque onglet (recherche en cours, position de défilement) au changement d'onglet.
+**Navigation** : cinq onglets en haut de l'écran (`RootTabScreen`, `TabBar` défilant sous une
+`AppBar` unique et partagée) — Calcul, Entraînement, Références, Réglages, À propos. L'AppBar
+(logo + « BioSigma ») ne se reconstruit pas au changement d'onglet : le logo reste donc visible en
+permanence, y compris à l'ouverture de chaque onglet. Chaque écran d'onglet n'a plus son propre
+`Scaffold`/`AppBar` ; un wrapper `AutomaticKeepAliveClientMixin` par onglet (le `TabBarView` ne
+conserve pas ses enfants hors écran par défaut, contrairement à `IndexedStack`) préserve l'état de
+chaque onglet (recherche en cours, position de défilement) au changement d'onglet.
 
 **Vérification de nouvelle version** (`lib/widgets/update_checker.dart`) : au démarrage, uniquement
 sur les applications installées (jamais sur le web, qui se met déjà à jour via son service worker),
@@ -257,9 +261,9 @@ suivants nécessitent une décision et une validation propres à chaque laborato
 | Élément | État |
 |---|---|
 | Moteur de calcul pur (32 calculs, conversions, métadonnées) | ✅ Construit, `dart analyze` propre, 95/95 tests verts |
-| Application Flutter (accueil, recherche, favoris, 32 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 8/8 tests widget verts, vérifiée visuellement (bureau et mobile) |
-| Navigation par onglets (Calcul, Entraînement, Références, Réglages, À propos) | ✅ `NavigationBar` Material 3, testée (parcours bout en bout par onglet) |
-| Écran de démarrage (logo) | ✅ Généré pour Android et iOS (`flutter_native_splash`) |
+| Application Flutter (accueil, recherche, favoris, 32 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 9/9 tests widget verts, vérifiée visuellement (bureau et mobile) |
+| Navigation par onglets, en haut de l'écran (Calcul, Entraînement, Références, Réglages, À propos) | ✅ `TabBar` sous une `AppBar` partagée (logo visible en permanence, y compris à l'ouverture de chaque onglet), testée (parcours bout en bout par onglet) |
+| Écran de démarrage (logo) | ✅ Généré pour Android et iOS (`flutter_native_splash`) ; équivalent HTML/CSS ajouté pour le web (retiré au premier rendu Flutter) |
 | Vérification de nouvelle version (apps installées, jamais sur le web) | ✅ `version.json` publié sur le site, bandeau in-app avec lien si une version plus récente existe |
 | Onglet Entraînement (4 banques, séries de 20 tirées au hasard, majorité cas cliniques/interprétation) | ✅ **232 questions** au total (55 rénal, 55 cardiométabolique, 68 ionogramme, 54 hémostase) ; scores locaux uniquement, tests de contenu + parcours bout en bout verts. Banque en expansion progressive vers l'objectif de ~1000 questions. |
 | Icône et identité visuelle (bleu nuit/cyan/corail, sigma + molécule + goutte) | ✅ Générée pour Android et iOS (`flutter_launcher_icons`) |

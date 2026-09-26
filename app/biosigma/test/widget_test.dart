@@ -4,13 +4,14 @@
 // affiche le catalogue, et qu'un calcul réel (QUICKI) produit un résultat
 // affiché à l'écran.
 //
-// Remarque sur les finders : le corps de l'écran racine est un
-// `IndexedStack` (les cinq onglets restent tous montés pour préserver leur
-// état) — un texte générique comme « Réglages » peut donc apparaître à la
-// fois dans l'étiquette de l'onglet et dans l'AppBar de l'écran
-// correspondant. Les taps de changement d'onglet sont donc scopés à la
-// `NavigationBar`, et les vérifications de contenu utilisent des textes
-// propres à l'écran visé plutôt que son seul titre.
+// Remarque sur les finders : les cinq onglets sont maintenus en vie
+// (`AutomaticKeepAliveClientMixin`) pour préserver leur état (recherche en
+// cours, défilement) au changement d'onglet — leur contenu reste donc
+// construit simultanément. Chaque écran d'onglet n'a plus son propre AppBar
+// (le titre « Réglages », « Entraînement », etc. n'apparaît donc qu'une
+// fois, dans le `TabBar` partagé) : les taps de changement d'onglet sont
+// scopés à ce `TabBar` par prudence, et les vérifications de contenu
+// utilisent des textes propres à l'écran visé plutôt que son seul titre.
 import 'package:biosigma/app.dart';
 import 'package:biosigma/data/quiz/quiz_renal.dart';
 import 'package:biosigma/screens/quiz_module_screen.dart';
@@ -34,7 +35,7 @@ Future<AppState> _pumpApp(WidgetTester tester) async {
 
 Future<void> _tapTab(WidgetTester tester, String label) async {
   final tabFinder = find.descendant(
-    of: find.byType(NavigationBar),
+    of: find.byType(TabBar),
     matching: find.text(label),
   );
   await tester.tap(tabFinder);
@@ -48,10 +49,9 @@ void main() {
     expect(find.text('BioSigma'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
     expect(find.text('DFG — panel CKD-EPI'), findsOneWidget);
-    expect(find.byType(NavigationBar), findsOneWidget);
+    expect(find.byType(TabBar), findsOneWidget);
     for (final label in ['Calcul', 'Entraînement', 'Références', 'Réglages', 'À propos']) {
-      expect(find.descendant(of: find.byType(NavigationBar), matching: find.text(label)),
-          findsOneWidget,
+      expect(find.descendant(of: find.byType(TabBar), matching: find.text(label)), findsOneWidget,
           reason: 'onglet $label');
     }
   });

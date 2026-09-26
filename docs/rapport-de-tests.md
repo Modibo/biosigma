@@ -147,3 +147,56 @@ Environnement identique (Flutter 3.47.5, mêmes limites de SDK). Changements :
   - **Non fait dans cette livraison** : revue clinique exhaustive des 200 nouvelles questions par un
     biologiste responsable (seul un échantillon a été relu manuellement) ; poursuite de la banque
     vers l'objectif de 1000 questions.
+
+## 7. Correctif du 26/09/2026 — onglets en haut, logo visible sur chaque onglet
+
+Suite à un signalement utilisateur : « l'organisation en 5 onglets disponible en entête et
+l'affichage du logo au démarrage ne sont pas visibles ». Diagnostic :
+
+- **Cause 1 (blocante)** : cache navigateur/service-worker sur `main.dart.js`, empêchant le
+  chargement de la version déployée. Corrigé côté serveur : `nginx.conf` ajoute désormais
+  `Cache-Control: no-cache` explicite pour `main.dart.js`, `flutter.js`, `flutter_bootstrap.js` et
+  `manifest.json` (en plus des règles déjà existantes pour `index.html`,
+  `flutter_service_worker.js` et `version.json`).
+- **Cause 2** : le splash natif (`flutter_native_splash`) est exclu du web par construction
+  (`web: false`) ; le web n'affichait donc aucun logo au démarrage par design, pas par bug. Ajout
+  d'un splash HTML/CSS autonome dans `web/index.html` (`#app-splash`, fond #0F2245, logo centré),
+  retiré au premier rendu Flutter via l'évènement `flutter-first-frame`.
+
+En plus de ce correctif, demande explicite de repositionner la barre d'onglets en haut (au lieu du
+bas) et de garantir que le logo reste visible à l'ouverture de **chaque** onglet, pas seulement
+l'onglet par défaut. Changement d'architecture :
+
+- `RootTabScreen` reconstruit avec `DefaultTabController` + une seule `AppBar` partagée (logo +
+  « BioSigma ») portant `bottom: TabBar(isScrollable: true, tabs: [...])`, et un `TabBarView` pour
+  le contenu — remplace l'ancienne `NavigationBar` Material 3 en bas d'écran avec `IndexedStack`.
+  Comme l'AppBar ne se reconstruit jamais au changement d'onglet, le logo est désormais visible en
+  permanence, y compris à l'ouverture de chaque onglet (satisfait explicitement la demande).
+- Les 5 écrans d'onglet (`home_screen.dart`, `entrainement_screen.dart`, `references_screen.dart`,
+  `settings_screen.dart`, `about_screen.dart`) ont perdu leur propre `Scaffold`/`AppBar` ; chacun
+  expose directement son contenu via `SafeArea(top: false, child: ...)`.
+- `TabBarView`, contrairement à `IndexedStack`, ne conserve pas ses enfants hors écran par défaut :
+  ajout d'un wrapper privé `_KeepAlive` (`AutomaticKeepAliveClientMixin`) autour de chaque onglet
+  pour préserver l'état (recherche en cours, position de défilement, session de quiz en cours) au
+  changement d'onglet.
+- `about_screen.dart` : correction d'un résidu affichant « BioSigma 1.0.0 » en dur ; utilise
+  désormais `$kAppVersion`.
+
+Vérifications :
+
+- `flutter analyze` : propre (aucune erreur/avertissement).
+- `flutter test` : 9/9 verts après mise à jour de `test/widget_test.dart` (le finder de bascule
+  d'onglet et la vérification de présence des onglets ciblent désormais `TabBar` au lieu de
+  `NavigationBar`, qui n'existe plus dans l'arbre de rendu).
+- Vérification visuelle (`flutter build web --release`, navigateur intégré) : AppBar affichant le
+  logo + « BioSigma » avec les 5 onglets défilants en dessous (Calcul, Entraînement, Références,
+  Réglages, À propos) ; changement d'onglet confirmé fonctionnel (le contenu de l'onglet
+  Entraînement s'affiche correctement, avec la mention de la banque de 232 questions) et le logo
+  reste affiché sans interruption dans l'AppBar au changement d'onglet.
+- Vérification visuelle en largeur mobile (375×812) : la même AppBar (logo + titre + `TabBar` à 5
+  onglets défilants) s'affiche sans débordement horizontal ; le contenu de l'écran À propos
+  (première capture testée à cette largeur) s'affiche correctement sous la barre d'onglets.
+- **À faire côté serveur** : redéployer (`git pull && bash install-caddy.sh` sur le VPS) pour que
+  les correctifs de cache nginx et la nouvelle architecture d'onglets soient effectifs sur
+  `biosigma.komodi-labo.org` ; après déploiement, un rechargement forcé (ou navigation privée) reste
+  nécessaire pour les navigateurs ayant déjà mis en cache l'ancienne version de `main.dart.js`.
