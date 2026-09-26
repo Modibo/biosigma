@@ -85,11 +85,13 @@ permanence, y compris à l'ouverture de chaque onglet. Chaque écran d'onglet n'
 conserve pas ses enfants hors écran par défaut, contrairement à `IndexedStack`) préserve l'état de
 chaque onglet (recherche en cours, position de défilement) au changement d'onglet.
 
-**Vérification de nouvelle version** (`lib/widgets/update_checker.dart`) : au démarrage, uniquement
-sur les applications installées (jamais sur le web, qui se met déjà à jour via son service worker),
+**Vérification de nouvelle version** (`lib/widgets/update_checker.dart`) : au démarrage, sur
+**toutes** les plateformes y compris le web (navigateur mobile ou PWA — le service worker Flutter
+finit par se mettre à jour seul en arrière-plan, mais ce délai est invisible et parfois long),
 l'app interroge silencieusement `https://biosigma.komodi-labo.org/version.json` ; si une version plus
-récente que `kAppVersion` (`lib/app_version.dart`) y est publiée, un bandeau propose un lien de mise
-à jour. Échec réseau = silencieux, aucun blocage du lancement. **À chaque livraison**, mettre à jour
+récente que `kAppVersion` (`lib/app_version.dart`) y est publiée, un bandeau propose soit un lien de
+mise à jour (Android/iOS/bureau), soit un rechargement immédiat de la page (web, via
+`lib/widgets/reload_page_web.dart`). Échec réseau = silencieux, aucun blocage du lancement. **À chaque livraison**, mettre à jour
 ensemble `pubspec.yaml` (`version:`), `lib/app_version.dart` (`kAppVersion`) et
 `app/biosigma/web/version.json` (`latest`) — sinon l'application se croira à jour, ou à l'inverse
 proposera indéfiniment une « mise à jour » déjà installée.
@@ -283,7 +285,7 @@ suivants nécessitent une décision et une validation propres à chaque laborato
 | SCORE2 (risque cardiovasculaire ESC 2021, 4 régions européennes) | ✅ Coefficients vérifiés par recherche web contre le papier original et deux implémentations indépendantes (résultats reproduits au dixième de %) |
 | Scores de risque hémorragique/thrombotique cliniques (HAS-BLED, CHA₂DS₂-VASc, Padua, IMPROVE, Caprini) | ✅ Chaque critère et valeur de points vérifiés par recherche web contre ≥2 sources indépendantes ; catégories de risque sourcées (ACCP/CHEST, ACC/AHA/HRS...) |
 | Écran de démarrage (logo) | ✅ Généré pour Android et iOS (`flutter_native_splash`) ; équivalent HTML/CSS ajouté pour le web (retiré au premier rendu Flutter) |
-| Vérification de nouvelle version (apps installées, jamais sur le web) | ✅ `version.json` publié sur le site, bandeau in-app avec lien si une version plus récente existe |
+| Vérification de nouvelle version (toutes plateformes, y compris le web) | ✅ `version.json` publié sur le site, bandeau in-app (lien de mise à jour hors web, rechargement de page sur web) si une version plus récente existe |
 | Onglet Entraînement (4 banques, séries de 20 tirées au hasard, majorité cas cliniques/interprétation) | ✅ **232 questions** au total (55 rénal, 55 cardiométabolique, 68 ionogramme, 54 hémostase) ; scores locaux uniquement, tests de contenu + parcours bout en bout verts. Banque en expansion progressive vers l'objectif de ~1000 questions. |
 | Icône et identité visuelle (bleu nuit/cyan/corail, sigma + molécule + goutte) | ✅ Générée pour Android et iOS (`flutter_launcher_icons`) |
 | Table de traçabilité scientifique complète | ✅ `docs/tracabilite-scientifique.md` |
