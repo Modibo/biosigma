@@ -503,3 +503,56 @@ ACC/AHA/ACCP/HRS).
   et à l'écran Références.
 - Les taux de saignement annuels précis par score HAS-BLED n'ont pas été retenus faute de sources
   concordantes — seule la catégorisation qualitative est affichée.
+
+## 11. Livraison du 26/09/2026 — refonte du design (navigabilité, visuel, mode sombre)
+
+Demande utilisateur : « améliorer le design », précisée par question ciblée après constat visuel
+concret (l'écran d'accueil et l'écran Références, avec désormais 59 calculs, étaient devenus des
+listes plates obligeant à défiler sur plusieurs écrans pour atteindre les dernières catégories).
+L'utilisateur a choisi les trois axes proposés : navigabilité, rafraîchissement visuel général, et
+mode sombre.
+
+### Changements
+
+- **Navigabilité** (`lib/screens/home_screen.dart`, `lib/screens/references_screen.dart`) : les
+  5 catégories (`CalculatorCategory`) sont désormais chacune une carte `ExpansionTile` repliée par
+  défaut, avec icône de domaine, libellé, nombre de calculs et chevron — les 5 catégories tiennent
+  sur un seul écran, dépliées à la demande. « Outils composés » et « Favoris » restent toujours
+  visibles (peu d'éléments, entrées principales). Nouveau fichier `lib/theme/category_icons.dart`
+  (une icône Material par catégorie : goutte pour rénal, cœur pour cardiométabolique, éprouvette
+  pour ionogramme, goutte de sang pour hémostase, microscope pour hématologie).
+- **Rafraîchissement visuel** (`lib/theme/app_theme.dart`) : les cartes ont désormais un contour
+  discret et des coins arrondis (14px) au lieu d'être visuellement plates sur le fond ; thème
+  partagé pour les `ListTile` (coins arrondis assortis).
+- **Mode sombre** : `AppTheme.dark()` complété pour être au même niveau de détail que `light()`
+  (cardTheme, filledButtonTheme avec contraste vérifié). Les couleurs d'avertissement
+  (`BioSigmaColors.warningCaution`/`warningBlocking`), auparavant fixes indépendamment du thème,
+  ont maintenant des variantes claires dédiées au mode sombre (`warningCautionOnDark`,
+  `warningBlockingOnDark`) sélectionnées via `warningCautionFor(brightness)`/
+  `warningBlockingFor(brightness)` — appliqué dans `warning_list.dart`, `result_value_tile.dart` et
+  `quiz_module_screen.dart` (aucune couleur d'avertissement fixe restante indépendante du thème).
+  Le mode sombre suit déjà le thème système (`MaterialApp.darkTheme`, aucun changement de logique
+  nécessaire ici, seul le contenu du thème a été complété).
+
+### Vérification
+
+- `flutter analyze` : propre.
+- `flutter test` : 9/9 verts. Le test Références a dû être adapté : les catégories étant repliées
+  par défaut, le test déplie maintenant explicitement « Fonction rénale et urines » avant de
+  vérifier la présence de « CKD-EPI créatinine 2021 » et des fiches techniques.
+- Vérification visuelle (navigateur, `flutter build web --release`, clair et sombre, bureau et
+  mobile 375×812) :
+  - Accueil et Références : les 5 catégories tiennent sur un seul écran (clair et sombre, bureau et
+    mobile), dépliage/repliage fonctionnel, icônes de domaine visibles.
+  - CKD-EPI créatinine 2021 en mode sombre : formulaire, dropdown de sexe, bouton « Calculer »
+    (fond cyan clair / texte bleu nuit, contraste correct) et avertissement d'interprétation KDIGO
+    (icône et texte cyan clair sur fond translucide) tous lisibles.
+  - Écran À propos en mode sombre, bureau et mobile : logo et texte lisibles, aucun débordement.
+
+### Non fait / signalé pour suite
+
+- Aucun bouton de bascule manuel clair/sombre n'a été ajouté dans Réglages : l'application suit le
+  thème du système d'exploitation (`MaterialApp.darkTheme`, comportement déjà existant, jugé
+  suffisant sans demande explicite d'un contrôle manuel).
+- L'écran Entraînement (5 modules seulement) et l'écran Calculateur générique n'ont pas été touchés
+  par la refonte de navigabilité : leur taille ne posait pas le même problème de défilement.

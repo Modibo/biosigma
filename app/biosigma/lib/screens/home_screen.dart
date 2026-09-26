@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
+import '../theme/category_icons.dart';
 import 'calculator_router.dart';
 
 /// Onglet Calcul : recherche, outils composés (panel CKD-EPI, scores
@@ -92,36 +93,51 @@ class _BrowseContent extends StatelessWidget {
         .toList(growable: false);
 
     return ListView(
+      padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
       children: [
         _SectionHeader('Outils composés'),
-        ListTile(
-          leading: const Icon(Icons.merge_type),
-          title: const Text('DFG — panel CKD-EPI'),
-          subtitle: const Text(
-            'Créatinine, cystatine C et combinée, côte à côte',
+        Card(
+          child: Column(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.merge_type),
+                title: const Text('DFG — panel CKD-EPI'),
+                subtitle: const Text(
+                  'Créatinine, cystatine C et combinée, côte à côte',
+                ),
+                onTap: () => openCkdEpiPanel(context),
+              ),
+              const Divider(height: 1),
+              ListTile(
+                leading: const Icon(Icons.checklist),
+                title: const Text('Score ISTH-CIVD (module guidé)'),
+                onTap: () => openCalculator(context, 'isth_dic_score'),
+              ),
+              const Divider(height: 1),
+              ListTile(
+                leading: const Icon(Icons.checklist),
+                title: const Text('Score 4Ts (module guidé)'),
+                onTap: () => openCalculator(context, 'four_ts_score'),
+              ),
+            ],
           ),
-          onTap: () => openCkdEpiPanel(context),
-        ),
-        ListTile(
-          leading: const Icon(Icons.checklist),
-          title: const Text('Score ISTH-CIVD (module guidé)'),
-          onTap: () => openCalculator(context, 'isth_dic_score'),
-        ),
-        ListTile(
-          leading: const Icon(Icons.checklist),
-          title: const Text('Score 4Ts (module guidé)'),
-          onTap: () => openCalculator(context, 'four_ts_score'),
         ),
         if (favorites.isNotEmpty) ...[
           _SectionHeader('Favoris'),
-          ...favorites.map((m) => _CalculatorTile(meta: m)),
+          Card(
+            child: Column(
+              children: [
+                for (var i = 0; i < favorites.length; i++) ...[
+                  if (i > 0) const Divider(height: 1),
+                  _CalculatorTile(meta: favorites[i]),
+                ],
+              ],
+            ),
+          ),
         ],
-        for (final category in CalculatorCategory.values) ...[
-          _SectionHeader(category.label),
-          ...CalculatorCatalog.byCategory(category)
-              .map((m) => _CalculatorTile(meta: m)),
-        ],
-        const SizedBox(height: 24),
+        _SectionHeader('Domaines'),
+        for (final category in CalculatorCategory.values)
+          _CategorySection(category: category),
       ],
     );
   }
@@ -134,11 +150,52 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+      padding: const EdgeInsets.fromLTRB(4, 16, 4, 8),
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall
             ?.copyWith(color: Theme.of(context).colorScheme.primary),
+      ),
+    );
+  }
+}
+
+/// Un domaine clinique (ex. « Hématologie »), replié par défaut : à
+/// l'échelle du catalogue actuel (une soixantaine de calculs), une liste
+/// plate obligerait à défiler sur plusieurs écrans pour atteindre les
+/// dernières catégories — chaque domaine se déplie donc à la demande.
+class _CategorySection extends StatelessWidget {
+  const _CategorySection({required this.category});
+  final CalculatorCategory category;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = CalculatorCatalog.byCategory(category);
+    if (items.isEmpty) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      child: ExpansionTile(
+        key: PageStorageKey('home-category-${category.name}'),
+        leading: Icon(categoryIcon(category), color: theme.colorScheme.primary),
+        title: Text(category.label),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('${items.length}', style: theme.textTheme.bodySmall),
+            const SizedBox(width: 4),
+            const Icon(Icons.expand_more),
+          ],
+        ),
+        childrenPadding: const EdgeInsets.only(bottom: 4),
+        children: [
+          const Divider(height: 1),
+          for (var i = 0; i < items.length; i++) ...[
+            if (i > 0) const Divider(height: 1, indent: 16, endIndent: 16),
+            _CalculatorTile(meta: items[i]),
+          ],
+        ],
       ),
     );
   }

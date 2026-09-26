@@ -27,9 +27,10 @@ class _WarningTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
     final (color, icon) = switch (warning.severity) {
-      WarningSeverity.blocking => (BioSigmaColors.warningBlocking, Icons.error),
-      WarningSeverity.caution => (BioSigmaColors.warningCaution, Icons.warning_amber),
+      WarningSeverity.blocking => (BioSigmaColors.warningBlockingFor(brightness), Icons.error),
+      WarningSeverity.caution => (BioSigmaColors.warningCautionFor(brightness), Icons.warning_amber),
       WarningSeverity.info => (Theme.of(context).colorScheme.primary, Icons.info_outline),
     };
     return Container(

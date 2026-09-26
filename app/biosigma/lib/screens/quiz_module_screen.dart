@@ -137,7 +137,7 @@ class _QuizModuleScreenState extends State<QuizModuleScreen> {
             decoration: BoxDecoration(
               color: (_selected == _question.correctIndex
                       ? Colors.green
-                      : BioSigmaColors.warningBlocking)
+                      : BioSigmaColors.warningBlockingFor(theme.brightness))
                   .withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(8),
             ),
@@ -176,7 +176,8 @@ class _QuizModuleScreenState extends State<QuizModuleScreen> {
       if (isCorrect) {
         tileColor = Colors.green.withValues(alpha: 0.12);
       } else if (i == _selected) {
-        tileColor = BioSigmaColors.warningBlocking.withValues(alpha: 0.12);
+        tileColor = BioSigmaColors.warningBlockingFor(Theme.of(context).brightness)
+            .withValues(alpha: 0.12);
       }
     }
     return Padding(

@@ -17,16 +17,16 @@ class ResultValueTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     if (!result.isComputed) {
+      final blockingColor = BioSigmaColors.warningBlockingFor(theme.brightness);
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
           children: [
-            const Icon(Icons.block, color: BioSigmaColors.warningBlocking, size: 20),
+            Icon(Icons.block, color: blockingColor, size: 20),
             const SizedBox(width: 8),
             Expanded(
               child: Text('${result.label} : non calculé',
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(color: BioSigmaColors.warningBlocking)),
+                  style: theme.textTheme.bodyMedium?.copyWith(color: blockingColor)),
             ),
           ],
         ),

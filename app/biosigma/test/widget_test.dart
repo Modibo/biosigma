@@ -133,6 +133,11 @@ void main() {
       (tester) async {
     await _pumpApp(tester);
     await _tapTab(tester, 'Références');
+    // Chaque catégorie est repliée par défaut (à l'échelle du catalogue
+    // actuel, tout afficher à plat obligerait à défiler sur de nombreux
+    // écrans) : dépliage explicite de la catégorie rénale avant vérification.
+    await tester.tap(find.text('Fonction rénale et urines'));
+    await tester.pumpAndSettle();
     expect(find.textContaining('Formule, version et limites'), findsWidgets);
     // Le nom complet d'au moins une formule doit être visible au-dessus de
     // sa fiche technique (pas seulement son titre générique).

@@ -11,9 +11,29 @@ class BioSigmaColors {
   static const coral = Color(0xFFE1382A);
   static const coralLight = Color(0xFFFF8A65);
 
+  /// Couleurs d'avertissement : variantes claires distinctes pour le thème
+  /// sombre, où les teintes sombres du thème clair perdraient trop de
+  /// contraste sur un fond bleu nuit.
   static const warningCaution = Color(0xFFB26A00);
+  static const warningCautionOnDark = Color(0xFFFFB74D);
   static const warningBlocking = Color(0xFFB3261E);
+  static const warningBlockingOnDark = Color(0xFFFF6B60);
+
+  /// Sélectionne la variante d'avertissement adaptée à la luminosité du
+  /// thème courant — jamais une couleur fixe indépendante du thème.
+  static Color warningCautionFor(Brightness brightness) =>
+      brightness == Brightness.dark ? warningCautionOnDark : warningCaution;
+  static Color warningBlockingFor(Brightness brightness) =>
+      brightness == Brightness.dark ? warningBlockingOnDark : warningBlocking;
 }
+
+/// Contour discret partagé par toutes les cartes de l'application, plutôt
+/// qu'une élévation marquée, pour que chaque carte se détache proprement
+/// du fond sans effet « papier flottant ».
+RoundedRectangleBorder _cardShape(Color borderColor) => RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(14),
+      side: BorderSide(color: borderColor),
+    );
 
 class AppTheme {
   AppTheme._();
@@ -36,9 +56,15 @@ class AppTheme {
         centerTitle: false,
         elevation: 0,
       ),
-      cardTheme: const CardThemeData(
+      cardTheme: CardThemeData(
         elevation: 0,
-        margin: EdgeInsets.symmetric(vertical: 6),
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        shape: _cardShape(scheme.outlineVariant.withValues(alpha: 0.6)),
+        color: Colors.white,
+        surfaceTintColor: Colors.transparent,
+      ),
+      listTileTheme: const ListTileThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
       ),
       inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
@@ -69,9 +95,22 @@ class AppTheme {
         centerTitle: false,
         elevation: 0,
       ),
+      cardTheme: CardThemeData(
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        shape: _cardShape(scheme.outlineVariant.withValues(alpha: 0.4)),
+        color: BioSigmaColors.navy.withValues(alpha: 0.55),
+        surfaceTintColor: Colors.transparent,
+      ),
+      listTileTheme: const ListTileThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
+      ),
       inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
         filled: true,
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(backgroundColor: BioSigmaColors.cyanLight, foregroundColor: BioSigmaColors.navyDark),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
