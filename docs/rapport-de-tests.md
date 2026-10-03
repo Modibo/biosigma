@@ -556,3 +556,35 @@ mode sombre.
   suffisant sans demande explicite d'un contrôle manuel).
 - L'écran Entraînement (5 modules seulement) et l'écran Calculateur générique n'ont pas été touchés
   par la refonte de navigabilité : leur taille ne posait pas le même problème de défilement.
+
+## 12. Livraison — mode hors connexion réel sur le web, 1.5.2 puis 1.6.0
+
+Origine : signalements « la nouvelle version ne se charge pas » / « l'app ne s'affiche plus » sur
+téléphone. Diagnostic mesuré : nginx sert `main.dart.js` en 26 ms en local sur le VPS (au repos :
+charge 0,28, 16 % de mémoire) ; le débit client observé varie (10 Ko/s un jour, ~200 Ko/s le
+lendemain, RTT ~200 ms) ; le premier lancement télécharge ~3,4 Mo compressés (main.dart.js 1,1 Mo +
+CanvasKit 2,3 Mo en Brotli depuis gstatic).
+
+**Constat structurant** : le `flutter_service_worker.js` généré par Flutter 3.47 est un stub qui se
+désinscrit — aucune mise en cache. Le README affirmait à tort un fonctionnement hors connexion de
+la version web ; chaque lancement dépendait donc du réseau.
+
+Changements : `web/biosigma_sw.js` (service worker propre : précache atomique versionné par build,
+mise en cache du moteur graphique à la première utilisation, bascule pilotée par la page),
+`web/flutter_bootstrap.js` (désactive le service worker Flutter), `--no-web-resources-cdn`
+(CanvasKit et Roboto hébergés chez nous), `tool/stamp_sw.sh` + Dockerfile (empreinte du build),
+`nginx.conf` (no-cache sur `biosigma_sw.js`), écran de démarrage avec indicateur de chargement,
+bouton « Recharger » relié à la bascule du service worker (`reload_page_web.dart`, `dart:js_interop`).
+
+Décisions écartées après mesure : héberger CanvasKit seul (sans service worker) n'allège rien
+(gzip 2,9 Mo contre 2,28 Mo en Brotli chez Google, cache d'un an partagé) ; le build `--wasm` ne
+gagne que ~0,7 Mo au prix de risques de compatibilité sur anciens téléphones ; le code propre à
+BioSigma ajoute ~2 Mo bruts au socle Flutter (1,74 Mo), le différer n'apporterait presque rien.
+
+Vérifié au navigateur : installation sur navigateur vierge (17 fichiers dont la bonne variante de
+CanvasKit), démarrage et recherche fonctionnels **serveur arrêté** dès la première visite, bascule
+vers un nouveau build (nouveau cache rempli en attente, ancien supprimé, rechargement), bouton
+« Recharger » (appel vérifié). `flutter analyze` propre, 9/9 tests.
+
+Non vérifié : le Dockerfile modifié n'a pas été reconstruit ici (pas de Docker lancé dans cette
+session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas été essayé.

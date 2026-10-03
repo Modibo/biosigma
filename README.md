@@ -86,12 +86,12 @@ conserve pas ses enfants hors écran par défaut, contrairement à `IndexedStack
 chaque onglet (recherche en cours, position de défilement) au changement d'onglet.
 
 **Vérification de nouvelle version** (`lib/widgets/update_checker.dart`) : au démarrage, sur
-**toutes** les plateformes y compris le web (navigateur mobile ou PWA — le service worker Flutter
-finit par se mettre à jour seul en arrière-plan, mais ce délai est invisible et parfois long),
+**toutes** les plateformes y compris le web (navigateur mobile ou PWA — le service worker de
+BioSigma installe bien la nouvelle version en arrière-plan, mais rien n'en avertit l'utilisateur),
 l'app interroge silencieusement `https://biosigma.komodi-labo.org/version.json` ; si une version plus
 récente que `kAppVersion` (`lib/app_version.dart`) y est publiée, un bandeau propose soit un lien de
-mise à jour (Android/iOS/bureau), soit un rechargement immédiat de la page (web, via
-`lib/widgets/reload_page_web.dart`). Échec réseau = silencieux, aucun blocage du lancement. **À chaque livraison**, mettre à jour
+mise à jour (Android/iOS/bureau), soit, sur le web, la bascule vers le nouveau build puis le rechargement de la page (via
+`lib/widgets/reload_page_web.dart` → `window.biosigmaApplyUpdate` dans `web/index.html`). Échec réseau = silencieux, aucun blocage du lancement. **À chaque livraison**, mettre à jour
 ensemble `pubspec.yaml` (`version:`), `lib/app_version.dart` (`kAppVersion`) et
 `app/biosigma/web/version.json` (`latest`) — sinon l'application se croira à jour, ou à l'inverse
 proposera indéfiniment une « mise à jour » déjà installée.
@@ -195,10 +195,19 @@ infrastructure (réseau Docker de la façade Caddy déjà identifié, commande d
 
 **Important** : la version web n'est qu'une vitrine supplémentaire du même moteur de calcul ; elle
 ne remplace pas les paquets Android/iOS natifs pour un usage professionnel hors connexion garanti
-(un navigateur reste tributaire du cache du service worker, moins robuste qu'une application
-installée). Le service worker généré par Flutter (`flutter_service_worker.js`) permet néanmoins un
-fonctionnement hors connexion après un premier chargement, avec mise à jour automatique à la
-prochaine visite en ligne.
+(un navigateur reste tributaire de son cache, moins robuste qu'une application installée).
+
+**Mode hors connexion du web** (`web/biosigma_sw.js`) : le service worker généré par Flutter 3.47
+(`flutter_service_worker.js`) n'est qu'un nettoyeur qui se désinscrit, il ne met **rien** en cache ;
+BioSigma enregistre donc le sien (le bootstrap personnalisé `web/flutter_bootstrap.js` empêche Flutter
+d'enregistrer le sien). À la première visite il met en cache l'application, le moteur graphique
+(CanvasKit, hébergé sur notre serveur grâce à `--no-web-resources-cdn`) et les polices ; ensuite elle
+démarre sans rien télécharger et fonctionne sans connexion. Le cache est versionné par build :
+`tool/stamp_sw.sh` (lancé par le Dockerfile) inscrit l'empreinte du build dans `biosigma_sw.js`, ce qui
+fait détecter la nouvelle version au navigateur ; un nouveau build s'installe en arrière-plan puis
+bascule d'un coup (jamais un mélange d'ancien et de nouveau). **Pour un build local destiné à être
+servi** : `flutter build web --release --no-web-resources-cdn && sh tool/stamp_sw.sh build/web` ;
+sans l'étape `stamp_sw.sh`, le service worker reste inerte (aucune mise en cache, rien ne casse).
 
 ## Catalogue des calculs et sources scientifiques
 

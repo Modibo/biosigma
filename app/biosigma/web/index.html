@@ -47,8 +47,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+      gap: 20px;
       z-index: 9999;
     }
+    #app-splash .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      border-top-color: #8FF0FF;
+      border-radius: 50%;
+      animation: app-splash-spin 0.9s linear infinite;
+    }
+    #app-splash p {
+      margin: 0;
+      padding: 0 24px;
+      max-width: 320px;
+      text-align: center;
+      font: 14px/1.4 system-ui, sans-serif;
+      color: rgba(255, 255, 255, 0.75);
+    }
+    @keyframes app-splash-spin { to { transform: rotate(360deg); } }
     #app-splash img {
       width: 25vw;
       max-width: 140px;
@@ -58,12 +77,63 @@
   </style>
 </head>
 <body>
-  <div id="app-splash"><img src="icons/Icon-192.png" alt="BioSigma"></div>
+  <div id="app-splash">
+    <img src="icons/Icon-192.png" alt="BioSigma">
+    <div class="spinner" role="progressbar" aria-label="Chargement"></div>
+    <p>Chargement de BioSigma… Le premier démarrage télécharge quelques Mo et peut prendre une minute sur une connexion lente ; les suivants sont rapides.</p>
+  </div>
   <script>
     window.addEventListener('flutter-first-frame', function () {
       var splash = document.getElementById('app-splash');
       if (splash) splash.remove();
+      // Premier lancement : demande au service worker de conserver aussi les
+      // fichiers du moteur graphique déjà chargés (voir biosigma_sw.js).
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then(function (reg) {
+          var urls = performance.getEntriesByType('resource')
+            .map(function (e) { return e.name; })
+            .filter(function (u) { return u.indexOf('/canvaskit/') !== -1; });
+          if (reg.active && urls.length) reg.active.postMessage({ type: 'cacheUrls', urls: urls });
+        });
+      }
     });
+
+    // Service worker BioSigma (biosigma_sw.js) : mise en cache complète de
+    // l'application pour un démarrage instantané et l'usage hors connexion.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker
+          .register('biosigma_sw.js')
+          .catch(function (e) { console.warn('Service worker non enregistré :', e); });
+      });
+    }
+
+    // Appelé par le bandeau « Recharger » : demande au navigateur de
+    // récupérer le nouveau service worker, le fait basculer dès qu'il est
+    // installé, puis recharge la page. Retombe sur un simple rechargement si
+    // aucun service worker n'est actif.
+    window.biosigmaApplyUpdate = async function () {
+      try {
+        var reg = await navigator.serviceWorker.getRegistration();
+        if (!reg) { location.reload(); return; }
+        await reg.update();
+        var worker = reg.installing || reg.waiting;
+        if (worker) {
+          await new Promise(function (resolve) {
+            if (worker.state === 'installed') return resolve();
+            worker.addEventListener('statechange', function () {
+              if (worker.state === 'installed' || worker.state === 'redundant') resolve();
+            });
+          });
+          if (reg.waiting) {
+            navigator.serviceWorker.addEventListener('controllerchange', function () { location.reload(); });
+            reg.waiting.postMessage('skipWaiting');
+            return;
+          }
+        }
+      } catch (e) { console.warn(e); }
+      location.reload();
+    };
   </script>
 
   <!--

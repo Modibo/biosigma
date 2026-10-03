@@ -35,7 +35,11 @@ COPY app/biosigma ./app/biosigma
 
 WORKDIR /src/app/biosigma
 RUN flutter pub get
-RUN flutter build web --release
+# --no-web-resources-cdn : CanvasKit et polices de secours sont servis par
+# notre propre serveur (indispensable au mode hors connexion).
+# stamp_sw.sh : inscrit l'empreinte du build dans le service worker.
+RUN flutter build web --release --no-web-resources-cdn \
+ && sh tool/stamp_sw.sh build/web
 
 # ---- Étape 2 : service statique -------------------------------------------
 FROM nginx:1.27-alpine

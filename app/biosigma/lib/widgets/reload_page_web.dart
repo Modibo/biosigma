@@ -1,11 +1,19 @@
-// ignore_for_file: deprecated_member_use, avoid_web_libraries_in_flutter
 // Fichier chargé uniquement sur le web via l'import conditionnel de
 // update_checker.dart (`if (dart.library.html)`) — jamais compilé pour
-// Android/iOS/bureau, donc l'usage de dart:html ici est intentionnel et sûr.
-import 'dart:html' as html;
+// Android/iOS/bureau.
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
-/// Recharge la page web : force le navigateur à récupérer le nouveau
-/// `main.dart.js` et le nouveau service worker déployés, plutôt que
-/// d'attendre son propre cycle de mise à jour en arrière-plan (parfois
-/// long à se déclencher, notamment sur navigateur mobile).
-void reloadPage() => html.window.location.reload();
+/// Applique la mise à jour : demande au service worker de BioSigma
+/// (`biosigma_sw.js`) d'installer le nouveau build puis de basculer, avant de
+/// recharger la page — voir `window.biosigmaApplyUpdate` dans index.html. Un
+/// simple rechargement ne suffirait pas : le service worker sert l'ancienne
+/// version depuis son cache tant que la nouvelle n'a pas pris le relais.
+/// Retombe sur un rechargement ordinaire si cette fonction est absente.
+void reloadPage() {
+  if (globalContext.has('biosigmaApplyUpdate')) {
+    globalContext.callMethod('biosigmaApplyUpdate'.toJS);
+  } else {
+    (globalContext['location'] as JSObject).callMethod('reload'.toJS);
+  }
+}
