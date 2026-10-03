@@ -1,5 +1,5 @@
 {
-  "latest": "1.6.0",
+  "latest": "1.6.1",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Mode hors connexion réel sur le web : l'application (moteur graphique et polices inclus) est mise en cache à la première visite, démarre instantanément ensuite et fonctionne sans connexion. Écran de démarrage avec indicateur de chargement."
+  "notes": "Saisie plus sûre : un nombre ambigu (« 1.5 » en mode virgule) est refusé avec un message au lieu d'être lu avec un facteur 10. Les interprétations des scores ISTH-CIVD et 4Ts sont toujours affichées. Les seuils locaux sont rappelés sous le résultat. Les données illisibles sont mises de côté au lieu d'être effacées."
 }
