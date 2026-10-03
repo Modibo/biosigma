@@ -51,6 +51,21 @@ Récupération de l'archive sur le Mac (hors VPS) :
 scp VOTRE_COMPTE@VOTRE_SERVEUR:/opt/biosigma-backups/biosigma-1.6.0-image.tar.gz ~/Documents/
 ```
 
+### Contrôles effectués le 2026-10-03 (sorties relevées sur le VPS)
+
+| Contrôle | Résultat |
+|---|---|
+| Version en ligne (`version.json`) | `1.6.0` |
+| Commit déployé sur le VPS | `cf1beae` (= `baseline-v1.6.0`) |
+| Image `biosigma:1.6.0` et `biosigma:latest` | même ID `3b3fb7b0a6e7` (132 Mo, 35,9 Mo compressé) |
+| Archive `/opt/biosigma-backups/biosigma-1.6.0-image.tar.gz` (35 Mo) | lisible (`gunzip -t`), contenu listé (`blobs/sha256/…`) |
+| Empreinte SHA-256 | `8cd8b795b9f04d02fe15b3b8401ab4f963159a998c7db68558388c62cd458135` (aussi dans `biosigma-1.6.0-image.sha256`) |
+| Copie hors VPS (`scp` vers le Mac) | **non confirmée** à ce jour |
+| Copie du Caddyfile | **non confirmée** à ce jour |
+| Rechargement réel de l'archive (`docker load`) | **non fait** (voir §4) |
+
+Limite : « lisible » et « contenu listé » prouvent que l'archive n'est pas tronquée, pas qu'elle redémarre. Seule la répétition du §4 le prouve.
+
 ## 3. Procédure de retour arrière
 
 ### Règle à connaître
