@@ -59,6 +59,9 @@ class NumericUnitField extends StatelessWidget {
                   errorText: errorText,
                   errorMaxLines: 4,
                 ),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (text) =>
+                    NumberFormatService.ambiguityMessage(text ?? '', decimalSeparator),
                 onChanged: (text) => onValueChanged(NumberFormatService.parse(text, decimalSeparator)),
               ),
             ),
