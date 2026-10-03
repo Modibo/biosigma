@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,9 @@ class AppStorageService {
   static const _favoritesKey = 'biosigma.favorites.v1';
   static const _thresholdsKey = 'biosigma.thresholds.v1';
   static const _quizAttemptsKey = 'biosigma.quiz_attempts.v1';
+  /// Préfixe des copies de sauvegarde créées quand une donnée stockée est
+  /// illisible (voir [_quarantine]). Une seule copie par clé d'origine.
+  static const quarantinePrefix = 'biosigma.quarantine.';
   static const _maxHistoryEntries = 200;
   static const _maxQuizAttempts = 200;
 
@@ -30,6 +34,37 @@ class AppStorageService {
     return AppStorageService(prefs);
   }
 
+  /// Une donnée stockée est illisible (JSON invalide, schéma inattendu) :
+  /// on en garde une copie brute sous une clé de quarantaine AVANT que la
+  /// prochaine écriture n'écrase la clé d'origine. Rien n'est supprimé en
+  /// silence ; la copie est effacée par [clearAllLocalData].
+  void _quarantine(String key, String raw) {
+    unawaited(_prefs.setString('$quarantinePrefix$key', raw));
+  }
+
+  /// Clés dont une donnée illisible a été mise en quarantaine.
+  List<String> quarantinedKeys() => _prefs
+      .getKeys()
+      .where((k) => k.startsWith(quarantinePrefix))
+      .map((k) => k.substring(quarantinePrefix.length))
+      .toList(growable: false);
+
+  /// Décode une liste JSON ; en cas d'échec, met la donnée brute en
+  /// quarantaine et renvoie une liste vide.
+  List<T> _decodeList<T>(String key, T Function(Map<String, dynamic>) fromJson) {
+    final raw = _prefs.getString(key);
+    if (raw == null) return <T>[];
+    try {
+      final list = jsonDecode(raw) as List;
+      return list
+          .map((e) => fromJson(e as Map<String, dynamic>))
+          .toList(growable: false);
+    } catch (_) {
+      _quarantine(key, raw);
+      return <T>[];
+    }
+  }
+
   // --- Réglages ---
 
   AppSettings loadSettings() {
@@ -38,6 +73,7 @@ class AppStorageService {
     try {
       return AppSettings.fromJson(jsonDecode(raw) as Map<String, dynamic>);
     } catch (_) {
+      _quarantine(_settingsKey, raw);
       return const AppSettings();
     }
   }
@@ -59,18 +95,7 @@ class AppStorageService {
 
   // --- Historique (facultatif) ---
 
-  List<HistoryEntry> loadHistory() {
-    final raw = _prefs.getString(_historyKey);
-    if (raw == null) return const [];
-    try {
-      final list = jsonDecode(raw) as List;
-      return list
-          .map((e) => HistoryEntry.fromJson(e as Map<String, dynamic>))
-          .toList(growable: false);
-    } catch (_) {
-      return const [];
-    }
-  }
+  List<HistoryEntry> loadHistory() => _decodeList(_historyKey, HistoryEntry.fromJson);
 
   Future<void> appendHistoryEntry(HistoryEntry entry) async {
     final current = loadHistory().toList();
@@ -90,18 +115,8 @@ class AppStorageService {
 
   // --- Seuils locaux ---
 
-  List<LocalThreshold> loadThresholds() {
-    final raw = _prefs.getString(_thresholdsKey);
-    if (raw == null) return const [];
-    try {
-      final list = jsonDecode(raw) as List;
-      return list
-          .map((e) => LocalThreshold.fromJson(e as Map<String, dynamic>))
-          .toList(growable: false);
-    } catch (_) {
-      return const [];
-    }
-  }
+  List<LocalThreshold> loadThresholds() =>
+      _decodeList(_thresholdsKey, LocalThreshold.fromJson);
 
   Future<void> saveThresholds(List<LocalThreshold> thresholds) async {
     await _prefs.setString(
@@ -112,18 +127,8 @@ class AppStorageService {
 
   // --- Scores de quiz (formation) ---
 
-  List<QuizAttempt> loadQuizAttempts() {
-    final raw = _prefs.getString(_quizAttemptsKey);
-    if (raw == null) return const [];
-    try {
-      final list = jsonDecode(raw) as List;
-      return list
-          .map((e) => QuizAttempt.fromJson(e as Map<String, dynamic>))
-          .toList(growable: false);
-    } catch (_) {
-      return const [];
-    }
-  }
+  List<QuizAttempt> loadQuizAttempts() =>
+      _decodeList(_quizAttemptsKey, QuizAttempt.fromJson);
 
   Future<void> appendQuizAttempt(QuizAttempt attempt) async {
     final current = loadQuizAttempts().toList();
@@ -144,13 +149,16 @@ class AppStorageService {
   // --- Suppression totale ---
 
   /// Supprime toutes les données locales de BioSigma (réglages, favoris,
-  /// historique, seuils, scores de quiz) — action explicite depuis l'écran
-  /// Paramètres.
+  /// historique, seuils, scores de quiz, copies de quarantaine) — action
+  /// explicite depuis l'écran Paramètres.
   Future<void> clearAllLocalData() async {
     await _prefs.remove(_settingsKey);
     await _prefs.remove(_historyKey);
     await _prefs.remove(_favoritesKey);
     await _prefs.remove(_thresholdsKey);
     await _prefs.remove(_quizAttemptsKey);
+    for (final key in quarantinedKeys()) {
+      await _prefs.remove('$quarantinePrefix$key');
+    }
   }
 }

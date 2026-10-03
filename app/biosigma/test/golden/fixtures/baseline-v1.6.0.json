@@ -1,0 +1,4860 @@
+{
+  "baseline": "baseline-v1.6.0",
+  "cases": {
+    "ckd_epi_creatinine_2021": {
+      "inputs": {
+        "age": "60.0 ans",
+        "sex": "Femme",
+        "creatinine": "70.0 µmol/L",
+        "idmsConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG CKD-EPI créatinine 2021",
+            "value": 85.36287117713019,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G2 : DFG légèrement diminué (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "60 ans",
+          "Sexe": "Femme",
+          "Créatinine": "70.0 µmol/L (0.79 mg/dL)"
+        }
+      }
+    },
+    "ckd_epi_creatinine_2021#sex=1": {
+      "inputs": {
+        "age": "60.0 ans",
+        "sex": "Homme",
+        "creatinine": "70.0 µmol/L",
+        "idmsConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG CKD-EPI créatinine 2021",
+            "value": 101.63604875908628,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "60 ans",
+          "Sexe": "Homme",
+          "Créatinine": "70.0 µmol/L (0.79 mg/dL)"
+        }
+      }
+    },
+    "ckd_epi_creatinine_2021#creatinine@mg/dL": {
+      "inputs": {
+        "age": "60.0 ans",
+        "sex": "Femme",
+        "creatinine": "70.0 mg/dL",
+        "idmsConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG CKD-EPI créatinine 2021",
+            "value": 0.3939203357901028,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "60 ans",
+          "Sexe": "Femme",
+          "Créatinine": "70.00 mg/dL (6189.4 µmol/L)"
+        }
+      }
+    },
+    "ckd_epi_cystatin_c_2012": {
+      "inputs": {
+        "age": "60.0 ans",
+        "sex": "Femme",
+        "cystatinC": "1.0 mg/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG CKD-EPI cystatine C 2012",
+            "value": 72.4655114056525,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G2 : DFG légèrement diminué (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "60 ans",
+          "Sexe": "Femme",
+          "Cystatine C": "1.00 mg/L"
+        }
+      }
+    },
+    "ckd_epi_cystatin_c_2012#sex=1": {
+      "inputs": {
+        "age": "60.0 ans",
+        "sex": "Homme",
+        "cystatinC": "1.0 mg/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG CKD-EPI cystatine C 2012",
+            "value": 77.75269464125805,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G2 : DFG légèrement diminué (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "60 ans",
+          "Sexe": "Homme",
+          "Cystatine C": "1.00 mg/L"
+        }
+      }
+    },
+    "ckd_epi_creatinine_cystatin_c_2021": {
+      "inputs": {
+        "age": "60.0 ans",
+        "sex": "Femme",
+        "creatinine": "70.0 µmol/L",
+        "cystatinC": "1.0 mg/L",
+        "idmsConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG CKD-EPI créatinine-cystatine C 2021",
+            "value": 80.84700745398803,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G2 : DFG légèrement diminué (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "60 ans",
+          "Sexe": "Femme",
+          "Créatinine": "70.0 µmol/L (0.79 mg/dL)",
+          "Cystatine C": "1.00 mg/L"
+        }
+      }
+    },
+    "ckd_epi_creatinine_cystatin_c_2021#sex=1": {
+      "inputs": {
+        "age": "60.0 ans",
+        "sex": "Homme",
+        "creatinine": "70.0 µmol/L",
+        "cystatinC": "1.0 mg/L",
+        "idmsConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG CKD-EPI créatinine-cystatine C 2021",
+            "value": 93.31126309728072,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "60 ans",
+          "Sexe": "Homme",
+          "Créatinine": "70.0 µmol/L (0.79 mg/dL)",
+          "Cystatine C": "1.00 mg/L"
+        }
+      }
+    },
+    "ckd_epi_creatinine_cystatin_c_2021#creatinine@mg/dL": {
+      "inputs": {
+        "age": "60.0 ans",
+        "sex": "Femme",
+        "creatinine": "70.0 mg/dL",
+        "cystatinC": "1.0 mg/L",
+        "idmsConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG CKD-EPI créatinine-cystatine C 2021",
+            "value": 7.058955944071973,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "60 ans",
+          "Sexe": "Femme",
+          "Créatinine": "70.00 mg/dL (6189.4 µmol/L)",
+          "Cystatine C": "1.00 mg/L"
+        }
+      }
+    },
+    "schwartz_bedside_pediatric": {
+      "inputs": {
+        "age": "8.0 ans",
+        "height": "125.0 cm",
+        "creatinine": "45.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG Schwartz bedside",
+            "value": 101.43738888888889,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "8.0 ans",
+          "Taille": "125.0 cm",
+          "Créatinine": "45.0 µmol/L (0.51 mg/dL)"
+        }
+      }
+    },
+    "schwartz_bedside_pediatric#creatinine@mg/dL": {
+      "inputs": {
+        "age": "8.0 ans",
+        "height": "125.0 cm",
+        "creatinine": "45.0 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "DFG Schwartz bedside",
+            "value": 1.1472222222222221,
+            "unit": "mL/min/1,73 m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          }
+        ],
+        "echoed": {
+          "Âge": "8.0 ans",
+          "Taille": "125.0 cm",
+          "Créatinine": "45.00 mg/dL (3978.9 µmol/L)"
+        }
+      }
+    },
+    "proteinuria_24h": {
+      "inputs": {
+        "concentration": "300.0 mg/L",
+        "volume": "1500.0 mL",
+        "duration": "24.0 h"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (24.0 h)",
+            "value": 450.0,
+            "unit": "mg",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (24.0 h)",
+            "value": 0.45,
+            "unit": "g",
+            "precision": 3
+          },
+          {
+            "label": "Protéinurie des 24 heures",
+            "value": 450.0,
+            "unit": "mg/24h",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie des 24 heures",
+            "value": 0.45,
+            "unit": "g/24h",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Protéinurie non néphrotique (0.45 g/24h) : en dessous du seuil classiquement retenu en pratique néphrologique pour une protéinurie de rang néphrotique (≥ 3,5 g/24h)."
+          }
+        ],
+        "echoed": {
+          "Concentration urinaire": "300.0 mg/L",
+          "Volume recueilli": "1500 mL",
+          "Durée de recueil": "24.0 h"
+        }
+      }
+    },
+    "proteinuria_24h#concentration@g/L": {
+      "inputs": {
+        "concentration": "300.0 g/L",
+        "volume": "1500.0 mL",
+        "duration": "24.0 h"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (24.0 h)",
+            "value": 450000.0,
+            "unit": "mg",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (24.0 h)",
+            "value": 450.0,
+            "unit": "g",
+            "precision": 3
+          },
+          {
+            "label": "Protéinurie des 24 heures",
+            "value": 450000.0,
+            "unit": "mg/24h",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie des 24 heures",
+            "value": 450.0,
+            "unit": "g/24h",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Protéinurie de rang néphrotique (450.00 g/24h) : seuil classiquement retenu en pratique néphrologique (≥ 3,5 g/24h)."
+          }
+        ],
+        "echoed": {
+          "Concentration urinaire": "300.00 g/L (300000.0 mg/L)",
+          "Volume recueilli": "1500 mL",
+          "Durée de recueil": "24.0 h"
+        }
+      }
+    },
+    "proteinuria_24h#concentration@mg/dL": {
+      "inputs": {
+        "concentration": "300.0 mg/dL",
+        "volume": "1500.0 mL",
+        "duration": "24.0 h"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (24.0 h)",
+            "value": 4500.0,
+            "unit": "mg",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (24.0 h)",
+            "value": 4.5,
+            "unit": "g",
+            "precision": 3
+          },
+          {
+            "label": "Protéinurie des 24 heures",
+            "value": 4500.0,
+            "unit": "mg/24h",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie des 24 heures",
+            "value": 4.5,
+            "unit": "g/24h",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Protéinurie de rang néphrotique (4.50 g/24h) : seuil classiquement retenu en pratique néphrologique (≥ 3,5 g/24h)."
+          }
+        ],
+        "echoed": {
+          "Concentration urinaire": "300.00 mg/dL (3000.0 mg/L)",
+          "Volume recueilli": "1500 mL",
+          "Durée de recueil": "24.0 h"
+        }
+      }
+    },
+    "proteinuria_24h#volume@L": {
+      "inputs": {
+        "concentration": "300.0 mg/L",
+        "volume": "1500.0 L",
+        "duration": "24.0 h"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (24.0 h)",
+            "value": 450000.0,
+            "unit": "mg",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (24.0 h)",
+            "value": 450.0,
+            "unit": "g",
+            "precision": 3
+          },
+          {
+            "label": "Protéinurie des 24 heures",
+            "value": 450000.0,
+            "unit": "mg/24h",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie des 24 heures",
+            "value": 450.0,
+            "unit": "g/24h",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Protéinurie de rang néphrotique (450.00 g/24h) : seuil classiquement retenu en pratique néphrologique (≥ 3,5 g/24h)."
+          }
+        ],
+        "echoed": {
+          "Concentration urinaire": "300.0 mg/L",
+          "Volume recueilli": "1500.000 L (1500000 mL)",
+          "Durée de recueil": "24.0 h"
+        }
+      }
+    },
+    "proteinuria_24h#duration@min": {
+      "inputs": {
+        "concentration": "300.0 mg/L",
+        "volume": "1500.0 mL",
+        "duration": "24.0 min"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (0.4 h)",
+            "value": 450.0,
+            "unit": "mg",
+            "precision": 1
+          },
+          {
+            "label": "Protéinurie mesurée sur la durée réelle du recueil (0.4 h)",
+            "value": 0.45,
+            "unit": "g",
+            "precision": 3
+          },
+          {
+            "label": "Extrapolation à 24 h (collecte incomplète, 0.4 h) — mg",
+            "value": 27000.0,
+            "unit": "mg",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "caution",
+            "message": "Collecte incomplète (0.4 h) : ne pas confondre la valeur mesurée sur la période réelle avec l'extrapolation à 24 h."
+          },
+          {
+            "severity": "info",
+            "message": "Protéinurie de rang néphrotique (27.00 g/24h (estimation ramenée à 24 h)) : seuil classiquement retenu en pratique néphrologique (≥ 3,5 g/24h)."
+          }
+        ],
+        "echoed": {
+          "Concentration urinaire": "300.0 mg/L",
+          "Volume recueilli": "1500 mL",
+          "Durée de recueil": "24 min (0.4 h)"
+        }
+      }
+    },
+    "urine_albumin_creatinine_ratio": {
+      "inputs": {
+        "albuminuria": "30.0 mg/L",
+        "creatinineUrine": "8800.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport albumine/créatinine urinaire",
+            "value": 30.14318181818182,
+            "unit": "mg/g",
+            "precision": 1
+          },
+          {
+            "label": "Rapport albumine/créatinine urinaire",
+            "value": 3.4090909090909087,
+            "unit": "mg/mmol",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie KDIGO A2 : albuminurie modérément augmentée (grille KDIGO — A1 < 30 mg/g [< 3 mg/mmol], A2 30-300 mg/g [3-30 mg/mmol], A3 > 300 mg/g [> 30 mg/mmol])."
+          }
+        ],
+        "echoed": {
+          "Albuminurie": "30.0 mg/L",
+          "Créatininurie": "8800.0 µmol/L"
+        }
+      }
+    },
+    "urine_albumin_creatinine_ratio#albuminuria@g/L": {
+      "inputs": {
+        "albuminuria": "30.0 g/L",
+        "creatinineUrine": "8800.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport albumine/créatinine urinaire",
+            "value": 30143.18181818182,
+            "unit": "mg/g",
+            "precision": 1
+          },
+          {
+            "label": "Rapport albumine/créatinine urinaire",
+            "value": 3409.090909090909,
+            "unit": "mg/mmol",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie KDIGO A3 : albuminurie sévèrement augmentée (grille KDIGO — A1 < 30 mg/g [< 3 mg/mmol], A2 30-300 mg/g [3-30 mg/mmol], A3 > 300 mg/g [> 30 mg/mmol])."
+          }
+        ],
+        "echoed": {
+          "Albuminurie": "30.00 g/L (30000.0 mg/L)",
+          "Créatininurie": "8800.0 µmol/L"
+        }
+      }
+    },
+    "urine_albumin_creatinine_ratio#albuminuria@mg/dL": {
+      "inputs": {
+        "albuminuria": "30.0 mg/dL",
+        "creatinineUrine": "8800.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport albumine/créatinine urinaire",
+            "value": 301.4318181818182,
+            "unit": "mg/g",
+            "precision": 1
+          },
+          {
+            "label": "Rapport albumine/créatinine urinaire",
+            "value": 34.090909090909086,
+            "unit": "mg/mmol",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie KDIGO A3 : albuminurie sévèrement augmentée (grille KDIGO — A1 < 30 mg/g [< 3 mg/mmol], A2 30-300 mg/g [3-30 mg/mmol], A3 > 300 mg/g [> 30 mg/mmol])."
+          }
+        ],
+        "echoed": {
+          "Albuminurie": "30.00 mg/dL (300.0 mg/L)",
+          "Créatininurie": "8800.0 µmol/L"
+        }
+      }
+    },
+    "urine_albumin_creatinine_ratio#creatinineUrine@mg/dL": {
+      "inputs": {
+        "albuminuria": "30.0 mg/L",
+        "creatinineUrine": "8800.0 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport albumine/créatinine urinaire",
+            "value": 0.3409090909090909,
+            "unit": "mg/g",
+            "precision": 1
+          },
+          {
+            "label": "Rapport albumine/créatinine urinaire",
+            "value": 0.03855565380107339,
+            "unit": "mg/mmol",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie KDIGO A1 : albuminurie normale à légèrement augmentée (grille KDIGO — A1 < 30 mg/g [< 3 mg/mmol], A2 30-300 mg/g [3-30 mg/mmol], A3 > 300 mg/g [> 30 mg/mmol])."
+          }
+        ],
+        "echoed": {
+          "Albuminurie": "30.0 mg/L",
+          "Créatininurie": "8800.00 mg/dL (778096.0 µmol/L)"
+        }
+      }
+    },
+    "urine_protein_creatinine_ratio": {
+      "inputs": {
+        "proteinuria": "150.0 mg/L",
+        "creatinineUrine": "8800.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport protéines/créatinine urinaire",
+            "value": 150.7159090909091,
+            "unit": "mg/g",
+            "precision": 1
+          },
+          {
+            "label": "Rapport protéines/créatinine urinaire",
+            "value": 17.045454545454543,
+            "unit": "mg/mmol",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Il n'existe pas de catégorisation KDIGO formelle du rapport protéines/créatinine (contrairement à l'ACR). Par correspondance approximative d'usage clinique, un PCR ≥ 3000-3500 mg/g (soit ≥ 300-350 mg/mmol) est évocateur d'une protéinurie de rang néphrotique."
+          }
+        ],
+        "echoed": {
+          "Protéinurie totale": "150.0 mg/L",
+          "Créatininurie": "8800.0 µmol/L"
+        }
+      }
+    },
+    "urine_protein_creatinine_ratio#proteinuria@g/L": {
+      "inputs": {
+        "proteinuria": "150.0 g/L",
+        "creatinineUrine": "8800.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport protéines/créatinine urinaire",
+            "value": 150715.9090909091,
+            "unit": "mg/g",
+            "precision": 1
+          },
+          {
+            "label": "Rapport protéines/créatinine urinaire",
+            "value": 17045.454545454544,
+            "unit": "mg/mmol",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Il n'existe pas de catégorisation KDIGO formelle du rapport protéines/créatinine (contrairement à l'ACR). Par correspondance approximative d'usage clinique, un PCR ≥ 3000-3500 mg/g (soit ≥ 300-350 mg/mmol) est évocateur d'une protéinurie de rang néphrotique."
+          }
+        ],
+        "echoed": {
+          "Protéinurie totale": "150.00 g/L (150000.0 mg/L)",
+          "Créatininurie": "8800.0 µmol/L"
+        }
+      }
+    },
+    "urine_protein_creatinine_ratio#proteinuria@mg/dL": {
+      "inputs": {
+        "proteinuria": "150.0 mg/dL",
+        "creatinineUrine": "8800.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport protéines/créatinine urinaire",
+            "value": 1507.159090909091,
+            "unit": "mg/g",
+            "precision": 1
+          },
+          {
+            "label": "Rapport protéines/créatinine urinaire",
+            "value": 170.45454545454544,
+            "unit": "mg/mmol",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Il n'existe pas de catégorisation KDIGO formelle du rapport protéines/créatinine (contrairement à l'ACR). Par correspondance approximative d'usage clinique, un PCR ≥ 3000-3500 mg/g (soit ≥ 300-350 mg/mmol) est évocateur d'une protéinurie de rang néphrotique."
+          }
+        ],
+        "echoed": {
+          "Protéinurie totale": "150.00 mg/dL (1500.0 mg/L)",
+          "Créatininurie": "8800.0 µmol/L"
+        }
+      }
+    },
+    "urine_protein_creatinine_ratio#creatinineUrine@mg/dL": {
+      "inputs": {
+        "proteinuria": "150.0 mg/L",
+        "creatinineUrine": "8800.0 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport protéines/créatinine urinaire",
+            "value": 1.7045454545454546,
+            "unit": "mg/g",
+            "precision": 1
+          },
+          {
+            "label": "Rapport protéines/créatinine urinaire",
+            "value": 0.19277826900536696,
+            "unit": "mg/mmol",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Il n'existe pas de catégorisation KDIGO formelle du rapport protéines/créatinine (contrairement à l'ACR). Par correspondance approximative d'usage clinique, un PCR ≥ 3000-3500 mg/g (soit ≥ 300-350 mg/mmol) est évocateur d'une protéinurie de rang néphrotique."
+          }
+        ],
+        "echoed": {
+          "Protéinurie totale": "150.0 mg/L",
+          "Créatininurie": "8800.00 mg/dL (778096.0 µmol/L)"
+        }
+      }
+    },
+    "creatinine_clearance_timed": {
+      "inputs": {
+        "urineCreatinine": "8800.0 µmol/L",
+        "serumCreatinine": "80.0 µmol/L",
+        "urineVolume": "1440.0 mL",
+        "duration": "1440.0 min"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Clairance de la créatinine MESURÉE",
+            "value": 110.0,
+            "unit": "mL/min",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          },
+          {
+            "severity": "info",
+            "message": "Approximation informative : la clairance mesurée de la créatinine n'est pas strictement équivalente au DFG estimé (elle le surestime, notamment par sécrétion tubulaire de la créatinine) ; son positionnement dans les catégories KDIGO ci-dessus est donné à titre indicatif."
+          }
+        ],
+        "echoed": {
+          "Créatininurie": "8800.0 µmol/L",
+          "Créatininémie": "80.0 µmol/L",
+          "Volume urinaire": "1440 mL",
+          "Durée de recueil": "1440 min"
+        }
+      }
+    },
+    "creatinine_clearance_timed#urineCreatinine@mg/dL": {
+      "inputs": {
+        "urineCreatinine": "8800.0 mg/dL",
+        "serumCreatinine": "80.0 µmol/L",
+        "urineVolume": "1440.0 mL",
+        "duration": "1440.0 min"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Clairance de la créatinine MESURÉE",
+            "value": 9726.2,
+            "unit": "mL/min",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          },
+          {
+            "severity": "info",
+            "message": "Approximation informative : la clairance mesurée de la créatinine n'est pas strictement équivalente au DFG estimé (elle le surestime, notamment par sécrétion tubulaire de la créatinine) ; son positionnement dans les catégories KDIGO ci-dessus est donné à titre indicatif."
+          }
+        ],
+        "echoed": {
+          "Créatininurie": "8800.00 mg/dL (778096.0 µmol/L)",
+          "Créatininémie": "80.0 µmol/L",
+          "Volume urinaire": "1440 mL",
+          "Durée de recueil": "1440 min"
+        }
+      }
+    },
+    "creatinine_clearance_timed#serumCreatinine@mg/dL": {
+      "inputs": {
+        "urineCreatinine": "8800.0 µmol/L",
+        "serumCreatinine": "80.0 mg/dL",
+        "urineVolume": "1440.0 mL",
+        "duration": "1440.0 min"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Clairance de la créatinine MESURÉE",
+            "value": 1.2440624293146347,
+            "unit": "mL/min",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          },
+          {
+            "severity": "info",
+            "message": "Approximation informative : la clairance mesurée de la créatinine n'est pas strictement équivalente au DFG estimé (elle le surestime, notamment par sécrétion tubulaire de la créatinine) ; son positionnement dans les catégories KDIGO ci-dessus est donné à titre indicatif."
+          }
+        ],
+        "echoed": {
+          "Créatininurie": "8800.0 µmol/L",
+          "Créatininémie": "80.00 mg/dL (7073.6 µmol/L)",
+          "Volume urinaire": "1440 mL",
+          "Durée de recueil": "1440 min"
+        }
+      }
+    },
+    "creatinine_clearance_timed#urineVolume@L": {
+      "inputs": {
+        "urineCreatinine": "8800.0 µmol/L",
+        "serumCreatinine": "80.0 µmol/L",
+        "urineVolume": "1440.0 L",
+        "duration": "1440.0 min"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Clairance de la créatinine MESURÉE",
+            "value": 110000.0,
+            "unit": "mL/min",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          },
+          {
+            "severity": "info",
+            "message": "Approximation informative : la clairance mesurée de la créatinine n'est pas strictement équivalente au DFG estimé (elle le surestime, notamment par sécrétion tubulaire de la créatinine) ; son positionnement dans les catégories KDIGO ci-dessus est donné à titre indicatif."
+          }
+        ],
+        "echoed": {
+          "Créatininurie": "8800.0 µmol/L",
+          "Créatininémie": "80.0 µmol/L",
+          "Volume urinaire": "1440.000 L (1440000 mL)",
+          "Durée de recueil": "1440 min"
+        }
+      }
+    },
+    "creatinine_clearance_timed#duration@h": {
+      "inputs": {
+        "urineCreatinine": "8800.0 µmol/L",
+        "serumCreatinine": "80.0 µmol/L",
+        "urineVolume": "1440.0 mL",
+        "duration": "1440.0 h"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Clairance de la créatinine MESURÉE",
+            "value": 1.8333333333333333,
+            "unit": "mL/min",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-59, G3b 30-44, G4 15-29, G5 < 15 mL/min/1,73 m²). Une seule mesure oriente vers une maladie rénale chronique sans la diagnostiquer formellement : le diagnostic de MRC exige la persistance de l'anomalie au-delà de 3 mois."
+          },
+          {
+            "severity": "info",
+            "message": "Approximation informative : la clairance mesurée de la créatinine n'est pas strictement équivalente au DFG estimé (elle le surestime, notamment par sécrétion tubulaire de la créatinine) ; son positionnement dans les catégories KDIGO ci-dessus est donné à titre indicatif."
+          }
+        ],
+        "echoed": {
+          "Créatininurie": "8800.0 µmol/L",
+          "Créatininémie": "80.0 µmol/L",
+          "Volume urinaire": "1440 mL",
+          "Durée de recueil": "1440.00 h (86400 min)"
+        }
+      }
+    },
+    "fractional_excretion_sodium": {
+      "inputs": {
+        "urineSodium": "40.0 mmol/L",
+        "serumSodium": "140.0 mmol/L",
+        "urineCreatinine": "8800.0 µmol/L",
+        "serumCreatinine": "80.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Fraction excrétée du sodium (FeNa)",
+            "value": 0.2597402597402597,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "FeNa évocatrice d'une cause prérénale (hypoperfusion rénale) plutôt que d'une nécrose tubulaire aiguë (repères classiques : < 1 % prérénal, > 2 % nécrose tubulaire aiguë). Non interprétable sous diurétiques ; utiliser alors la fraction excrétée de l'urée."
+          }
+        ],
+        "echoed": {
+          "Sodium urinaire": "40.0 mmol/L",
+          "Sodium plasmatique": "140.0 mmol/L",
+          "Créatininurie": "8800.0 µmol/L",
+          "Créatininémie": "80.0 µmol/L"
+        }
+      }
+    },
+    "fractional_excretion_sodium#urineCreatinine@mg/dL": {
+      "inputs": {
+        "urineSodium": "40.0 mmol/L",
+        "serumSodium": "140.0 mmol/L",
+        "urineCreatinine": "8800.0 mg/dL",
+        "serumCreatinine": "80.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Fraction excrétée du sodium (FeNa)",
+            "value": 0.002937573622938925,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "FeNa évocatrice d'une cause prérénale (hypoperfusion rénale) plutôt que d'une nécrose tubulaire aiguë (repères classiques : < 1 % prérénal, > 2 % nécrose tubulaire aiguë). Non interprétable sous diurétiques ; utiliser alors la fraction excrétée de l'urée."
+          }
+        ],
+        "echoed": {
+          "Sodium urinaire": "40.0 mmol/L",
+          "Sodium plasmatique": "140.0 mmol/L",
+          "Créatininurie": "8800.00 mg/dL (778096.0 µmol/L)",
+          "Créatininémie": "80.0 µmol/L"
+        }
+      }
+    },
+    "fractional_excretion_sodium#serumCreatinine@mg/dL": {
+      "inputs": {
+        "urineSodium": "40.0 mmol/L",
+        "serumSodium": "140.0 mmol/L",
+        "urineCreatinine": "8800.0 µmol/L",
+        "serumCreatinine": "80.0 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Fraction excrétée du sodium (FeNa)",
+            "value": 22.966233766233763,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "FeNa évocatrice d'une cause rénale intrinsèque (nécrose tubulaire aiguë) plutôt que d'une cause prérénale (repères classiques : < 1 % prérénal, > 2 % nécrose tubulaire aiguë). Non interprétable sous diurétiques ; utiliser alors la fraction excrétée de l'urée."
+          }
+        ],
+        "echoed": {
+          "Sodium urinaire": "40.0 mmol/L",
+          "Sodium plasmatique": "140.0 mmol/L",
+          "Créatininurie": "8800.0 µmol/L",
+          "Créatininémie": "80.00 mg/dL (7073.6 µmol/L)"
+        }
+      }
+    },
+    "fractional_excretion_urea": {
+      "inputs": {
+        "urineUrea": "200.0 mmol/L",
+        "serumUrea": "6.0 mmol/L",
+        "urineCreatinine": "8800.0 µmol/L",
+        "serumCreatinine": "80.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Fraction excrétée de l'urée (FeUrée)",
+            "value": 30.303030303030305,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "FeUrée évocatrice d'une cause prérénale (repères classiques, utiles notamment sous diurétiques quand la FeNa n'est pas interprétable : < 35 % prérénal, > 50 % nécrose tubulaire aiguë)."
+          }
+        ],
+        "echoed": {
+          "Urée urinaire": "200.0 mmol/L",
+          "Urée plasmatique": "6.0 mmol/L",
+          "Créatininurie": "8800.0 µmol/L",
+          "Créatininémie": "80.0 µmol/L"
+        }
+      }
+    },
+    "fractional_excretion_urea#urineCreatinine@mg/dL": {
+      "inputs": {
+        "urineUrea": "200.0 mmol/L",
+        "serumUrea": "6.0 mmol/L",
+        "urineCreatinine": "8800.0 mg/dL",
+        "serumCreatinine": "80.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Fraction excrétée de l'urée (FeUrée)",
+            "value": 0.3427169226762079,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "FeUrée évocatrice d'une cause prérénale (repères classiques, utiles notamment sous diurétiques quand la FeNa n'est pas interprétable : < 35 % prérénal, > 50 % nécrose tubulaire aiguë)."
+          }
+        ],
+        "echoed": {
+          "Urée urinaire": "200.0 mmol/L",
+          "Urée plasmatique": "6.0 mmol/L",
+          "Créatininurie": "8800.00 mg/dL (778096.0 µmol/L)",
+          "Créatininémie": "80.0 µmol/L"
+        }
+      }
+    },
+    "fractional_excretion_urea#serumCreatinine@mg/dL": {
+      "inputs": {
+        "urineUrea": "200.0 mmol/L",
+        "serumUrea": "6.0 mmol/L",
+        "urineCreatinine": "8800.0 µmol/L",
+        "serumCreatinine": "80.0 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Fraction excrétée de l'urée (FeUrée)",
+            "value": 2679.3939393939395,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "FeUrée évocatrice d'une cause rénale intrinsèque (nécrose tubulaire aiguë) (repères classiques, utiles notamment sous diurétiques quand la FeNa n'est pas interprétable : < 35 % prérénal, > 50 % nécrose tubulaire aiguë)."
+          }
+        ],
+        "echoed": {
+          "Urée urinaire": "200.0 mmol/L",
+          "Urée plasmatique": "6.0 mmol/L",
+          "Créatininurie": "8800.0 µmol/L",
+          "Créatininémie": "80.00 mg/dL (7073.6 µmol/L)"
+        }
+      }
+    },
+    "quicki": {
+      "inputs": {
+        "fastingInsulin": "15.0 µU/mL",
+        "fastingGlucose": "5.0 mmol/L",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "QUICKI",
+            "value": 0.31941041638318596,
+            "unit": "",
+            "precision": 4
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour le QUICKI ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. QUICKI < 0,33-0,35 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude, à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Insulinémie à jeun": "15.00 µU/mL (15.00 µU/mL)",
+          "Glycémie à jeun": "5.00 mmol/L (5.000 mmol/L, 90.1 mg/dL)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "quicki#fastingInsulin@pmol/L": {
+      "inputs": {
+        "fastingInsulin": "15.0 pmol/L",
+        "fastingGlucose": "5.0 mmol/L",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "QUICKI",
+            "value": 0.43685366922533325,
+            "unit": "",
+            "precision": 4
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour le QUICKI ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. QUICKI < 0,33-0,35 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude, à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Insulinémie à jeun": "15.00 pmol/L (2.16 µU/mL)",
+          "Glycémie à jeun": "5.00 mmol/L (5.000 mmol/L, 90.1 mg/dL)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "quicki#fastingGlucose@mg/dL": {
+      "inputs": {
+        "fastingInsulin": "15.0 µU/mL",
+        "fastingGlucose": "5.0 mg/dL",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "QUICKI",
+            "value": 0.5333159078712727,
+            "unit": "",
+            "precision": 4
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour le QUICKI ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. QUICKI < 0,33-0,35 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude, à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Insulinémie à jeun": "15.00 µU/mL (15.00 µU/mL)",
+          "Glycémie à jeun": "5.00 mg/dL (0.278 mmol/L, 5.0 mg/dL)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "tyg_index": {
+      "inputs": {
+        "triglycerides": "1.7 mmol/L",
+        "fastingGlucose": "5.0 mmol/L",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice TyG",
+            "value": 8.821243794429916,
+            "unit": "",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. TyG > 4,5 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude (et à la convention de notation utilisée), à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Triglycérides à jeun": "1.70 mmol/L (150.4 mg/dL)",
+          "Glycémie à jeun": "5.00 mmol/L (90.1 mg/dL)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "tyg_index#triglycerides@mg/dL": {
+      "inputs": {
+        "triglycerides": "1.7 mg/dL",
+        "fastingGlucose": "5.0 mmol/L",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice TyG",
+            "value": 4.338291241166074,
+            "unit": "",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. TyG > 4,5 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude (et à la convention de notation utilisée), à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Triglycérides à jeun": "1.70 mg/dL (1.7 mg/dL)",
+          "Glycémie à jeun": "5.00 mmol/L (90.1 mg/dL)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "tyg_index#fastingGlucose@mg/dL": {
+      "inputs": {
+        "triglycerides": "1.7 mmol/L",
+        "fastingGlucose": "5.0 mg/dL",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice TyG",
+            "value": 5.929871536200167,
+            "unit": "",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. TyG > 4,5 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude (et à la convention de notation utilisée), à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Triglycérides à jeun": "1.70 mmol/L (150.4 mg/dL)",
+          "Glycémie à jeun": "5.00 mg/dL (5.0 mg/dL)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "homa_ir": {
+      "inputs": {
+        "fastingInsulin": "10.0 µU/mL",
+        "fastingGlucose": "5.0 mmol/L",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HOMA-IR",
+            "value": 2.2222222222222223,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour le HOMA-IR ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. HOMA-IR > 2,5), mais ce sont des seuils de recherche spécifiques à leur population d'étude et à la méthode de dosage de l'insuline, à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Insulinémie à jeun": "10.00 µU/mL (10.00 µU/mL)",
+          "Glycémie à jeun": "5.00 mmol/L (5.000 mmol/L)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "homa_ir#fastingInsulin@pmol/L": {
+      "inputs": {
+        "fastingInsulin": "10.0 pmol/L",
+        "fastingGlucose": "5.0 mmol/L",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HOMA-IR",
+            "value": 0.31997440204783617,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour le HOMA-IR ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. HOMA-IR > 2,5), mais ce sont des seuils de recherche spécifiques à leur population d'étude et à la méthode de dosage de l'insuline, à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Insulinémie à jeun": "10.00 pmol/L (1.44 µU/mL)",
+          "Glycémie à jeun": "5.00 mmol/L (5.000 mmol/L)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "homa_ir#fastingGlucose@mg/dL": {
+      "inputs": {
+        "fastingInsulin": "10.0 µU/mL",
+        "fastingGlucose": "5.0 mg/dL",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HOMA-IR",
+            "value": 0.12333333333333335,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour le HOMA-IR ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. HOMA-IR > 2,5), mais ce sont des seuils de recherche spécifiques à leur population d'étude et à la méthode de dosage de l'insuline, à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Insulinémie à jeun": "10.00 µU/mL (10.00 µU/mL)",
+          "Glycémie à jeun": "5.00 mg/dL (0.278 mmol/L)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "estimated_average_glucose_adag": {
+      "inputs": {
+        "hba1c": "7.0 %"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "eAG",
+            "value": 154.2,
+            "unit": "mg/dL",
+            "precision": 1
+          },
+          {
+            "label": "eAG",
+            "value": 8.5581,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Objectif glycémique habituel selon l'American Diabetes Association (ADA) : HbA1c < 7 % (< 53 mmol/mol) pour de nombreux adultes non enceintes, ce qui correspond à une eAG ≈ 154 mg/dL (8,6 mmol/L) d'après cette même équation. Cet objectif doit être individualisé par le clinicien (ex. cible plus stricte < 6,5 % envisageable chez certains patients ; cible plus souple < 8 % chez d'autres, en cas de comorbidités, d'espérance de vie limitée ou de risque hypoglycémique) : ne pas appliquer ce seuil de façon uniforme sans tenir compte du contexte clinique."
+          }
+        ],
+        "echoed": {
+          "HbA1c": "7.00 % (7.00 % NGSP)"
+        }
+      }
+    },
+    "estimated_average_glucose_adag#hba1c@mmol/mol": {
+      "inputs": {
+        "hba1c": "7.0 mmol/mol"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "eAG",
+            "value": 33.38728566200018,
+            "unit": "mg/dL",
+            "precision": 1
+          },
+          {
+            "label": "eAG",
+            "value": 1.85299435424101,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Objectif glycémique habituel selon l'American Diabetes Association (ADA) : HbA1c < 7 % (< 53 mmol/mol) pour de nombreux adultes non enceintes, ce qui correspond à une eAG ≈ 154 mg/dL (8,6 mmol/L) d'après cette même équation. Cet objectif doit être individualisé par le clinicien (ex. cible plus stricte < 6,5 % envisageable chez certains patients ; cible plus souple < 8 % chez d'autres, en cas de comorbidités, d'espérance de vie limitée ou de risque hypoglycémique) : ne pas appliquer ce seuil de façon uniforme sans tenir compte du contexte clinique."
+          }
+        ],
+        "echoed": {
+          "HbA1c": "7.00 mmol/mol (2.79 % NGSP)"
+        }
+      }
+    },
+    "ldl_panel": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "triglycerides": "1.5 mmol/L",
+        "formula": "Friedewald 1972"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "LDL calculé (Friedewald 1972)",
+            "value": 3.213451327433629,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol non-HDL",
+            "value": 3.9000000000000004,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Ratio CT/HDL",
+            "value": 4.0,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio TG/HDL (mg/dL)",
+            "value": 2.640571817562968,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol résiduel (non-HDL − LDL)",
+            "value": 0.6865486725663712,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : quasi optimal (100-129 mg/dL, soit 2,6-3,3 mmol/L). Cette catégorie est purement descriptive : la cible thérapeutique réelle dépend de la catégorie de risque cardiovasculaire global du patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce calculateur ne détermine pas — ne jamais lire cette catégorie comme un objectif de traitement individualisé."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L, 201.1 mg/dL)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L, 50.3 mg/dL)",
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L, 132.7 mg/dL)",
+          "Équation LDL": "Friedewald 1972"
+        }
+      }
+    },
+    "ldl_panel#formula=1": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "triglycerides": "1.5 mmol/L",
+        "formula": "Sampson 2020 (équation NIH 2)"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "LDL calculé (Sampson 2020 (équation NIH 2))",
+            "value": 3.2876535462396004,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol non-HDL",
+            "value": 3.9000000000000004,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Ratio CT/HDL",
+            "value": 4.0,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio TG/HDL (mg/dL)",
+            "value": 2.640571817562968,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol résiduel (non-HDL − LDL)",
+            "value": 0.6123464537604,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : quasi optimal (100-129 mg/dL, soit 2,6-3,3 mmol/L). Cette catégorie est purement descriptive : la cible thérapeutique réelle dépend de la catégorie de risque cardiovasculaire global du patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce calculateur ne détermine pas — ne jamais lire cette catégorie comme un objectif de traitement individualisé."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L, 201.1 mg/dL)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L, 50.3 mg/dL)",
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L, 132.7 mg/dL)",
+          "Équation LDL": "Sampson 2020 (équation NIH 2)"
+        }
+      }
+    },
+    "ldl_panel#totalCholesterol@g/L": {
+      "inputs": {
+        "totalCholesterol": "5.2 g/L",
+        "hdl": "1.3 mmol/L",
+        "triglycerides": "1.5 mmol/L",
+        "formula": "Friedewald 1972"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "LDL calculé (Friedewald 1972)",
+            "value": 11.460651327433629,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol non-HDL",
+            "value": 12.1472,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Ratio CT/HDL",
+            "value": 10.344,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio TG/HDL (mg/dL)",
+            "value": 2.640571817562968,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol résiduel (non-HDL − LDL)",
+            "value": 0.6865486725663708,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : très haut (≥ 190 mg/dL, soit ≥ 4,9 mmol/L). Cette catégorie est purement descriptive : la cible thérapeutique réelle dépend de la catégorie de risque cardiovasculaire global du patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce calculateur ne détermine pas — ne jamais lire cette catégorie comme un objectif de traitement individualisé."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 g/L (13.447 mmol/L, 520.0 mg/dL)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L, 50.3 mg/dL)",
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L, 132.7 mg/dL)",
+          "Équation LDL": "Friedewald 1972"
+        }
+      }
+    },
+    "ldl_panel#totalCholesterol@mg/dL": {
+      "inputs": {
+        "totalCholesterol": "5.2 mg/dL",
+        "hdl": "1.3 mmol/L",
+        "triglycerides": "1.5 mmol/L",
+        "formula": "Friedewald 1972"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "LDL calculé (Friedewald 1972)",
+            "value": -1.8520766725663718,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol non-HDL",
+            "value": -1.1655280000000001,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Ratio CT/HDL",
+            "value": 0.10344,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio TG/HDL (mg/dL)",
+            "value": 2.640571817562968,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol résiduel (non-HDL − LDL)",
+            "value": 0.6865486725663716,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : optimal (< 100 mg/dL, soit < 2,6 mmol/L). Cette catégorie est purement descriptive : la cible thérapeutique réelle dépend de la catégorie de risque cardiovasculaire global du patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce calculateur ne détermine pas — ne jamais lire cette catégorie comme un objectif de traitement individualisé."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mg/dL (0.134 mmol/L, 5.2 mg/dL)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L, 50.3 mg/dL)",
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L, 132.7 mg/dL)",
+          "Équation LDL": "Friedewald 1972"
+        }
+      }
+    },
+    "ldl_panel#hdl@g/L": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 g/L",
+        "triglycerides": "1.5 mmol/L",
+        "formula": "Friedewald 1972"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "LDL calculé (Friedewald 1972)",
+            "value": 1.1516513274336286,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol non-HDL",
+            "value": 1.8382,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Ratio CT/HDL",
+            "value": 1.5467904098994587,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio TG/HDL (mg/dL)",
+            "value": 1.0211027910142954,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol résiduel (non-HDL − LDL)",
+            "value": 0.6865486725663714,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : optimal (< 100 mg/dL, soit < 2,6 mmol/L). Cette catégorie est purement descriptive : la cible thérapeutique réelle dépend de la catégorie de risque cardiovasculaire global du patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce calculateur ne détermine pas — ne jamais lire cette catégorie comme un objectif de traitement individualisé."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L, 201.1 mg/dL)",
+          "HDL-cholestérol": "1.30 g/L (3.362 mmol/L, 130.0 mg/dL)",
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L, 132.7 mg/dL)",
+          "Équation LDL": "Friedewald 1972"
+        }
+      }
+    },
+    "ldl_panel#hdl@mg/dL": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 mg/dL",
+        "triglycerides": "1.5 mmol/L",
+        "formula": "Friedewald 1972"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "LDL calculé (Friedewald 1972)",
+            "value": 4.479833327433628,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol non-HDL",
+            "value": 5.1663820000000005,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Ratio CT/HDL",
+            "value": 154.67904098994586,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio TG/HDL (mg/dL)",
+            "value": 102.11027910142954,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol résiduel (non-HDL − LDL)",
+            "value": 0.6865486725663725,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : haut (160-189 mg/dL, soit 4,1-4,9 mmol/L). Cette catégorie est purement descriptive : la cible thérapeutique réelle dépend de la catégorie de risque cardiovasculaire global du patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce calculateur ne détermine pas — ne jamais lire cette catégorie comme un objectif de traitement individualisé."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L, 201.1 mg/dL)",
+          "HDL-cholestérol": "1.30 mg/dL (0.034 mmol/L, 1.3 mg/dL)",
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L, 132.7 mg/dL)",
+          "Équation LDL": "Friedewald 1972"
+        }
+      }
+    },
+    "ldl_panel#triglycerides@mg/dL": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "triglycerides": "1.5 mg/dL",
+        "formula": "Friedewald 1972"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "LDL calculé (Friedewald 1972)",
+            "value": 3.8922420000000004,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol non-HDL",
+            "value": 3.9000000000000004,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Ratio CT/HDL",
+            "value": 4.0,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio TG/HDL (mg/dL)",
+            "value": 0.029838461538461536,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol résiduel (non-HDL − LDL)",
+            "value": 0.007757999999999932,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : limite haute (130-159 mg/dL, soit 3,4-4,1 mmol/L). Cette catégorie est purement descriptive : la cible thérapeutique réelle dépend de la catégorie de risque cardiovasculaire global du patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce calculateur ne détermine pas — ne jamais lire cette catégorie comme un objectif de traitement individualisé."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L, 201.1 mg/dL)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L, 50.3 mg/dL)",
+          "Triglycérides": "1.50 mg/dL (0.017 mmol/L, 1.5 mg/dL)",
+          "Équation LDL": "Friedewald 1972"
+        }
+      }
+    },
+    "atherogenic_index_of_plasma": {
+      "inputs": {
+        "triglycerides": "1.5 mmol/L",
+        "hdl": "1.3 mmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "AIP",
+            "value": 0.06214790674884443,
+            "unit": "",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégories proposées par les auteurs de l'indice (Dobiásová, Frohlich) dans leurs travaux de validation, non formellement reprises par une société savante (ESC/ADA) : risque cardiovasculaire faible si AIP < 0,11 ; intermédiaire si 0,11 à 0,21 ; élevé si > 0,21 (log10[TG/HDL-C], TG et HDL-C exprimés en mmol/L). À interpréter comme un repère de la littérature d'origine, non comme une recommandation officielle."
+          }
+        ],
+        "echoed": {
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L)"
+        }
+      }
+    },
+    "atherogenic_index_of_plasma#triglycerides@mg/dL": {
+      "inputs": {
+        "triglycerides": "1.5 mg/dL",
+        "hdl": "1.3 mmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "AIP",
+            "value": -1.8847736497677354,
+            "unit": "",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégories proposées par les auteurs de l'indice (Dobiásová, Frohlich) dans leurs travaux de validation, non formellement reprises par une société savante (ESC/ADA) : risque cardiovasculaire faible si AIP < 0,11 ; intermédiaire si 0,11 à 0,21 ; élevé si > 0,21 (log10[TG/HDL-C], TG et HDL-C exprimés en mmol/L). À interpréter comme un repère de la littérature d'origine, non comme une recommandation officielle."
+          }
+        ],
+        "echoed": {
+          "Triglycérides": "1.50 mg/dL (0.017 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L)"
+        }
+      }
+    },
+    "atherogenic_index_of_plasma#hdl@g/L": {
+      "inputs": {
+        "triglycerides": "1.5 mmol/L",
+        "hdl": "1.3 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "AIP",
+            "value": -0.35048061379553075,
+            "unit": "",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégories proposées par les auteurs de l'indice (Dobiásová, Frohlich) dans leurs travaux de validation, non formellement reprises par une société savante (ESC/ADA) : risque cardiovasculaire faible si AIP < 0,11 ; intermédiaire si 0,11 à 0,21 ; élevé si > 0,21 (log10[TG/HDL-C], TG et HDL-C exprimés en mmol/L). À interpréter comme un repère de la littérature d'origine, non comme une recommandation officielle."
+          }
+        ],
+        "echoed": {
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L)",
+          "HDL-cholestérol": "1.30 g/L (3.362 mmol/L)"
+        }
+      }
+    },
+    "atherogenic_index_of_plasma#hdl@mg/dL": {
+      "inputs": {
+        "triglycerides": "1.5 mmol/L",
+        "hdl": "1.3 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "AIP",
+            "value": 1.649519386204469,
+            "unit": "",
+            "precision": 3
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégories proposées par les auteurs de l'indice (Dobiásová, Frohlich) dans leurs travaux de validation, non formellement reprises par une société savante (ESC/ADA) : risque cardiovasculaire faible si AIP < 0,11 ; intermédiaire si 0,11 à 0,21 ; élevé si > 0,21 (log10[TG/HDL-C], TG et HDL-C exprimés en mmol/L). À interpréter comme un repère de la littérature d'origine, non comme une recommandation officielle."
+          }
+        ],
+        "echoed": {
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L)",
+          "HDL-cholestérol": "1.30 mg/dL (0.034 mmol/L)"
+        }
+      }
+    },
+    "bmi": {
+      "inputs": {
+        "weightKg": "70.0 kg",
+        "heightCm": "175.0 cm"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "IMC",
+            "value": 22.857142857142858,
+            "unit": "kg/m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Classification OMS 2000 (WHO Technical Report Series 894) : poids normal (18,5-24,9 kg/m²). Catégorie de population générale, informative : les seuils de surpoids/obésité diffèrent selon certaines recommandations ethniques (ex. seuils abaissés proposés pour les populations asiatiques), et l'IMC ne distingue pas la masse grasse de la masse maigre — l'interprétation clinique individuelle relève du biologiste ou du clinicien."
+          }
+        ],
+        "echoed": {
+          "Poids": "70.0 kg",
+          "Taille": "175.0 cm (1.750 m)"
+        }
+      }
+    },
+    "tyg_bmi": {
+      "inputs": {
+        "triglycerides": "1.7 mmol/L",
+        "fastingGlucose": "5.0 mmol/L",
+        "weightKg": "70.0 kg",
+        "heightCm": "175.0 cm",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "TyG-IMC",
+            "value": 201.62842958696953,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Indice TyG (composante)",
+            "value": 8.821243794429916,
+            "unit": "",
+            "precision": 3
+          },
+          {
+            "label": "IMC (composante)",
+            "value": 22.857142857142858,
+            "unit": "kg/m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG-IMC ; les seuils publiés dans la littérature proviennent d'une cohorte d'étude spécifique et ne doivent pas être généralisés ni utilisés comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Triglycérides à jeun": "1.70 mmol/L (150.4 mg/dL)",
+          "Glycémie à jeun": "5.00 mmol/L (90.1 mg/dL)",
+          "Poids": "70.0 kg",
+          "Taille": "175.0 cm (1.750 m)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "tyg_bmi#triglycerides@mg/dL": {
+      "inputs": {
+        "triglycerides": "1.7 mg/dL",
+        "fastingGlucose": "5.0 mmol/L",
+        "weightKg": "70.0 kg",
+        "heightCm": "175.0 cm",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "TyG-IMC",
+            "value": 99.16094265522455,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Indice TyG (composante)",
+            "value": 4.338291241166074,
+            "unit": "",
+            "precision": 3
+          },
+          {
+            "label": "IMC (composante)",
+            "value": 22.857142857142858,
+            "unit": "kg/m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG-IMC ; les seuils publiés dans la littérature proviennent d'une cohorte d'étude spécifique et ne doivent pas être généralisés ni utilisés comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Triglycérides à jeun": "1.70 mg/dL (1.7 mg/dL)",
+          "Glycémie à jeun": "5.00 mmol/L (90.1 mg/dL)",
+          "Poids": "70.0 kg",
+          "Taille": "175.0 cm (1.750 m)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "tyg_bmi#fastingGlucose@mg/dL": {
+      "inputs": {
+        "triglycerides": "1.7 mmol/L",
+        "fastingGlucose": "5.0 mg/dL",
+        "weightKg": "70.0 kg",
+        "heightCm": "175.0 cm",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "TyG-IMC",
+            "value": 135.5399208274324,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Indice TyG (composante)",
+            "value": 5.929871536200167,
+            "unit": "",
+            "precision": 3
+          },
+          {
+            "label": "IMC (composante)",
+            "value": 22.857142857142858,
+            "unit": "kg/m²",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG-IMC ; les seuils publiés dans la littérature proviennent d'une cohorte d'étude spécifique et ne doivent pas être généralisés ni utilisés comme seuil diagnostique universel."
+          }
+        ],
+        "echoed": {
+          "Triglycérides à jeun": "1.70 mmol/L (150.4 mg/dL)",
+          "Glycémie à jeun": "5.00 mg/dL (5.0 mg/dL)",
+          "Poids": "70.0 kg",
+          "Taille": "175.0 cm (1.750 m)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "homa_beta": {
+      "inputs": {
+        "fastingInsulin": "10.0 µU/mL",
+        "fastingGlucose": "5.0 mmol/L",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HOMA-β",
+            "value": 133.33333333333334,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil consensuel de société savante (ADA/EASD/IDF) n'existe pour interpréter le HOMA-β en pratique clinique courante ; les valeurs de référence publiées varient selon la population et la méthode de dosage de l'insuline utilisée, à ne pas généraliser."
+          }
+        ],
+        "echoed": {
+          "Insulinémie à jeun": "10.00 µU/mL (10.00 µU/mL)",
+          "Glycémie à jeun": "5.00 mmol/L (5.000 mmol/L)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "homa_beta#fastingInsulin@pmol/L": {
+      "inputs": {
+        "fastingInsulin": "10.0 pmol/L",
+        "fastingGlucose": "5.0 mmol/L",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HOMA-β",
+            "value": 19.19846412287017,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil consensuel de société savante (ADA/EASD/IDF) n'existe pour interpréter le HOMA-β en pratique clinique courante ; les valeurs de référence publiées varient selon la population et la méthode de dosage de l'insuline utilisée, à ne pas généraliser."
+          }
+        ],
+        "echoed": {
+          "Insulinémie à jeun": "10.00 pmol/L (1.44 µU/mL)",
+          "Glycémie à jeun": "5.00 mmol/L (5.000 mmol/L)",
+          "Prélèvement à jeun": "confirmé"
+        }
+      }
+    },
+    "homa_beta#fastingGlucose@mg/dL": {
+      "inputs": {
+        "fastingInsulin": "10.0 µU/mL",
+        "fastingGlucose": "5.0 mg/dL",
+        "fastingConfirmed": true
+      },
+      "outcome": {
+        "error": [
+          {
+            "field": "fastingGlucoseValue",
+            "message": "La glycémie doit être strictement supérieure à 3,5 mmol/L (0,63 g/L) pour calculer le HOMA-β."
+          }
+        ]
+      }
+    },
+    "ct_hdl_ratio": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 mmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Castelli I (CT/HDL)",
+            "value": 4.0,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Seuils descriptifs souvent cités dans l'enseignement (héritage de l'ère NCEP) : < 4 souhaitable, ≥ 5 risque élevé. Ce ratio n'est toutefois pas retenu comme critère de première ligne par les recommandations actuelles (ESC/EAS, ADA), qui privilégient les valeurs absolues de LDL-C, de cholestérol non-HDL ou d'ApoB comme cibles thérapeutiques ; à considérer comme un repère informel et non comme une cible de traitement actuelle."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L)"
+        }
+      }
+    },
+    "ct_hdl_ratio#totalCholesterol@g/L": {
+      "inputs": {
+        "totalCholesterol": "5.2 g/L",
+        "hdl": "1.3 mmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Castelli I (CT/HDL)",
+            "value": 10.344,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Seuils descriptifs souvent cités dans l'enseignement (héritage de l'ère NCEP) : < 4 souhaitable, ≥ 5 risque élevé. Ce ratio n'est toutefois pas retenu comme critère de première ligne par les recommandations actuelles (ESC/EAS, ADA), qui privilégient les valeurs absolues de LDL-C, de cholestérol non-HDL ou d'ApoB comme cibles thérapeutiques ; à considérer comme un repère informel et non comme une cible de traitement actuelle."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 g/L (13.447 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L)"
+        }
+      }
+    },
+    "ct_hdl_ratio#totalCholesterol@mg/dL": {
+      "inputs": {
+        "totalCholesterol": "5.2 mg/dL",
+        "hdl": "1.3 mmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Castelli I (CT/HDL)",
+            "value": 0.10344,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Seuils descriptifs souvent cités dans l'enseignement (héritage de l'ère NCEP) : < 4 souhaitable, ≥ 5 risque élevé. Ce ratio n'est toutefois pas retenu comme critère de première ligne par les recommandations actuelles (ESC/EAS, ADA), qui privilégient les valeurs absolues de LDL-C, de cholestérol non-HDL ou d'ApoB comme cibles thérapeutiques ; à considérer comme un repère informel et non comme une cible de traitement actuelle."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mg/dL (0.134 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L)"
+        }
+      }
+    },
+    "ct_hdl_ratio#hdl@g/L": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Castelli I (CT/HDL)",
+            "value": 1.5467904098994587,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Seuils descriptifs souvent cités dans l'enseignement (héritage de l'ère NCEP) : < 4 souhaitable, ≥ 5 risque élevé. Ce ratio n'est toutefois pas retenu comme critère de première ligne par les recommandations actuelles (ESC/EAS, ADA), qui privilégient les valeurs absolues de LDL-C, de cholestérol non-HDL ou d'ApoB comme cibles thérapeutiques ; à considérer comme un repère informel et non comme une cible de traitement actuelle."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L)",
+          "HDL-cholestérol": "1.30 g/L (3.362 mmol/L)"
+        }
+      }
+    },
+    "ct_hdl_ratio#hdl@mg/dL": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Castelli I (CT/HDL)",
+            "value": 154.67904098994586,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Seuils descriptifs souvent cités dans l'enseignement (héritage de l'ère NCEP) : < 4 souhaitable, ≥ 5 risque élevé. Ce ratio n'est toutefois pas retenu comme critère de première ligne par les recommandations actuelles (ESC/EAS, ADA), qui privilégient les valeurs absolues de LDL-C, de cholestérol non-HDL ou d'ApoB comme cibles thérapeutiques ; à considérer comme un repère informel et non comme une cible de traitement actuelle."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L)",
+          "HDL-cholestérol": "1.30 mg/dL (0.034 mmol/L)"
+        }
+      }
+    },
+    "apob_apoa1_ratio": {
+      "inputs": {
+        "apoB": "1.0 g/L",
+        "apoA1": "1.4 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport ApoB/ApoA1",
+            "value": 0.7142857142857143,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil diagnostique unique consensuel n'est actuellement recommandé par une société savante (ESC/AHA) pour ce rapport. Il est mentionné dans les recommandations ESC/EAS 2019 comme outil d'affinement du risque cardiovasculaire dans certaines situations spécifiques (ex. hypertriglycéridémie, diabète, obésité), sans seuil unique universel de décision thérapeutique."
+          }
+        ],
+        "echoed": {
+          "Apolipoprotéine B": "1.00 g/L",
+          "Apolipoprotéine A1": "1.40 g/L"
+        }
+      }
+    },
+    "framingham_risk_score": {
+      "inputs": {
+        "age": "55.0 ans",
+        "sex": "Homme",
+        "totalCholesterol": "6.2 mmol/L",
+        "hdl": "1.2 mmol/L",
+        "systolicBloodPressure": "145.0 mmHg",
+        "treatedHypertension": false,
+        "currentSmoker": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score de points (Framingham)",
+            "value": 13.0,
+            "unit": "points",
+            "precision": 0
+          },
+          {
+            "label": "Risque coronarien (« hard CHD ») à 10 ans",
+            "value": 12.0,
+            "unit": "%",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon le cadre du NCEP ATP III (2002), habituellement utilisé conjointement avec ce score : risque intermédiaire/modérément élevé (10-20 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          }
+        ],
+        "echoed": {
+          "Âge": "55 ans (points : 8)",
+          "Sexe": "Homme",
+          "Cholestérol total": "6.20 mmol/L (239.8 mg/dL, points : 3)",
+          "HDL-cholestérol": "1.20 mmol/L (46.4 mg/dL, points : 1)",
+          "Tabagisme actif": "Non (points : 0)",
+          "Pression artérielle systolique": "145 mmHg (points : 1)",
+          "Traitement antihypertenseur": "Non"
+        }
+      }
+    },
+    "framingham_risk_score#sex=0": {
+      "inputs": {
+        "age": "55.0 ans",
+        "sex": "Femme",
+        "totalCholesterol": "6.2 mmol/L",
+        "hdl": "1.2 mmol/L",
+        "systolicBloodPressure": "145.0 mmHg",
+        "treatedHypertension": false,
+        "currentSmoker": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score de points (Framingham)",
+            "value": 16.0,
+            "unit": "points",
+            "precision": 0
+          },
+          {
+            "label": "Risque coronarien (« hard CHD ») à 10 ans",
+            "value": 4.0,
+            "unit": "%",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon le cadre du NCEP ATP III (2002), habituellement utilisé conjointement avec ce score : risque faible (< 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          }
+        ],
+        "echoed": {
+          "Âge": "55 ans (points : 8)",
+          "Sexe": "Femme",
+          "Cholestérol total": "6.20 mmol/L (239.8 mg/dL, points : 4)",
+          "HDL-cholestérol": "1.20 mmol/L (46.4 mg/dL, points : 1)",
+          "Tabagisme actif": "Non (points : 0)",
+          "Pression artérielle systolique": "145 mmHg (points : 3)",
+          "Traitement antihypertenseur": "Non"
+        }
+      }
+    },
+    "framingham_risk_score#totalCholesterol@g/L": {
+      "inputs": {
+        "age": "55.0 ans",
+        "sex": "Homme",
+        "totalCholesterol": "6.2 g/L",
+        "hdl": "1.2 mmol/L",
+        "systolicBloodPressure": "145.0 mmHg",
+        "treatedHypertension": false,
+        "currentSmoker": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score de points (Framingham)",
+            "value": 15.0,
+            "unit": "points",
+            "precision": 0
+          },
+          {
+            "label": "Risque coronarien (« hard CHD ») à 10 ans",
+            "value": 20.0,
+            "unit": "%",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon le cadre du NCEP ATP III (2002), habituellement utilisé conjointement avec ce score : risque intermédiaire/modérément élevé (10-20 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          }
+        ],
+        "echoed": {
+          "Âge": "55 ans (points : 8)",
+          "Sexe": "Homme",
+          "Cholestérol total": "6.20 g/L (620.0 mg/dL, points : 5)",
+          "HDL-cholestérol": "1.20 mmol/L (46.4 mg/dL, points : 1)",
+          "Tabagisme actif": "Non (points : 0)",
+          "Pression artérielle systolique": "145 mmHg (points : 1)",
+          "Traitement antihypertenseur": "Non"
+        }
+      }
+    },
+    "framingham_risk_score#totalCholesterol@mg/dL": {
+      "inputs": {
+        "age": "55.0 ans",
+        "sex": "Homme",
+        "totalCholesterol": "6.2 mg/dL",
+        "hdl": "1.2 mmol/L",
+        "systolicBloodPressure": "145.0 mmHg",
+        "treatedHypertension": false,
+        "currentSmoker": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score de points (Framingham)",
+            "value": 10.0,
+            "unit": "points",
+            "precision": 0
+          },
+          {
+            "label": "Risque coronarien (« hard CHD ») à 10 ans",
+            "value": 6.0,
+            "unit": "%",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon le cadre du NCEP ATP III (2002), habituellement utilisé conjointement avec ce score : risque faible (< 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          }
+        ],
+        "echoed": {
+          "Âge": "55 ans (points : 8)",
+          "Sexe": "Homme",
+          "Cholestérol total": "6.20 mg/dL (6.2 mg/dL, points : 0)",
+          "HDL-cholestérol": "1.20 mmol/L (46.4 mg/dL, points : 1)",
+          "Tabagisme actif": "Non (points : 0)",
+          "Pression artérielle systolique": "145 mmHg (points : 1)",
+          "Traitement antihypertenseur": "Non"
+        }
+      }
+    },
+    "framingham_risk_score#hdl@g/L": {
+      "inputs": {
+        "age": "55.0 ans",
+        "sex": "Homme",
+        "totalCholesterol": "6.2 mmol/L",
+        "hdl": "1.2 g/L",
+        "systolicBloodPressure": "145.0 mmHg",
+        "treatedHypertension": false,
+        "currentSmoker": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score de points (Framingham)",
+            "value": 11.0,
+            "unit": "points",
+            "precision": 0
+          },
+          {
+            "label": "Risque coronarien (« hard CHD ») à 10 ans",
+            "value": 8.0,
+            "unit": "%",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon le cadre du NCEP ATP III (2002), habituellement utilisé conjointement avec ce score : risque faible (< 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          }
+        ],
+        "echoed": {
+          "Âge": "55 ans (points : 8)",
+          "Sexe": "Homme",
+          "Cholestérol total": "6.20 mmol/L (239.8 mg/dL, points : 3)",
+          "HDL-cholestérol": "1.20 g/L (120.0 mg/dL, points : -1)",
+          "Tabagisme actif": "Non (points : 0)",
+          "Pression artérielle systolique": "145 mmHg (points : 1)",
+          "Traitement antihypertenseur": "Non"
+        }
+      }
+    },
+    "framingham_risk_score#hdl@mg/dL": {
+      "inputs": {
+        "age": "55.0 ans",
+        "sex": "Homme",
+        "totalCholesterol": "6.2 mmol/L",
+        "hdl": "1.2 mg/dL",
+        "systolicBloodPressure": "145.0 mmHg",
+        "treatedHypertension": false,
+        "currentSmoker": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score de points (Framingham)",
+            "value": 14.0,
+            "unit": "points",
+            "precision": 0
+          },
+          {
+            "label": "Risque coronarien (« hard CHD ») à 10 ans",
+            "value": 16.0,
+            "unit": "%",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon le cadre du NCEP ATP III (2002), habituellement utilisé conjointement avec ce score : risque intermédiaire/modérément élevé (10-20 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          }
+        ],
+        "echoed": {
+          "Âge": "55 ans (points : 8)",
+          "Sexe": "Homme",
+          "Cholestérol total": "6.20 mmol/L (239.8 mg/dL, points : 3)",
+          "HDL-cholestérol": "1.20 mg/dL (1.2 mg/dL, points : 2)",
+          "Tabagisme actif": "Non (points : 0)",
+          "Pression artérielle systolique": "145 mmHg (points : 1)",
+          "Traitement antihypertenseur": "Non"
+        }
+      }
+    },
+    "score2_risk": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Homme",
+        "region": "Risque faible",
+        "totalCholesterol": "5.5 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Risque SCORE2 à 10 ans (événements fatals et non fatals)",
+            "value": 5.913255030512921,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour la bande d'âge concernée : risque élevé (5 à < 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          },
+          {
+            "severity": "caution",
+            "message": "Modèle dérivé et calibré sur des cohortes européennes : aucune des 4 régions de risque SCORE2 ne couvre l'Afrique subsaharienne. Le choix de région ci-dessus est une approximation nécessaire ; le risque absolu affiché doit être interprété avec une prudence accrue dans ce contexte."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "Sexe": "Homme",
+          "Région de risque": "Risque faible",
+          "Tabagisme actif": "Oui",
+          "Pression artérielle systolique": "140 mmHg",
+          "Cholestérol total": "5.50 mmol/L (5.50 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.30 mmol/L)",
+          "Cholestérol non-HDL (informatif, non utilisé dans le calcul)": "4.20 mmol/L"
+        }
+      }
+    },
+    "score2_risk#sex=0": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Femme",
+        "region": "Risque faible",
+        "totalCholesterol": "5.5 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Risque SCORE2 à 10 ans (événements fatals et non fatals)",
+            "value": 4.215488871095852,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour la bande d'âge concernée : risque faible à modéré (< 5 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          },
+          {
+            "severity": "caution",
+            "message": "Modèle dérivé et calibré sur des cohortes européennes : aucune des 4 régions de risque SCORE2 ne couvre l'Afrique subsaharienne. Le choix de région ci-dessus est une approximation nécessaire ; le risque absolu affiché doit être interprété avec une prudence accrue dans ce contexte."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "Sexe": "Femme",
+          "Région de risque": "Risque faible",
+          "Tabagisme actif": "Oui",
+          "Pression artérielle systolique": "140 mmHg",
+          "Cholestérol total": "5.50 mmol/L (5.50 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.30 mmol/L)",
+          "Cholestérol non-HDL (informatif, non utilisé dans le calcul)": "4.20 mmol/L"
+        }
+      }
+    },
+    "score2_risk#region=1": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Homme",
+        "region": "Risque modéré",
+        "totalCholesterol": "5.5 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Risque SCORE2 à 10 ans (événements fatals et non fatals)",
+            "value": 7.561250523415097,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour la bande d'âge concernée : risque élevé (5 à < 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          },
+          {
+            "severity": "caution",
+            "message": "Modèle dérivé et calibré sur des cohortes européennes : aucune des 4 régions de risque SCORE2 ne couvre l'Afrique subsaharienne. Le choix de région ci-dessus est une approximation nécessaire ; le risque absolu affiché doit être interprété avec une prudence accrue dans ce contexte."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "Sexe": "Homme",
+          "Région de risque": "Risque modéré",
+          "Tabagisme actif": "Oui",
+          "Pression artérielle systolique": "140 mmHg",
+          "Cholestérol total": "5.50 mmol/L (5.50 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.30 mmol/L)",
+          "Cholestérol non-HDL (informatif, non utilisé dans le calcul)": "4.20 mmol/L"
+        }
+      }
+    },
+    "score2_risk#region=2": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Homme",
+        "region": "Risque élevé",
+        "totalCholesterol": "5.5 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Risque SCORE2 à 10 ans (événements fatals et non fatals)",
+            "value": 8.122611628084675,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour la bande d'âge concernée : risque élevé (5 à < 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          },
+          {
+            "severity": "caution",
+            "message": "Modèle dérivé et calibré sur des cohortes européennes : aucune des 4 régions de risque SCORE2 ne couvre l'Afrique subsaharienne. Le choix de région ci-dessus est une approximation nécessaire ; le risque absolu affiché doit être interprété avec une prudence accrue dans ce contexte."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "Sexe": "Homme",
+          "Région de risque": "Risque élevé",
+          "Tabagisme actif": "Oui",
+          "Pression artérielle systolique": "140 mmHg",
+          "Cholestérol total": "5.50 mmol/L (5.50 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.30 mmol/L)",
+          "Cholestérol non-HDL (informatif, non utilisé dans le calcul)": "4.20 mmol/L"
+        }
+      }
+    },
+    "score2_risk#region=3": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Homme",
+        "region": "Risque très élevé",
+        "totalCholesterol": "5.5 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Risque SCORE2 à 10 ans (événements fatals et non fatals)",
+            "value": 14.048633498766627,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour la bande d'âge concernée : risque très élevé (≥ 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          },
+          {
+            "severity": "caution",
+            "message": "Modèle dérivé et calibré sur des cohortes européennes : aucune des 4 régions de risque SCORE2 ne couvre l'Afrique subsaharienne. Le choix de région ci-dessus est une approximation nécessaire ; le risque absolu affiché doit être interprété avec une prudence accrue dans ce contexte."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "Sexe": "Homme",
+          "Région de risque": "Risque très élevé",
+          "Tabagisme actif": "Oui",
+          "Pression artérielle systolique": "140 mmHg",
+          "Cholestérol total": "5.50 mmol/L (5.50 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.30 mmol/L)",
+          "Cholestérol non-HDL (informatif, non utilisé dans le calcul)": "4.20 mmol/L"
+        }
+      }
+    },
+    "score2_risk#totalCholesterol@g/L": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Homme",
+        "region": "Risque faible",
+        "totalCholesterol": "5.5 g/L",
+        "hdl": "1.3 mmol/L",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Risque SCORE2 à 10 ans (événements fatals et non fatals)",
+            "value": 20.352444337552768,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour la bande d'âge concernée : risque très élevé (≥ 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          },
+          {
+            "severity": "caution",
+            "message": "Modèle dérivé et calibré sur des cohortes européennes : aucune des 4 régions de risque SCORE2 ne couvre l'Afrique subsaharienne. Le choix de région ci-dessus est une approximation nécessaire ; le risque absolu affiché doit être interprété avec une prudence accrue dans ce contexte."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "Sexe": "Homme",
+          "Région de risque": "Risque faible",
+          "Tabagisme actif": "Oui",
+          "Pression artérielle systolique": "140 mmHg",
+          "Cholestérol total": "5.50 g/L (14.22 mmol/L)",
+          "HDL-cholestérol": "1.30 mmol/L (1.30 mmol/L)",
+          "Cholestérol non-HDL (informatif, non utilisé dans le calcul)": "12.92 mmol/L"
+        }
+      }
+    },
+    "score2_risk#totalCholesterol@mg/dL": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Homme",
+        "region": "Risque faible",
+        "totalCholesterol": "5.5 mg/dL",
+        "hdl": "1.3 mmol/L",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "error": [
+          {
+            "field": "hdl",
+            "message": "Le HDL-cholestérol ne peut pas être supérieur ou égal au cholestérol total."
+          }
+        ]
+      }
+    },
+    "score2_risk#hdl@g/L": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Homme",
+        "region": "Risque faible",
+        "totalCholesterol": "5.5 mmol/L",
+        "hdl": "1.3 g/L",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Risque SCORE2 à 10 ans (événements fatals et non fatals)",
+            "value": 2.0196789039393814,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour la bande d'âge concernée : risque faible à modéré (< 5 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          },
+          {
+            "severity": "caution",
+            "message": "Modèle dérivé et calibré sur des cohortes européennes : aucune des 4 régions de risque SCORE2 ne couvre l'Afrique subsaharienne. Le choix de région ci-dessus est une approximation nécessaire ; le risque absolu affiché doit être interprété avec une prudence accrue dans ce contexte."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "Sexe": "Homme",
+          "Région de risque": "Risque faible",
+          "Tabagisme actif": "Oui",
+          "Pression artérielle systolique": "140 mmHg",
+          "Cholestérol total": "5.50 mmol/L (5.50 mmol/L)",
+          "HDL-cholestérol": "1.30 g/L (3.36 mmol/L)",
+          "Cholestérol non-HDL (informatif, non utilisé dans le calcul)": "2.14 mmol/L"
+        }
+      }
+    },
+    "score2_risk#hdl@mg/dL": {
+      "inputs": {
+        "age": "50.0 ans",
+        "sex": "Homme",
+        "region": "Risque faible",
+        "totalCholesterol": "5.5 mmol/L",
+        "hdl": "1.3 mg/dL",
+        "systolicBloodPressure": "140.0 mmHg",
+        "currentSmoker": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Risque SCORE2 à 10 ans (événements fatals et non fatals)",
+            "value": 11.252760185551525,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour la bande d'âge concernée : risque très élevé (≥ 10 %). Cette catégorie ne remplace pas une évaluation clinique globale ni les recommandations de prise en charge actuelles."
+          },
+          {
+            "severity": "caution",
+            "message": "Modèle dérivé et calibré sur des cohortes européennes : aucune des 4 régions de risque SCORE2 ne couvre l'Afrique subsaharienne. Le choix de région ci-dessus est une approximation nécessaire ; le risque absolu affiché doit être interprété avec une prudence accrue dans ce contexte."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "Sexe": "Homme",
+          "Région de risque": "Risque faible",
+          "Tabagisme actif": "Oui",
+          "Pression artérielle systolique": "140 mmHg",
+          "Cholestérol total": "5.50 mmol/L (5.50 mmol/L)",
+          "HDL-cholestérol": "1.30 mg/dL (0.03 mmol/L)",
+          "Cholestérol non-HDL (informatif, non utilisé dans le calcul)": "5.47 mmol/L"
+        }
+      }
+    },
+    "anion_gap": {
+      "inputs": {
+        "sodium": "140.0 mmol/L",
+        "chloride": "104.0 mmol/L",
+        "bicarbonate": "24.0 mmol/L",
+        "potassium": "4.5 mmol/L",
+        "albumin": "40.0 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Trou anionique (sans potassium)",
+            "value": 12.0,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Trou anionique (avec potassium)",
+            "value": 16.5,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Trou anionique corrigé pour l'albuminémie",
+            "value": 12.0,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Trou anionique (sans potassium) : normal (repère habituel ≈ 8-12 mmol/L, enseignement classique de biochimie clinique — Emmett & Narins 1977). Un trou anionique élevé oriente vers une acidose métabolique à trou anionique augmenté et impose une recherche étiologique (ex. lactates, cétones, toxiques [méthanol, éthylène glycol, salicylés], insuffisance rénale — catégories classiquement résumées par l'acronyme MUDPILES) ; un trou anionique bas a peu de valeur diagnostique isolée (à évoquer notamment en cas d'hypoalbuminémie)."
+          },
+          {
+            "severity": "info",
+            "message": "La correction pour l'albuminémie vise à démasquer un trou anionique élevé faussement normalisé par une hypoalbuminémie ; le même repère habituel (≈ 8-12 mmol/L) est usuellement appliqué à la valeur corrigée."
+          }
+        ],
+        "echoed": {
+          "Sodium": "140.0 mmol/L",
+          "Chlore": "104.0 mmol/L",
+          "Bicarbonates": "24.0 mmol/L",
+          "Potassium": "4.5 mmol/L",
+          "Albuminémie": "40.0 g/L"
+        }
+      }
+    },
+    "anion_gap#albumin@g/dL": {
+      "inputs": {
+        "sodium": "140.0 mmol/L",
+        "chloride": "104.0 mmol/L",
+        "bicarbonate": "24.0 mmol/L",
+        "potassium": "4.5 mmol/L",
+        "albumin": "40.0 g/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Trou anionique (sans potassium)",
+            "value": 12.0,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Trou anionique (avec potassium)",
+            "value": 16.5,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Trou anionique corrigé pour l'albuminémie",
+            "value": -78.0,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Trou anionique (sans potassium) : normal (repère habituel ≈ 8-12 mmol/L, enseignement classique de biochimie clinique — Emmett & Narins 1977). Un trou anionique élevé oriente vers une acidose métabolique à trou anionique augmenté et impose une recherche étiologique (ex. lactates, cétones, toxiques [méthanol, éthylène glycol, salicylés], insuffisance rénale — catégories classiquement résumées par l'acronyme MUDPILES) ; un trou anionique bas a peu de valeur diagnostique isolée (à évoquer notamment en cas d'hypoalbuminémie)."
+          },
+          {
+            "severity": "info",
+            "message": "La correction pour l'albuminémie vise à démasquer un trou anionique élevé faussement normalisé par une hypoalbuminémie ; le même repère habituel (≈ 8-12 mmol/L) est usuellement appliqué à la valeur corrigée."
+          }
+        ],
+        "echoed": {
+          "Sodium": "140.0 mmol/L",
+          "Chlore": "104.0 mmol/L",
+          "Bicarbonates": "24.0 mmol/L",
+          "Potassium": "4.5 mmol/L",
+          "Albuminémie": "40.00 g/dL (400.0 g/L)"
+        }
+      }
+    },
+    "calculated_osmolarity_osmolar_gap": {
+      "inputs": {
+        "sodium": "140.0 mmol/L",
+        "glucose": "5.5 mmol/L",
+        "urea": "5.0 mmol/L",
+        "measuredOsmolality": "290.0 mOsm/kg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Osmolarité calculée",
+            "value": 290.5,
+            "unit": "mOsm/L",
+            "precision": 1
+          },
+          {
+            "label": "Trou osmolaire (osmolalité mesurée − osmolarité calculée)",
+            "value": -0.5,
+            "unit": "mOsm/kg",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Trou osmolaire : non élevé (seuil classiquement enseigné en toxicologie clinique : > 10 mOsm/kg considéré comme élevé — nous n'avons pas identifié une guideline unique formellement à l'origine de ce seuil, largement repris dans les manuels de toxicologie et de médecine d'urgence). Un trou osmolaire élevé doit faire rechercher des solutés osmotiquement actifs non mesurés (ex. alcools toxiques : méthanol, éthylène glycol, isopropanol), à corréler impérativement au contexte clinique."
+          }
+        ],
+        "echoed": {
+          "Sodium": "140.0 mmol/L",
+          "Glycémie": "5.50 mmol/L",
+          "Urée": "5.0 mmol/L",
+          "Osmolalité mesurée": "290.0 mOsm/kg"
+        }
+      }
+    },
+    "calculated_osmolarity_osmolar_gap#glucose@mg/dL": {
+      "inputs": {
+        "sodium": "140.0 mmol/L",
+        "glucose": "5.5 mg/dL",
+        "urea": "5.0 mmol/L",
+        "measuredOsmolality": "290.0 mOsm/kg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Osmolarité calculée",
+            "value": 285.30525,
+            "unit": "mOsm/L",
+            "precision": 1
+          },
+          {
+            "label": "Trou osmolaire (osmolalité mesurée − osmolarité calculée)",
+            "value": 4.694749999999999,
+            "unit": "mOsm/kg",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Trou osmolaire : non élevé (seuil classiquement enseigné en toxicologie clinique : > 10 mOsm/kg considéré comme élevé — nous n'avons pas identifié une guideline unique formellement à l'origine de ce seuil, largement repris dans les manuels de toxicologie et de médecine d'urgence). Un trou osmolaire élevé doit faire rechercher des solutés osmotiquement actifs non mesurés (ex. alcools toxiques : méthanol, éthylène glycol, isopropanol), à corréler impérativement au contexte clinique."
+          }
+        ],
+        "echoed": {
+          "Sodium": "140.0 mmol/L",
+          "Glycémie": "5.50 mg/dL (0.31 mmol/L)",
+          "Urée": "5.0 mmol/L",
+          "Osmolalité mesurée": "290.0 mOsm/kg"
+        }
+      }
+    },
+    "corrected_sodium_hyperglycemia": {
+      "inputs": {
+        "sodiumMeasured": "130.0 mmol/L",
+        "glucose": "25.0 mmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Sodium corrigé — coefficient de Katz (1,6)",
+            "value": 135.6072072072072,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Sodium corrigé — coefficient de Hillier (2,4)",
+            "value": 138.4108108108108,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Repères habituels (mêmes bandes que le sodium non corrigé, biochimie clinique standard) : < 135 mmol/L hyponatrémie, 135-145 mmol/L normal, > 145 mmol/L hypernatrémie — appliqués ici à la valeur corrigée. Coefficient de Katz (1,6) : normal (135.6 mmol/L). Coefficient de Hillier (2,4) : normal (138.4 mmol/L)."
+          }
+        ],
+        "echoed": {
+          "Sodium": "130.0 mmol/L",
+          "Glycémie": "25.00 mmol/L (450 mg/dL)"
+        }
+      }
+    },
+    "corrected_sodium_hyperglycemia#glucose@mg/dL": {
+      "inputs": {
+        "sodiumMeasured": "130.0 mmol/L",
+        "glucose": "25.0 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Sodium corrigé — coefficient de Katz (1,6)",
+            "value": 128.8,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Sodium corrigé — coefficient de Hillier (2,4)",
+            "value": 128.2,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Correction peu pertinente pour une glycémie ≤ 1,00 g/L (5,55 mmol/L)."
+          },
+          {
+            "severity": "info",
+            "message": "Repères habituels (mêmes bandes que le sodium non corrigé, biochimie clinique standard) : < 135 mmol/L hyponatrémie, 135-145 mmol/L normal, > 145 mmol/L hypernatrémie — appliqués ici à la valeur corrigée. Coefficient de Katz (1,6) : hyponatrémie (128.8 mmol/L). Coefficient de Hillier (2,4) : hyponatrémie (128.2 mmol/L)."
+          }
+        ],
+        "echoed": {
+          "Sodium": "130.0 mmol/L",
+          "Glycémie": "25 mg/dL"
+        }
+      }
+    },
+    "corrected_calcium_albumin": {
+      "inputs": {
+        "calcium": "2.0 mmol/L",
+        "albumin": "30.0 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Calcium corrigé pour l'albuminémie",
+            "value": 8.816032064128256,
+            "unit": "mg/dL",
+            "precision": 2
+          },
+          {
+            "label": "Calcium corrigé pour l'albuminémie",
+            "value": 2.1995999999999998,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Calcium corrigé : normal (repères usuels de biochimie clinique standard, appliqués à la valeur corrigée : hypocalcémie < 8,5 mg/dL [< 2,10 mmol/L] ; normal 8,5-10,5 mg/dL [2,10-2,55 mmol/L] ; hypercalcémie > 10,5 mg/dL [> 2,55 mmol/L])."
+          }
+        ],
+        "echoed": {
+          "Calcium": "2.00 mmol/L (8.02 mg/dL)",
+          "Albuminémie": "30.0 g/L (3.00 g/dL)"
+        }
+      }
+    },
+    "corrected_calcium_albumin#calcium@mg/dL": {
+      "inputs": {
+        "calcium": "2.0 mg/dL",
+        "albumin": "30.0 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Calcium corrigé pour l'albuminémie",
+            "value": 2.8,
+            "unit": "mg/dL",
+            "precision": 2
+          },
+          {
+            "label": "Calcium corrigé pour l'albuminémie",
+            "value": 0.6986,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Calcium corrigé : hypocalcémie (repères usuels de biochimie clinique standard, appliqués à la valeur corrigée : hypocalcémie < 8,5 mg/dL [< 2,10 mmol/L] ; normal 8,5-10,5 mg/dL [2,10-2,55 mmol/L] ; hypercalcémie > 10,5 mg/dL [> 2,55 mmol/L])."
+          }
+        ],
+        "echoed": {
+          "Calcium": "2.00 mg/dL",
+          "Albuminémie": "30.0 g/L (3.00 g/dL)"
+        }
+      }
+    },
+    "corrected_calcium_albumin#albumin@g/dL": {
+      "inputs": {
+        "calcium": "2.0 mmol/L",
+        "albumin": "30.0 g/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Calcium corrigé pour l'albuminémie",
+            "value": -12.783967935871745,
+            "unit": "mg/dL",
+            "precision": 2
+          },
+          {
+            "label": "Calcium corrigé pour l'albuminémie",
+            "value": -3.1896000000000004,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Calcium corrigé : hypocalcémie (repères usuels de biochimie clinique standard, appliqués à la valeur corrigée : hypocalcémie < 8,5 mg/dL [< 2,10 mmol/L] ; normal 8,5-10,5 mg/dL [2,10-2,55 mmol/L] ; hypercalcémie > 10,5 mg/dL [> 2,55 mmol/L])."
+          }
+        ],
+        "echoed": {
+          "Calcium": "2.00 mmol/L (8.02 mg/dL)",
+          "Albuminémie": "30.0 g/dL"
+        }
+      }
+    },
+    "tibc_from_transferrin": {
+      "inputs": {
+        "transferrin": "250.0 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Capacité totale de fixation du fer (calculée)",
+            "value": 355.0,
+            "unit": "µg/dL",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Repère général (enseignement de biochimie clinique, pas de guideline unique dédiée à ce facteur de conversion) : la CTF est usuellement augmentée en cas de carence martiale et diminuée en cas d'inflammation ou de surcharge en fer ; interpréter par rapport à l'intervalle de référence propre au laboratoire."
+          }
+        ],
+        "echoed": {
+          "Transferrine": "250 mg/dL"
+        }
+      }
+    },
+    "transferrin_saturation": {
+      "inputs": {
+        "serumIron": "80.0 µg/dL",
+        "tibc": "350.0 µg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Coefficient de saturation de la transferrine",
+            "value": 22.857142857142858,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Saturation dans la zone intermédiaire usuelle (20-45 %), ni évocatrice de carence martiale, ni du seuil de dépistage de l'hémochromatose retenu par l'AASLD 2011."
+          }
+        ],
+        "echoed": {
+          "Fer sérique": "80 µg/dL",
+          "CTF": "350 µg/dL"
+        }
+      }
+    },
+    "globulins_ag_ratio": {
+      "inputs": {
+        "totalProtein": "72.0 g/L",
+        "albumin": "42.0 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Globulines",
+            "value": 30.0,
+            "unit": "g/L",
+            "precision": 2
+          },
+          {
+            "label": "Rapport albumine/globulines",
+            "value": 1.4,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Rapport A/G ≥ 1 : dans la zone habituelle (repère d'enseignement classique de biochimie clinique ; un rapport bas ou inversé, < 1, est classiquement associé à la cirrhose, à un état inflammatoire chronique ou à une gammapathie monoclonale)."
+          }
+        ],
+        "echoed": {
+          "Protéines totales": "72.0 g/L",
+          "Albuminémie": "42.0 g/L"
+        }
+      }
+    },
+    "globulins_ag_ratio#totalProtein@g/dL": {
+      "inputs": {
+        "totalProtein": "72.0 g/dL",
+        "albumin": "42.0 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Globulines",
+            "value": 678.0,
+            "unit": "g/L",
+            "precision": 2
+          },
+          {
+            "label": "Rapport albumine/globulines",
+            "value": 0.061946902654867256,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Rapport A/G bas ou inversé (< 1) : repère d'enseignement classique de biochimie clinique (pas de guideline unique dédiée), associé notamment à la cirrhose, à un état inflammatoire chronique ou à une gammapathie monoclonale ; à corréler avec les autres données cliniques et biologiques (électrophorèse des protéines)."
+          }
+        ],
+        "echoed": {
+          "Protéines totales": "72.00 g/dL (720.0 g/L)",
+          "Albuminémie": "42.0 g/L"
+        }
+      }
+    },
+    "globulins_ag_ratio#albumin@g/dL": {
+      "inputs": {
+        "totalProtein": "72.0 g/L",
+        "albumin": "42.0 g/dL"
+      },
+      "outcome": {
+        "error": [
+          {
+            "field": "albuminValue",
+            "message": "L'albuminémie ne peut pas dépasser les protéines totales."
+          }
+        ]
+      }
+    },
+    "indirect_bilirubin": {
+      "inputs": {
+        "totalBilirubin": "20.0 µmol/L",
+        "directBilirubin": "5.0 µmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Bilirubine indirecte",
+            "value": 15.0,
+            "unit": "µmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Repère habituel (enseignement de biochimie clinique, pas de guideline dédiée) : bilirubine totale usuellement < 17 µmol/L chez l'adulte, majoritairement sous forme indirecte à l'état normal."
+          }
+        ],
+        "echoed": {
+          "Bilirubine totale": "20.0 µmol/L",
+          "Bilirubine directe": "5.0 µmol/L"
+        }
+      }
+    },
+    "ast_alt_ratio_de_ritis": {
+      "inputs": {
+        "ast": "40.0 U/L",
+        "alt": "30.0 U/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport ASAT/ALAT (De Ritis)",
+            "value": 1.3333333333333333,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Rapport entre 1 et 2 : zone intermédiaire, sans orientation typique selon ce repère d'enseignement classique ; à interpréter avec le contexte clinique."
+          }
+        ],
+        "echoed": {
+          "ASAT": "40 U/L",
+          "ALAT": "30 U/L"
+        }
+      }
+    },
+    "fib4": {
+      "inputs": {
+        "age": "50.0 ans",
+        "ast": "40.0 U/L",
+        "platelets": "200.0 G/L",
+        "alt": "35.0 U/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score FIB-4",
+            "value": 1.6903085094570331,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "FIB-4 entre 1,30 et 2,67 : zone indéterminée. Seuils largement repris par les sociétés savantes d'hépatologie (ex. EASL 2021) pour l'évaluation non invasive de la fibrose hépatique, dérivés de la cohorte de dérivation originale (Sterling et al. 2006)."
+          }
+        ],
+        "echoed": {
+          "Âge": "50 ans",
+          "ASAT": "40 U/L",
+          "Plaquettes": "200 G/L",
+          "ALAT": "35 U/L"
+        }
+      }
+    },
+    "apri": {
+      "inputs": {
+        "ast": "60.0 U/L",
+        "astUln": "40.0 U/L",
+        "platelets": "150.0 G/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score APRI",
+            "value": 1.0,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "APRI entre 0,5 et 1,5 : zone intermédiaire."
+          }
+        ],
+        "echoed": {
+          "ASAT": "60 U/L",
+          "ULN ASAT": "40 U/L",
+          "Plaquettes": "150 G/L"
+        }
+      }
+    },
+    "meld_na": {
+      "inputs": {
+        "creatinine": "100.0 µmol/L",
+        "bilirubin": "50.0 µmol/L",
+        "inr": "1.5 ",
+        "sodium": "135.0 mmol/L",
+        "onDialysis": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score MELD (sans sodium)",
+            "value": 16.204738596203516,
+            "unit": "",
+            "precision": 1
+          },
+          {
+            "label": "Score MELD-Na",
+            "value": 17.775225848854085,
+            "unit": "",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "MELD-Na ≈ 17.8 : risque de mortalité à court terme (≈ 90 jours) modéré, par corrélation approximative rapportée dans la littérature de validation du score (Kamath et al. 2001 ; adoption UNOS/OPTN, Wiesner et al. 2003) — bandes qualitatives indicatives (< 10 faible ; 10-19 modéré ; 20-29 important ; 30-39 élevé ; ≥ 40 très élevé), à ne jamais interpréter comme un pourcentage de mortalité individuel précis pour un patient donné."
+          }
+        ],
+        "echoed": {
+          "Créatinine": "100 µmol/L (1.13 mg/dL, 1.13 mg/dL utilisée)",
+          "Bilirubine": "50.0 µmol/L (2.92 mg/dL utilisée)",
+          "INR": "1.50 (1.50 utilisé)",
+          "Sodium": "135.0 mmol/L (135.0 mmol/L utilisé)",
+          "Dialyse / hémodiafiltration continue ≥ 24 h": "Non"
+        }
+      }
+    },
+    "meld_na#creatinine@mg/dL": {
+      "inputs": {
+        "creatinine": "100.0 mg/dL",
+        "bilirubin": "50.0 µmol/L",
+        "inr": "1.5 ",
+        "sodium": "135.0 mmol/L",
+        "onDialysis": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score MELD (sans sodium)",
+            "value": 40.0,
+            "unit": "",
+            "precision": 1
+          },
+          {
+            "label": "Score MELD-Na",
+            "value": 40.0,
+            "unit": "",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "MELD-Na ≈ 40.0 : risque de mortalité à court terme (≈ 90 jours) très élevé, par corrélation approximative rapportée dans la littérature de validation du score (Kamath et al. 2001 ; adoption UNOS/OPTN, Wiesner et al. 2003) — bandes qualitatives indicatives (< 10 faible ; 10-19 modéré ; 20-29 important ; 30-39 élevé ; ≥ 40 très élevé), à ne jamais interpréter comme un pourcentage de mortalité individuel précis pour un patient donné."
+          }
+        ],
+        "echoed": {
+          "Créatinine": "100.00 mg/dL (100.00 mg/dL utilisée)",
+          "Bilirubine": "50.0 µmol/L (2.92 mg/dL utilisée)",
+          "INR": "1.50 (1.50 utilisé)",
+          "Sodium": "135.0 mmol/L (135.0 mmol/L utilisé)",
+          "Dialyse / hémodiafiltration continue ≥ 24 h": "Non"
+        }
+      }
+    },
+    "albi_score": {
+      "inputs": {
+        "bilirubin": "20.0 µmol/L",
+        "albumin": "40.0 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score ALBI",
+            "value": -2.5493202028617725,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Grade ALBI 2 (−2,60 < ALBI ≤ −1,39) — grades publiés par Johnson et al. 2015, fournis ici à titre informatif."
+          }
+        ],
+        "echoed": {
+          "Bilirubine": "20.0 µmol/L",
+          "Albuminémie": "40.0 g/L"
+        }
+      }
+    },
+    "albi_score#albumin@g/dL": {
+      "inputs": {
+        "bilirubin": "20.0 µmol/L",
+        "albumin": "40.0 g/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score ALBI",
+            "value": -33.22132020286177,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Grade ALBI 1 (ALBI ≤ −2,60) — grades publiés par Johnson et al. 2015, fournis ici à titre informatif."
+          }
+        ],
+        "echoed": {
+          "Bilirubine": "20.0 µmol/L",
+          "Albuminémie": "40.00 g/dL (400.0 g/L)"
+        }
+      }
+    },
+    "expected_acid_base_compensation": {
+      "inputs": {
+        "disorder": "Acidose métabolique",
+        "hco3": "15.0 mmol/L",
+        "paco2": "30.0 mmHg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "PaCO2 attendue (valeur centrale)",
+            "value": 30.5,
+            "unit": "mmHg",
+            "precision": 1
+          },
+          {
+            "label": "Demi-amplitude de la fourchette attendue (±)",
+            "value": 2.0,
+            "unit": "mmHg",
+            "precision": 0
+          }
+        ],
+        "warnings": [],
+        "echoed": {
+          "Trouble primaire supposé": "Acidose métabolique",
+          "HCO3 mesuré": "15.0 mmol/L"
+        }
+      }
+    },
+    "expected_acid_base_compensation#disorder=1": {
+      "inputs": {
+        "disorder": "Alcalose métabolique",
+        "hco3": "15.0 mmol/L",
+        "paco2": "30.0 mmHg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "PaCO2 attendue (valeur centrale)",
+            "value": 33.7,
+            "unit": "mmHg",
+            "precision": 1
+          },
+          {
+            "label": "Demi-amplitude de la fourchette attendue (±)",
+            "value": 5.0,
+            "unit": "mmHg",
+            "precision": 0
+          }
+        ],
+        "warnings": [],
+        "echoed": {
+          "Trouble primaire supposé": "Alcalose métabolique",
+          "HCO3 mesuré": "15.0 mmol/L"
+        }
+      }
+    },
+    "expected_acid_base_compensation#disorder=2": {
+      "inputs": {
+        "disorder": "Acidose respiratoire aiguë",
+        "hco3": "15.0 mmol/L",
+        "paco2": "30.0 mmHg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HCO3 attendu (valeur centrale)",
+            "value": 23.0,
+            "unit": "mmol/L",
+            "precision": 1
+          },
+          {
+            "label": "Demi-amplitude de la fourchette attendue (±)",
+            "value": 3.0,
+            "unit": "mmol/L",
+            "precision": 0
+          }
+        ],
+        "warnings": [],
+        "echoed": {
+          "Trouble primaire supposé": "Acidose respiratoire aiguë",
+          "PaCO2 mesurée": "30.0 mmHg"
+        }
+      }
+    },
+    "expected_acid_base_compensation#disorder=3": {
+      "inputs": {
+        "disorder": "Acidose respiratoire chronique",
+        "hco3": "15.0 mmol/L",
+        "paco2": "30.0 mmHg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HCO3 attendu (valeur centrale)",
+            "value": 20.5,
+            "unit": "mmol/L",
+            "precision": 1
+          },
+          {
+            "label": "Demi-amplitude de la fourchette attendue (±)",
+            "value": 4.0,
+            "unit": "mmol/L",
+            "precision": 0
+          }
+        ],
+        "warnings": [],
+        "echoed": {
+          "Trouble primaire supposé": "Acidose respiratoire chronique",
+          "PaCO2 mesurée": "30.0 mmHg"
+        }
+      }
+    },
+    "expected_acid_base_compensation#disorder=4": {
+      "inputs": {
+        "disorder": "Alcalose respiratoire aiguë",
+        "hco3": "15.0 mmol/L",
+        "paco2": "30.0 mmHg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HCO3 attendu (valeur centrale)",
+            "value": 22.0,
+            "unit": "mmol/L",
+            "precision": 1
+          },
+          {
+            "label": "Demi-amplitude de la fourchette attendue (±)",
+            "value": 2.0,
+            "unit": "mmol/L",
+            "precision": 0
+          }
+        ],
+        "warnings": [],
+        "echoed": {
+          "Trouble primaire supposé": "Alcalose respiratoire aiguë",
+          "PaCO2 mesurée": "30.0 mmHg"
+        }
+      }
+    },
+    "expected_acid_base_compensation#disorder=5": {
+      "inputs": {
+        "disorder": "Alcalose respiratoire chronique",
+        "hco3": "15.0 mmol/L",
+        "paco2": "30.0 mmHg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "HCO3 attendu (valeur centrale)",
+            "value": 20.0,
+            "unit": "mmol/L",
+            "precision": 1
+          },
+          {
+            "label": "Demi-amplitude de la fourchette attendue (±)",
+            "value": 4.0,
+            "unit": "mmol/L",
+            "precision": 0
+          }
+        ],
+        "warnings": [],
+        "echoed": {
+          "Trouble primaire supposé": "Alcalose respiratoire chronique",
+          "PaCO2 mesurée": "30.0 mmHg"
+        }
+      }
+    },
+    "bicarbonate_chloride_ratio": {
+      "inputs": {
+        "bicarbonate": "24.0 mmol/L",
+        "chloride": "104.0 mmol/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Rapport bicarbonates/chlorures",
+            "value": 0.23076923076923078,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil consensuel établi par une société savante n'existe pour ce rapport simple : il s'agit d'un repère rapide non spécifique, à ne jamais interpréter isolément — une valeur basse peut orienter vers une acidose hyperchlorémique, mais seuls le trou anionique et l'analyse acido-basique complète (gaz du sang, contexte clinique) permettent une interprétation fiable."
+          }
+        ],
+        "echoed": {
+          "Bicarbonates": "24.0 mmol/L",
+          "Chlorures": "104.0 mmol/L"
+        }
+      }
+    },
+    "rosner_index": {
+      "inputs": {
+        "mixTime": "38.0 s",
+        "normalPlasmaTime": "12.0 s",
+        "patientPlasmaTime": "70.0 s",
+        "phase": "Lecture immédiate"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Rosner — Lecture immédiate",
+            "value": 37.142857142857146,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Indice de Rosner ≥ 15 % : évocateur d'une absence de correction du TCA par le mélange, en faveur de la présence d'un inhibiteur circulant (anticoagulant lupique ou inhibiteur spécifique d'un facteur). Ce seuil de 15 % correspond à la convention interprétative classiquement enseignée à partir des travaux de Rosner et al. (1987) ; il s'agit d'un principe interprétatif général et non d'une valeur absolue : le seuil exact varie selon le réactif, le protocole (mélange immédiat ou après incubation) et la validation locale du laboratoire. Dans tous les cas, des explorations spécifiques complémentaires (recherche d'anticoagulant lupique, dosage de facteurs) restent nécessaires pour confirmer l'hypothèse d'un déficit ou d'un inhibiteur."
+          }
+        ],
+        "echoed": {
+          "TCA mélange 1:1": "38.0 s",
+          "TCA plasma témoin normal": "12.0 s",
+          "TCA plasma patient": "70.0 s",
+          "Phase": "Lecture immédiate"
+        }
+      }
+    },
+    "rosner_index#phase=1": {
+      "inputs": {
+        "mixTime": "38.0 s",
+        "normalPlasmaTime": "12.0 s",
+        "patientPlasmaTime": "70.0 s",
+        "phase": "Après incubation (typiquement 1-2 h à 37°C)"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Rosner — Après incubation (typiquement 1-2 h à 37°C)",
+            "value": 37.142857142857146,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Indice de Rosner ≥ 15 % : évocateur d'une absence de correction du TCA par le mélange, en faveur de la présence d'un inhibiteur circulant (anticoagulant lupique ou inhibiteur spécifique d'un facteur). Ce seuil de 15 % correspond à la convention interprétative classiquement enseignée à partir des travaux de Rosner et al. (1987) ; il s'agit d'un principe interprétatif général et non d'une valeur absolue : le seuil exact varie selon le réactif, le protocole (mélange immédiat ou après incubation) et la validation locale du laboratoire. Dans tous les cas, des explorations spécifiques complémentaires (recherche d'anticoagulant lupique, dosage de facteurs) restent nécessaires pour confirmer l'hypothèse d'un déficit ou d'un inhibiteur."
+          }
+        ],
+        "echoed": {
+          "TCA mélange 1:1": "38.0 s",
+          "TCA plasma témoin normal": "12.0 s",
+          "TCA plasma patient": "70.0 s",
+          "Phase": "Après incubation (typiquement 1-2 h à 37°C)"
+        }
+      }
+    },
+    "inr": {
+      "inputs": {
+        "patientPt": "28.0 s",
+        "meanNormalPt": "12.0 s",
+        "isi": "1.2 "
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "INR",
+            "value": 2.7642170559319026,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "La cible thérapeutique de l'INR dépend entièrement de l'indication clinique et ne peut pas être résumée par une valeur unique. En l'absence de traitement anticoagulant, la valeur de référence est proche de 0,8-1,2. Sous antivitamine K, la cible usuelle est généralement de 2,0 à 3,0 pour la plupart des indications (fibrillation atriale, traitement d'une maladie thromboembolique veineuse), et de 2,5 à 3,5 pour certaines valves cardiaques mécaniques à haut risque thrombotique — à individualiser selon l'indication précise et les recommandations en vigueur (par exemple ACC/AHA/HRS pour la fibrillation atriale)."
+          }
+        ],
+        "echoed": {
+          "TP patient": "28.0 s",
+          "TP moyen normal du laboratoire": "12.0 s",
+          "ISI": "1.20"
+        }
+      }
+    },
+    "aptt_ratio": {
+      "inputs": {
+        "patientApt": "45.0 s",
+        "controlApt": "30.0 s"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Ratio TCA patient/témoin",
+            "value": 1.5,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Il n'existe pas de seuil universel pour le ratio TCA : la plage normale dépend du réactif et de l'analyseur du laboratoire, et l'intervalle thérapeutique visé lors de la surveillance d'un traitement par héparine non fractionnée est spécifique à chaque réactif — il doit être établi localement par étalonnage vis-à-vis de l'activité anti-Xa. Cette application ne peut donc pas fournir une plage de référence ou thérapeutique unique valable pour tous les laboratoires ; se référer aux valeurs établies par le laboratoire réalisant le dosage."
+          }
+        ],
+        "echoed": {
+          "TCA patient": "45.0 s",
+          "TCA témoin": "30.0 s"
+        }
+      }
+    },
+    "serial_value_trend": {
+      "inputs": {
+        "analyteLabel": "Créatinine",
+        "previousValue": "80.0 ",
+        "currentValue": "95.0 "
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Variation absolue",
+            "value": 15.0,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Variation relative",
+            "value": 18.75,
+            "unit": "%",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Tendance en hausse par rapport à la valeur précédente (18.8 %). Cette observation est purement descriptive : elle ne constitue pas une interprétation clinique et doit être replacée dans le contexte du patient, de l'analyte suivi et de la variabilité analytique du test utilisé."
+          }
+        ],
+        "echoed": {
+          "Analyte": "Créatinine",
+          "Valeur précédente": "80.00 ",
+          "Valeur actuelle": "95.00 "
+        }
+      }
+    },
+    "drvvt_normalized_ratio": {
+      "inputs": {
+        "patientScreen": "45.0 s",
+        "normalScreen": "35.0 s",
+        "patientConfirm": "38.0 s",
+        "normalConfirm": "33.0 s"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Ratio de dépistage",
+            "value": 1.2857142857142858,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio de confirmation",
+            "value": 1.1515151515151516,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio normalisé dRVVT",
+            "value": 1.1165413533834587,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Pourcentage de correction",
+            "value": 10.437710437710438,
+            "unit": "%",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Un rapport normalisé dRVVT élevé est évocateur d'un anticoagulant lupique, mais sa positivité se définit par un dépassement de l'intervalle de référence propre au laboratoire (99e percentile d'une population normale locale, typiquement), conformément aux critères ISTH (Pengo et al. 2009) — aucun seuil numérique universel ne peut être appliqué automatiquement par cette application."
+          }
+        ],
+        "echoed": {
+          "Temps de dépistage patient": "45.0 s",
+          "Temps de dépistage plasma normal": "35.0 s",
+          "Temps de confirmation patient": "38.0 s",
+          "Temps de confirmation plasma normal": "33.0 s"
+        }
+      }
+    },
+    "sic_score": {
+      "inputs": {
+        "plateletCount": "90.0 ×10⁹/L",
+        "inr": "1.5 ",
+        "sofaRespiratoryCardiovascularSubscore": "2.0 points"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score SIC",
+            "value": 6.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score ≥ 4 : compatible avec une coagulopathie induite par le sepsis (SIC) selon les critères originaux (Iba et al. 2017)."
+          }
+        ],
+        "echoed": {
+          "Plaquettes": "90 ×10⁹/L → 2 points",
+          "INR": "1.50 → 2 points",
+          "Sous-score SOFA respiratoire + cardiovasculaire": "2 → 2 points"
+        }
+      }
+    },
+    "has_bled_score": {
+      "inputs": {
+        "hypertensionUncontrolled": true,
+        "abnormalRenalFunction": false,
+        "abnormalLiverFunction": false,
+        "strokeHistory": false,
+        "bleedingHistoryOrPredisposition": false,
+        "labileInr": false,
+        "age": "70.0 ans",
+        "antiplateletOrNsaidUse": true,
+        "alcoholExcess": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score HAS-BLED",
+            "value": 3.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score HAS-BLED = 3/9 : risque hémorragique élevé (catégorisation usuelle 0-1 = faible, 2 = modéré, ≥ 3 = élevé, dérivée de Pisters et al. 2010). Un score élevé doit inciter à corriger les facteurs de risque hémorragique modifiables et à un suivi rapproché, mais ne constitue pas à lui seul une contre-indication à l'anticoagulation orale (ESC, Hindricks et al. 2021)."
+          }
+        ],
+        "echoed": {
+          "Hypertension non contrôlée (PAS > 160 mmHg)": "Oui → 1 point",
+          "Fonction rénale anormale": "Non → 0 point",
+          "Fonction hépatique anormale": "Non → 0 point",
+          "Antécédent d'AVC": "Non → 0 point",
+          "Hémorragie/prédisposition": "Non → 0 point",
+          "INR labile (TTR < 60 %)": "Non → 0 point",
+          "Âge": "70 ans → 1 point(s)",
+          "Médicaments prédisposants (antiagrégants/AINS)": "Oui → 1 point",
+          "Alcool excessif (≥ 8 verres/semaine)": "Non → 0 point"
+        }
+      }
+    },
+    "cha2ds2_vasc_score": {
+      "inputs": {
+        "congestiveHeartFailureOrLvDysfunction": true,
+        "hypertension": true,
+        "age": "70.0 ans",
+        "diabetesMellitus": false,
+        "strokeTiaOrThromboembolismHistory": false,
+        "vascularDisease": false,
+        "female": true
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score CHA₂DS₂-VASc",
+            "value": 4.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score CHA₂DS₂-VASc = 4/9. Anticoagulation orale recommandée (recommandation de classe I) : score ≥ 3 chez une femme. Seuils selon les recommandations ACC/AHA/ACCP/HRS 2023 (Joglar et al., Circulation 2024;149(1):e1-e156) : ≥ 2 chez l'homme ou ≥ 3 chez la femme = anticoagulation recommandée ; 1 chez l'homme ou 2 chez la femme = à envisager ; 0 chez l'homme ou 1 chez la femme (sexe seul) = risque faible."
+          }
+        ],
+        "echoed": {
+          "Insuffisance cardiaque / dysfonction VG": "Oui → 1 point",
+          "Hypertension artérielle": "Oui → 1 point",
+          "Âge": "70 ans → 1 point(s)",
+          "Diabète sucré": "Non → 0 point",
+          "Antécédent AVC/AIT/embolie": "Non → 0 point",
+          "Maladie vasculaire": "Non → 0 point",
+          "Sexe féminin": "Oui → 1 point"
+        }
+      }
+    },
+    "padua_prediction_score": {
+      "inputs": {
+        "age": "72.0 ans",
+        "activeCancer": true,
+        "previousVte": false,
+        "reducedMobility": true,
+        "knownThrombophilicCondition": false,
+        "recentTraumaOrSurgery": false,
+        "heartOrRespiratoryFailure": false,
+        "acuteMyocardialInfarctionOrIschemicStroke": false,
+        "acuteInfectionOrRheumatologicDisorder": false,
+        "obesityBmiOver30": false,
+        "ongoingHormonalTreatment": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score de Padua",
+            "value": 7.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score ≥ 4 : risque élevé de maladie thromboembolique veineuse selon les critères originaux (Barbar et al. 2010) — une thromboprophylaxie pharmacologique est généralement indiquée en l'absence de contre-indication (ASH 2018), après évaluation du risque hémorragique (ex. score IMPROVE)."
+          }
+        ],
+        "echoed": {
+          "Âge": "72 ans",
+          "Facteurs à 3 points cochés (6 pt)": "Cancer actif (métastases et/ou chimiothérapie/radiothérapie dans les 6 derniers mois) ; Mobilité réduite (alitement avec autorisation d'aller aux toilettes, ≥ 3 jours)",
+          "Facteurs à 2 points cochés (0 pt)": "Aucun",
+          "Facteurs à 1 point cochés (1 pt)": "Âge ≥ 70 ans"
+        }
+      }
+    },
+    "improve_bleeding_score": {
+      "inputs": {
+        "age": "70.0 ans",
+        "sex": "Homme",
+        "gfr": "45.0 mL/min/1,73 m²",
+        "plateletCount": "120.0 ×10⁹/L",
+        "inr": "1.2 ",
+        "icuOrCcuAdmission": false,
+        "centralVenousCatheter": false,
+        "rheumaticDisease": false,
+        "currentCancer": true,
+        "activeGastroduodenalUlcer": false,
+        "bleedingInPrior3Months": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score IMPROVE (hémorragie)",
+            "value": 5.5,
+            "unit": "points",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score < 7 : pas de risque hémorragique accru identifié selon les critères originaux (Decousus et al. 2011)."
+          }
+        ],
+        "echoed": {
+          "Âge": "70 ans → Âge 40-84 ans (1.5 pt)",
+          "Sexe": "Homme",
+          "DFG": "45 mL/min/1,73 m² → Insuffisance rénale modérée (DFG 30-59 mL/min/1,73 m²) (1.0 pt)",
+          "Numération plaquettaire": "120 ×10⁹/L",
+          "INR": "1.20",
+          "Facteurs binaires présents": "Sexe masculin (1 pt) ; Cancer actuel (2 pt)"
+        }
+      }
+    },
+    "improve_bleeding_score#sex=0": {
+      "inputs": {
+        "age": "70.0 ans",
+        "sex": "Femme",
+        "gfr": "45.0 mL/min/1,73 m²",
+        "plateletCount": "120.0 ×10⁹/L",
+        "inr": "1.2 ",
+        "icuOrCcuAdmission": false,
+        "centralVenousCatheter": false,
+        "rheumaticDisease": false,
+        "currentCancer": true,
+        "activeGastroduodenalUlcer": false,
+        "bleedingInPrior3Months": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score IMPROVE (hémorragie)",
+            "value": 4.5,
+            "unit": "points",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score < 7 : pas de risque hémorragique accru identifié selon les critères originaux (Decousus et al. 2011)."
+          }
+        ],
+        "echoed": {
+          "Âge": "70 ans → Âge 40-84 ans (1.5 pt)",
+          "Sexe": "Femme",
+          "DFG": "45 mL/min/1,73 m² → Insuffisance rénale modérée (DFG 30-59 mL/min/1,73 m²) (1.0 pt)",
+          "Numération plaquettaire": "120 ×10⁹/L",
+          "INR": "1.20",
+          "Facteurs binaires présents": "Cancer actuel (2 pt)"
+        }
+      }
+    },
+    "caprini_score": {
+      "inputs": {
+        "age41to60": true,
+        "minorSurgeryPlanned": true,
+        "priorMajorSurgeryHistory": false,
+        "varicoseVeins": false,
+        "inflammatoryBowelDiseaseHistory": false,
+        "currentSwollenLegs": false,
+        "obesityBmiOver25": true,
+        "acuteMyocardialInfarction": false,
+        "congestiveHeartFailureUnder1Month": false,
+        "sepsisUnder1Month": false,
+        "seriousLungDiseaseOrPneumoniaUnder1Month": false,
+        "abnormalPulmonaryFunction": false,
+        "oralContraceptiveOrHormoneReplacementTherapy": false,
+        "pregnancyOrPostpartumUnder1Month": false,
+        "historyOfUnexplainedStillbirthOrRecurrentMiscarriageOrToxemia": false,
+        "medicalPatientCurrentlyOnBedRest": false,
+        "otherRiskFactorNotListed": false,
+        "age61to74": false,
+        "arthroscopicSurgery": false,
+        "malignancyCurrentOrPrevious": true,
+        "majorOpenSurgeryOver45Minutes": true,
+        "laparoscopicSurgeryOver45Minutes": false,
+        "bedConfinementOver72Hours": false,
+        "immobilizingPlasterCast": false,
+        "centralVenousAccess": false,
+        "age75OrOlder": false,
+        "historyOfVte": false,
+        "familyHistoryOfVteOrThrombophilia": false,
+        "factorVLeidenPositive": false,
+        "prothrombin20210APositive": false,
+        "elevatedSerumHomocysteine": false,
+        "lupusAnticoagulantPositive": false,
+        "elevatedAnticardiolipinAntibodies": false,
+        "heparinInducedThrombocytopeniaHistory": false,
+        "otherCongenitalOrAcquiredThrombophilia": false,
+        "electiveMajorLowerExtremityArthroplasty": false,
+        "hipPelvisOrLegFractureUnder1Month": false,
+        "strokeUnder1Month": false,
+        "multipleTraumaUnder1Month": false,
+        "acuteSpinalCordInjuryWithParalysisUnder1Month": false
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score de Caprini",
+            "value": 7.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score ≥ 5 : risque élevé selon les catégories ACCP/CHEST (Gould et al. 2012) — une prophylaxie pharmacologique associée à une prophylaxie mécanique est généralement indiquée, sauf contre-indication."
+          }
+        ],
+        "echoed": {
+          "Facteurs à 1 point cochés (3 pt)": "Âge 41-60 ans ; Chirurgie mineure prévue (< 45 min) ; Obésité (IMC > 25)",
+          "Facteurs à 2 points cochés (4 pt)": "Cancer actuel ou antérieur ; Chirurgie majeure ouverte (> 45 min)",
+          "Facteurs à 3 points cochés (0 pt)": "Aucun",
+          "Facteurs à 5 points cochés (0 pt)": "Aucun"
+        }
+      }
+    },
+    "mentzer_index": {
+      "inputs": {
+        "mcv": "70.0 fL",
+        "rbc": "5.5 ×10¹²/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Mentzer",
+            "value": 12.727272727272727,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Indice de Mentzer < 13 : profil plutôt évocateur d'un trait thalassémique qu'une carence martiale (seuil de 13 proposé par Mentzer, 1973). Seuil habituellement cité dans la littérature comparant les indices discriminants de la microcytose, non formellement validé par une société savante d'hématologie (ex. ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC de l'hémoglobine et bilan martial (ferritine, coefficient de saturation de la transferrine) — aucun indice discriminant n'est individuellement fiable et ne doit être utilisé seul."
+          }
+        ],
+        "echoed": {
+          "VGM": "70.0 fL",
+          "GR": "5.50 ×10¹²/L"
+        }
+      }
+    },
+    "shine_lal_index": {
+      "inputs": {
+        "mcv": "70.0 fL",
+        "mch": "22.0 pg"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Shine & Lal",
+            "value": 1078.0,
+            "unit": "",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Indice de Shine & Lal < 1760 : profil plutôt évocateur d'un trait thalassémique (seuil de 1760 proposé par Shine & Lal, 1977). Seuil habituellement cité dans la littérature comparant les indices discriminants de la microcytose, non formellement validé par une société savante d'hématologie (ex. ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC de l'hémoglobine et bilan martial (ferritine, coefficient de saturation de la transferrine) — aucun indice discriminant n'est individuellement fiable et ne doit être utilisé seul."
+          }
+        ],
+        "echoed": {
+          "VGM": "70.0 fL",
+          "TCMH": "22.0 pg"
+        }
+      }
+    },
+    "england_fraser_index": {
+      "inputs": {
+        "mcv": "70.0 fL",
+        "rbc": "5.5 ×10¹²/L",
+        "hb": "10.0 g/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice d'England & Fraser",
+            "value": 11.1,
+            "unit": "",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Indice d'England & Fraser positif : profil plutôt évocateur d'une carence martiale (lecture proposée par England & Fraser, 1973). Seuil habituellement cité dans la littérature comparant les indices discriminants de la microcytose, non formellement validé par une société savante d'hématologie (ex. ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC de l'hémoglobine et bilan martial (ferritine, coefficient de saturation de la transferrine) — aucun indice discriminant n'est individuellement fiable et ne doit être utilisé seul."
+          }
+        ],
+        "echoed": {
+          "VGM": "70.0 fL",
+          "GR": "5.50 ×10¹²/L",
+          "Hémoglobine": "10.0 g/dL"
+        }
+      }
+    },
+    "green_king_index": {
+      "inputs": {
+        "mcv": "70.0 fL",
+        "rdw": "20.0 %",
+        "hb": "10.0 g/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Indice de Green & King",
+            "value": 98.0,
+            "unit": "",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Indice de Green & King > 72 : profil plutôt évocateur d'une carence martiale (seuil de 72 proposé par Green & King, 1989). Seuil habituellement cité dans la littérature comparant les indices discriminants de la microcytose, non formellement validé par une société savante d'hématologie (ex. ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC de l'hémoglobine et bilan martial (ferritine, coefficient de saturation de la transferrine) — aucun indice discriminant n'est individuellement fiable et ne doit être utilisé seul."
+          }
+        ],
+        "echoed": {
+          "VGM": "70.0 fL",
+          "IDR (RDW)": "20.0 %",
+          "Hémoglobine": "10.0 g/dL"
+        }
+      }
+    },
+    "rdw_index": {
+      "inputs": {
+        "mcv": "70.0 fL",
+        "rdw": "20.0 %",
+        "rbc": "5.5 ×10¹²/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "RDWI",
+            "value": 254.54545454545453,
+            "unit": "",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "RDWI ≥ 220 : profil plutôt évocateur d'une carence martiale (seuil de 220 rapporté par Jayabose et al., 1999). Seuil habituellement cité dans la littérature comparant les indices discriminants de la microcytose, non formellement validé par une société savante d'hématologie (ex. ICSH) : outil de dépistage à confirmer par électrophorèse/HPLC de l'hémoglobine et bilan martial (ferritine, coefficient de saturation de la transferrine) — aucun indice discriminant n'est individuellement fiable et ne doit être utilisé seul."
+          }
+        ],
+        "echoed": {
+          "VGM": "70.0 fL",
+          "IDR (RDW)": "20.0 %",
+          "GR": "5.50 ×10¹²/L"
+        }
+      }
+    },
+    "reticulocyte_indices_panel": {
+      "inputs": {
+        "reticulocytes": "2.0 %",
+        "rbc": "3.0 ×10¹²/L",
+        "hematocrit": "35.0 %"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Nombre absolu de réticulocytes",
+            "value": 60.0,
+            "unit": "×10⁹/L",
+            "precision": 1
+          },
+          {
+            "label": "Réticulocytes corrigés (CRC)",
+            "value": 1.5555555555555556,
+            "unit": "%",
+            "precision": 2
+          },
+          {
+            "label": "Indice de production réticulocytaire (RPI)",
+            "value": 1.037037037037037,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "RPI < 2 : évocateur d'une réponse médullaire inadaptée (hypoproliférative), compatible par exemple avec une insuffisance médullaire, une carence nutritionnelle ou une anémie par défaut de production. Interprétation d'enseignement classique en hématologie clinique, fondée sur la méthode de Hillman (1969) déjà citée pour ce panel, et non sur une recommandation formelle d'une société savante nommée."
+          }
+        ],
+        "echoed": {
+          "Réticulocytes": "2.00 %",
+          "GR": "3.00 ×10¹²/L",
+          "Hématocrite": "35.0 %",
+          "Facteur de maturation (Hillman)": "1.5"
+        }
+      }
+    },
+    "sii_index": {
+      "inputs": {
+        "platelets": "250.0 ×10⁹/L",
+        "neutrophils": "6.0 ×10⁹/L",
+        "lymphocytes": "2.0 ×10⁹/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "SII",
+            "value": 750.0,
+            "unit": "",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil clinique consensuel n'est actuellement recommandé par une société savante d'hématologie ou d'oncologie pour cet index ; les seuils rapportés dans la littérature (principalement en recherche pronostique oncologique) varient fortement selon la pathologie et la cohorte étudiées, et ne doivent pas être généralisés à la pratique clinique courante."
+          }
+        ],
+        "echoed": {
+          "Plaquettes": "250.0 ×10⁹/L",
+          "Neutrophiles": "6.00 ×10⁹/L",
+          "Lymphocytes": "2.00 ×10⁹/L"
+        }
+      }
+    },
+    "siri_index": {
+      "inputs": {
+        "neutrophils": "6.0 ×10⁹/L",
+        "monocytes": "0.8 ×10⁹/L",
+        "lymphocytes": "2.0 ×10⁹/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "SIRI",
+            "value": 2.4000000000000004,
+            "unit": "",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil clinique consensuel n'est actuellement recommandé par une société savante d'hématologie ou d'oncologie pour cet index ; les seuils rapportés dans la littérature (principalement en recherche pronostique oncologique) varient fortement selon la pathologie et la cohorte étudiées, et ne doivent pas être généralisés à la pratique clinique courante."
+          }
+        ],
+        "echoed": {
+          "Neutrophiles": "6.00 ×10⁹/L",
+          "Monocytes": "0.80 ×10⁹/L",
+          "Lymphocytes": "2.00 ×10⁹/L"
+        }
+      }
+    },
+    "isth_dic_score": {
+      "inputs": {
+        "underlyingDisorderPresent": true,
+        "platelets": "80 G/L",
+        "fibrinMarker": "moderate",
+        "ptProlongation": "4.0 s",
+        "fibrinogen": "0.8 g/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score ISTH-CIVD",
+            "value": 5.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score ≥ 5 : compatible avec une CIVD manifeste (décompensée), seuil diagnostique défini par les critères originaux de l'ISTH (Taylor et al. 2001). À répéter quotidiennement."
+          }
+        ],
+        "echoed": {
+          "Plaquettes": "80 G/L",
+          "Marqueur de fibrine": "Augmentation modérée",
+          "Allongement du TP": "4.0 s",
+          "Fibrinogène": "0.80 g/L (0.80 g/L)"
+        }
+      }
+    },
+    "isth_dic_score#fibrinogen@mg/dL": {
+      "inputs": {
+        "underlyingDisorderPresent": true,
+        "fibrinogen": "80 mg/dL"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score ISTH-CIVD",
+            "value": 7.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score ≥ 5 : compatible avec une CIVD manifeste (décompensée), seuil diagnostique défini par les critères originaux de l'ISTH (Taylor et al. 2001). À répéter quotidiennement."
+          }
+        ],
+        "echoed": {
+          "Plaquettes": "80 G/L",
+          "Marqueur de fibrine": "Augmentation forte",
+          "Allongement du TP": "7.0 s",
+          "Fibrinogène": "80.00 mg/dL (0.80 g/L)"
+        }
+      }
+    },
+    "isth_dic_score#sans_contexte": {
+      "inputs": {
+        "underlyingDisorderPresent": false
+      },
+      "outcome": {
+        "complete": false,
+        "values": [
+          {
+            "label": "Score ISTH-CIVD",
+            "value": null,
+            "unit": "points",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "caution",
+            "message": "Ce score n'est validé que chez un patient présentant une pathologie associée à un risque de CIVD ; il n'est pas recommandé de l'appliquer hors de ce contexte."
+          }
+        ],
+        "echoed": {}
+      }
+    },
+    "isth_dic_score#incomplet": {
+      "inputs": {
+        "underlyingDisorderPresent": true
+      },
+      "outcome": {
+        "complete": false,
+        "values": [
+          {
+            "label": "Score ISTH-CIVD",
+            "value": null,
+            "unit": "points",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "caution",
+            "message": "Score incomplet : renseignez tous les critères."
+          }
+        ],
+        "echoed": {}
+      }
+    },
+    "four_ts_score": {
+      "inputs": {
+        "critères": "2,2,2,2"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score 4Ts",
+            "value": 8.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score 6-8 : probabilité clinique élevée de thrombopénie induite par l'héparine (TIH), selon les catégories de probabilité pré-test de Lo et al. (2006)."
+          }
+        ],
+        "echoed": {
+          "Thrombopénie": "Chute des plaquettes > 50 % ET nadir ≥ 20 G/L",
+          "Chronologie": "Début net entre le 5e et le 10e jour, ou chute ≤ 1 jour si exposition à l'héparine dans les 30 derniers jours",
+          "Thrombose/séquelles": "Nouvelle thrombose confirmée, nécrose cutanée, ou réaction systémique aiguë après bolus IV d'héparine",
+          "Autres causes": "Aucune autre cause apparente de thrombopénie"
+        }
+      }
+    },
+    "four_ts_score#intermediaire": {
+      "inputs": {
+        "critères": "1,1,1,1"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score 4Ts",
+            "value": 4.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score 4-5 : probabilité clinique intermédiaire de TIH, selon Lo et al. (2006)."
+          }
+        ],
+        "echoed": {
+          "Thrombopénie": "Chute des plaquettes 30-50 % OU nadir 10-19 G/L",
+          "Chronologie": "Chute compatible avec le 5e-10e jour mais mal documentée, ou début après le 10e jour, ou chute ≤ 1 jour si exposition 30-100 jours auparavant",
+          "Thrombose/séquelles": "Thrombose progressive ou récidivante, lésions cutanées non nécrotiques, ou thrombose suspectée non confirmée",
+          "Autres causes": "Autre cause possible"
+        }
+      }
+    },
+    "four_ts_score#faible": {
+      "inputs": {
+        "critères": "0,0,0,0"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "Score 4Ts",
+            "value": 0.0,
+            "unit": "points",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Score 0-3 : probabilité clinique faible de TIH, selon Lo et al. (2006)."
+          }
+        ],
+        "echoed": {
+          "Thrombopénie": "Chute des plaquettes < 30 % OU nadir < 10 G/L",
+          "Chronologie": "Chute des plaquettes récente (< 4 jours) sans exposition récente à l'héparine",
+          "Thrombose/séquelles": "Aucun signe de thrombose ou de séquelle",
+          "Autres causes": "Autre cause définie et documentée"
+        }
+      }
+    },
+    "four_ts_score#incomplet": {
+      "inputs": {
+        "critères": "manquants"
+      },
+      "outcome": {
+        "complete": false,
+        "values": [
+          {
+            "label": "Score 4Ts",
+            "value": null,
+            "unit": "points",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "caution",
+            "message": "Score incomplet : renseignez les 4 critères."
+          }
+        ],
+        "echoed": {}
+      }
+    }
+  }
+}
