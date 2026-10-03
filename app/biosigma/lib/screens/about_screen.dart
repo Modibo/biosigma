@@ -79,7 +79,8 @@ class AboutScreen extends StatelessWidget {
               "plutôt que d'inventer un seuil. Ces interprétations restent des repères généraux, "
               'à individualiser : elles ne remplacent ni le contexte clinique du patient, ni le '
               "jugement du professionnel compétent. Les seuils propres au laboratoire (méthode de "
-              "dosage, population locale) restent réglables dans Réglages, section Seuils locaux.\n\n"
+              "dosage, population locale) peuvent être saisis dans Réglages, section Seuils locaux : ils sont "
+              "alors rappelés sous le résultat du calcul concerné, sans comparaison automatique.\n\n"
               'BioSigma ne collecte aucune donnée nominative, ne nécessite aucune connexion pour '
               "calculer, et n'envoie rien en dehors de l'appareil.",
             ),

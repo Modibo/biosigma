@@ -9,13 +9,13 @@ import '../widgets/formula_reference_section.dart';
 import '../widgets/guided_criterion_selector.dart';
 import '../widgets/numeric_unit_field.dart';
 import '../widgets/result_value_tile.dart';
+import '../widgets/warning_list.dart';
 
 /// Module guidé du score ISTH de CIVD : demande explicitement chaque
 /// donnée clinique/analytique requise, n'infère jamais une donnée
 /// absente, et affiche « score incomplet » tant que tous les critères ne
-/// sont pas renseignés. L'interprétation clinique du score n'est affichée
-/// que si le biologiste responsable a coché la validation locale dans les
-/// réglages (cf. cahier des charges).
+/// sont pas renseignés. L'interprétation du score est toujours affichée,
+/// comme pour tous les autres calculateurs (décision D-03).
 class IsthDicScreen extends StatefulWidget {
   const IsthDicScreen({super.key});
 
@@ -78,7 +78,6 @@ class _IsthDicScreenState extends State<IsthDicScreen> {
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
-    final validated = appState.settings.localInterpretationsValidated;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Score ISTH-CIVD')),
@@ -175,20 +174,7 @@ class _IsthDicScreenState extends State<IsthDicScreen> {
                       ..._result!.values.map((v) => ResultValueTile(
                           result: v, decimalSeparator: appState.settings.decimalSeparator)),
                       const SizedBox(height: 8),
-                      if (_result!.isComplete && !validated)
-                        const Padding(
-                          padding: EdgeInsets.only(top: 4),
-                          child: Text(
-                            "Interprétation masquée : cochez « interprétations locales validées » "
-                            'dans Réglages pour l\'afficher (validation par le biologiste responsable).',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        )
-                      else
-                        ..._result!.warnings.map((w) => Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Text(w.message),
-                            )),
+                      WarningList(warnings: _result!.warnings),
                     ],
                   ),
                 ),

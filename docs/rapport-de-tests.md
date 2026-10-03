@@ -70,7 +70,7 @@ respectifs (voir `README.md`)**, mais confirme que l'interface se comporte corre
   s'inversent car 70/88,42/0,7 ≈ 1,13 > 1, cf. détail dans `docs/tracabilite-scientifique.md`).
 - Module guidé Score ISTH-CIVD : bascule « pathologie associée », numération plaquettaire,
   sélecteurs catégoriels avec points affichés, champs TP/fibrinogène — rendu conforme au cahier
-  des charges (« score incomplet » si un critère manque, interprétation masquée par défaut).
+  des charges (« score incomplet » si un critère manque ; au moment de cette vérification l'interprétation était masquée par défaut, ce qui a été retiré depuis — décision D-03).
 - Testé aux largeurs bureau (800 px) et mobile (375 px) : aucun débordement, mise en page adaptée.
 
 **Anomalie détectée puis corrigée pendant cette vérification visuelle** : le bouton « Nouvelle
@@ -145,8 +145,8 @@ Environnement identique (Flutter 3.47.5, mêmes limites de SDK). Changements :
     question affichée (pas d'ordre supposé, compatible avec le tirage aléatoire), vérifie le score
     final 20/20 et son report sur l'écran Entraînement — vert.
   - **Non fait dans cette livraison** : revue clinique exhaustive des 200 nouvelles questions par un
-    biologiste responsable (seul un échantillon a été relu manuellement) ; poursuite de la banque
-    vers l'objectif de 1000 questions.
+    biologiste responsable (seul un échantillon a été relu manuellement). L'extension de la banque
+    vers ~1000 questions, qui était l'objectif initial, a été abandonnée par l'utilisateur.
 
 ## 7. Correctif du 26/09/2026 — onglets en haut, logo visible sur chaque onglet
 
@@ -588,3 +588,19 @@ vers un nouveau build (nouveau cache rempli en attente, ancien supprimé, rechar
 
 Non vérifié : le Dockerfile modifié n'a pas été reconstruit ici (pas de Docker lancé dans cette
 session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas été essayé.
+
+## Décisions D-03 et D-04 (2026-10-03)
+
+- **D-03** : l'interprétation des scores ISTH-CIVD et 4Ts est désormais **toujours affichée**, comme
+  pour tous les autres calculateurs, conformément à la décision de l'utilisateur du 26/09 (« toujours
+  affiché, sans blocage »). Le réglage « interprétations locales validées » est retiré. La
+  contradiction signalée dans le dossier d'audit (A-14) est levée pour ces deux écrans ; les
+  interprétations ne sont toujours pas validées par un biologiste responsable.
+- **D-04** : réglages sans effet traités un par un — *précision d'affichage* (retirée : la précision de
+  chaque résultat est fixée par son calcul) ; *coefficient de Katz mis en avant* (retiré : Katz et Hillier
+  sont toujours affichés côte à côte) ; *équation LDL* (câblée : présélection à l'ouverture du panel
+  LDL, sans effet sur un résultat) ; *seuils locaux* (câblés : rappelés sous le résultat du calcul
+  concerné, sans comparaison ni interprétation automatique). D'anciens réglages enregistrés contenant
+  les clés retirées sont relus normalement.
+- Vérification : `flutter analyze` sans remarque ; 37 tests de l'application verts (dont 4 nouveaux pour D-03/D-04) ;
+  golden master inchangé.

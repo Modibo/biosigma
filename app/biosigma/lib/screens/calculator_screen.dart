@@ -7,6 +7,7 @@ import '../models/app_settings.dart';
 import '../models/calculator_definition.dart';
 import '../models/calculator_field.dart';
 import '../models/history_entry.dart';
+import '../models/local_threshold.dart';
 import '../state/app_state.dart';
 import '../widgets/disclaimer_banner.dart';
 import '../widgets/formula_reference_section.dart';
@@ -51,12 +52,22 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         case FieldKind.boolean:
           map[field.id] = field.defaultBoolValue;
         case FieldKind.enumSelect:
-          map[field.id] = null;
+          map[field.id] = _presetEnumValue(field);
         case FieldKind.text:
           map[field.id] = field.defaultText ?? '';
       }
     }
     return map;
+  }
+
+  /// Seule présélection : l'équation LDL choisie dans Réglages. Tout autre
+  /// choix reste vide, pour que l'utilisateur le fasse explicitement.
+  Object? _presetEnumValue(CalculatorFieldSpec field) {
+    if (widget.definition.meta.id == 'ldl_panel' && field.id == 'formula') {
+      final friedewald = context.read<AppState>().settings.ldlDefaultFriedewald;
+      return friedewald ? LdlFormula.friedewald : LdlFormula.sampson;
+    }
+    return null;
   }
 
   int _formGeneration = 0;
@@ -254,6 +265,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   ),
                 ),
               ),
+              _LocalThresholdsCard(thresholds: appState.thresholdsFor(meta.id)),
               const SizedBox(height: 12),
               _EchoedInputsCard(inputs: _result!.echoedInputs),
             ],
@@ -381,6 +393,49 @@ class _EchoedInputsCard extends StatelessWidget {
                   child: Text('${e.key} : ${e.value}'),
                 )),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Rappel des seuils définis localement par le laboratoire pour ce calcul.
+/// Affichage seul : aucune comparaison ni interprétation automatique.
+class _LocalThresholdsCard extends StatelessWidget {
+  const _LocalThresholdsCard({required this.thresholds});
+
+  final List<LocalThreshold> thresholds;
+
+  @override
+  Widget build(BuildContext context) {
+    if (thresholds.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Seuils locaux du laboratoire',
+                  style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 4),
+              Text(
+                'Définis par votre laboratoire, non fournis par BioSigma. '
+                'Le résultat n\'est pas comparé automatiquement à ces seuils.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 8),
+              for (final t in thresholds)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Text(
+                    '${t.label} : ${t.value} ${t.unit}\n${t.method} — validé le '
+                    '${t.validatedOn.toLocal().toString().split(' ').first} par ${t.validatedBy}',
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

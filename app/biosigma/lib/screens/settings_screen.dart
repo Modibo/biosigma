@@ -6,10 +6,9 @@ import '../models/app_settings.dart';
 import '../models/local_threshold.dart';
 import '../state/app_state.dart';
 
-/// Écran Réglages : séparateur décimal, précision d'affichage, historique
-/// local (facultatif, désactivé par défaut), validation locale des
-/// interprétations de score, seuils locaux du laboratoire, et suppression
-/// totale des données locales.
+/// Écran Réglages : séparateur décimal, historique local (facultatif,
+/// désactivé par défaut), équation LDL présélectionnée, seuils locaux du
+/// laboratoire, et suppression totale des données locales.
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -46,38 +45,6 @@ class SettingsScreen extends StatelessWidget {
                       RadioListTile<DecimalSeparator>(
                         value: DecimalSeparator.dot,
                         title: Text('Point (1.50)'),
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  title: const Text('Précision d\'affichage par défaut'),
-                  subtitle: Text(
-                    '${settings.displayPrecision} décimale(s) — '
-                    'la précision propre à chaque formule reste prioritaire',
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove),
-                        onPressed: settings.displayPrecision > 0
-                            ? () => appState.updateSettings(
-                                (s) => s.copyWith(
-                                  displayPrecision: s.displayPrecision - 1,
-                                ),
-                              )
-                            : null,
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: settings.displayPrecision < 6
-                            ? () => appState.updateSettings(
-                                (s) => s.copyWith(
-                                  displayPrecision: s.displayPrecision + 1,
-                                ),
-                              )
-                            : null,
                       ),
                     ],
                   ),
@@ -151,26 +118,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            'Scores guidés (ISTH-CIVD, 4Ts)',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 8),
-          Card(
-            child: SwitchListTile(
-              title: const Text('Interprétations locales validées'),
-              subtitle: const Text(
-                'À cocher uniquement par le biologiste responsable, après validation locale : '
-                'affiche le texte d\'interprétation clinique des scores ISTH-CIVD et 4Ts.',
-              ),
-              value: settings.localInterpretationsValidated,
-              onChanged: (v) => appState.updateSettings(
-                (s) => s.copyWith(localInterpretationsValidated: v),
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            'Panel LDL et sodium corrigé',
+            'Panel LDL',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
@@ -178,25 +126,14 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               children: [
                 SwitchListTile(
-                  title: const Text('Mettre en avant Friedewald par défaut'),
+                  title: const Text('Présélectionner Friedewald dans le panel LDL'),
                   subtitle: const Text(
-                    'Sinon Sampson. Les deux résultats restent calculables.',
+                    'Sinon Sampson. Simple présélection à l\'ouverture : l\'équation reste '
+                    'modifiable avant le calcul et aucun résultat n\'est changé.',
                   ),
                   value: settings.ldlDefaultFriedewald,
                   onChanged: (v) => appState.updateSettings(
                     (s) => s.copyWith(ldlDefaultFriedewald: v),
-                  ),
-                ),
-                SwitchListTile(
-                  title: const Text(
-                    'Mettre en avant le coefficient de Katz (1,6)',
-                  ),
-                  subtitle: const Text(
-                    'Sinon Hillier (2,4). Les deux valeurs restent affichées.',
-                  ),
-                  value: settings.sodiumCorrectionUsesKatz,
-                  onChanged: (v) => appState.updateSettings(
-                    (s) => s.copyWith(sodiumCorrectionUsesKatz: v),
                   ),
                 ),
               ],
@@ -218,8 +155,9 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
           Text(
-            'Aucun seuil universel n\'est imposé par BioSigma : ceux définis ici, avec valeur, '
-            'unité, méthode et responsable de validation, sont les seuls affichés dans l\'application.',
+            'Aucun seuil universel n\'est imposé par BioSigma. Ceux définis ici (valeur, unité, '
+            'méthode, responsable de validation) sont rappelés sous le résultat du calcul concerné, '
+            'tels que vous les avez saisis : l\'application ne compare pas le résultat au seuil.',
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 8),

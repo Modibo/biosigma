@@ -236,10 +236,10 @@ Quatre banques de questions (une par domaine : rénal, cardiométabolique, ionog
 lancement (`QuizModule.sampleSession`, `lib/screens/quiz_module_screen.dart`).
 
 **État actuel de la banque : 232 questions** (55 rénal, 55 cardiométabolique, 68 ionogramme,
-54 hémostase). Objectif visé à terme : ~1000 questions, en croissance progressive au fil des
-livraisons — essentiellement des **cas cliniques et questions d'interprétation**, complétées par de
-la culture scientifique et du vocabulaire, sans jamais asserter un seuil clinique numérique comme
-une vérité universelle :
+54 hémostase). La banque est **volontairement arrêtée à ce volume** (l'extension à ~1000 questions
+a été abandonnée). Elle est essentiellement composée de **cas cliniques et questions
+d'interprétation**, complétées par de la culture scientifique et du vocabulaire, sans jamais
+asserter un seuil clinique numérique comme une vérité universelle :
 
 - **Cas clinique / interprétation** (majoritaire) : un bref contexte patient-laboratoire, puis une
   question fermée dont la bonne réponse reprend fidèlement un fait déjà documenté dans le
@@ -267,9 +267,11 @@ suivants nécessitent une décision et une validation propres à chaque laborato
    par défaut est proposé mais reconfigurable.
 4. **Facteur transferrine → CTF** (×1,42 usuel) : affiché comme un facteur de laboratoire par
    défaut, à confirmer localement.
-5. **Activation de l'interprétation des scores ISTH-CIVD et 4Ts** : les scores se calculent
-   toujours, mais leur texte d'interprétation clinique reste masqué tant que le biologiste
-   responsable n'a pas coché « interprétations locales validées » dans Réglages.
+5. **Interprétation des scores ISTH-CIVD et 4Ts** : comme pour tous les autres calculateurs, le
+   texte d'interprétation est toujours affiché (décision D-03 du 2026-10-03 ; l'ancien réglage
+   « interprétations locales validées », qui masquait ce texte, a été retiré). Aucune interprétation
+   n'est pour autant validée par un biologiste responsable : voir la revue scientifique finale
+   ci-dessous.
 6. **Coefficient de correction du sodium** (Katz 1,6 ou Hillier 2,4) : les deux résultats sont
    toujours affichés côte à côte, le laboratoire retient celui qu'il utilise en pratique.
 
