@@ -164,10 +164,12 @@ final CalculatorDefinition ldlPanelDefinition = CalculatorDefinition(
       helpText:
           "Friedewald n'est valide que pour des triglycérides < 4,52 mmol/L "
           "(400 mg/dL) ; Sampson étend le domaine de validité jusqu'à "
-          "8,90 mmol/L (800 mg/dL).",
+          "8,90 mmol/L (800 mg/dL) ; Martin-Hopkins utilise un tableau de facteurs "
+          "(saisi par le validateur, voir la fiche).",
       enumOptions: [
         EnumFieldOption(value: LdlFormula.friedewald, label: LdlFormula.friedewald.label),
         EnumFieldOption(value: LdlFormula.sampson, label: LdlFormula.sampson.label),
+        EnumFieldOption(value: LdlFormula.martinHopkins, label: LdlFormula.martinHopkins.label),
       ],
     ),
   ],

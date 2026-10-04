@@ -3,6 +3,7 @@ import '../../models/formula_meta.dart';
 import '../../models/reference.dart';
 import '../../models/result.dart';
 import '../../validation.dart';
+import 'martin_hopkins_table_data.dart';
 
 /// Tableau des facteurs triglycérides/VLDL-C de la méthode de Martin-Hopkins,
 /// **saisi par l'utilisateur** (aucune valeur n'est embarquée : le tableau
@@ -84,6 +85,12 @@ class MartinHopkinsTable {
     return MartinHopkinsTable._(nonHdl, tg, f);
   }
 
+  /// Le tableau saisi par l'utilisateur (voir `martin_hopkins_table_data.dart`).
+  static final MartinHopkinsTable entered = MartinHopkinsTable.fromCsv(martinHopkinsEnteredTableCsv);
+
+  /// Borne inférieure de la dernière strate de TG (la strate « ≥ … » du tableau).
+  double get lastTgLowerEdge => tgLowerEdges.last;
+
   int get cellCount => factors.fold(0, (s, r) => s + r.length);
 
   /// Facteur de la strate qui contient ces valeurs (mg/dL) ; `null` si les TG
@@ -95,10 +102,15 @@ class MartinHopkinsTable {
     return factors[r][c];
   }
 
+  /// Tolérance (mg/dL) pour qu'une valeur à la borne d'une strate n'en sorte pas à cause du bruit
+  /// de calcul flottant : un cholestérol saisi à 215 mg/dL revient de la conversion en mmol/L puis
+  /// en mg/dL sous la forme 214,99999999999997. Un écart de 10⁻⁶ mg/dL n'a aucun sens biologique.
+  static const double _edgeTolerance = 1e-6;
+
   static int _stratum(List<double> edges, double v) {
     var idx = -1;
     for (var i = 0; i < edges.length; i++) {
-      if (v >= edges[i]) idx = i;
+      if (v >= edges[i] - _edgeTolerance) idx = i;
     }
     return idx;
   }

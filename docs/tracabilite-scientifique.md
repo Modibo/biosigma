@@ -34,7 +34,7 @@ embarqué). Aucun seuil interprétatif clinique n'est codé en dur comme univers
 | TyG (`tyg_index`) | Simental-Mendía LE et al. *Metab Syndr Relat Disord.* 2008;6(4):299-304. | TyG = ln[(TG mg/dL × Glycémie mg/dL)/2] | TG et glycémie mg/dL (formule) | Adulte, à jeun | Prélèvement non à jeun | Autres conventions de parenthésage existent dans la littérature : ne pas comparer les seuils entre conventions |
 | HOMA-IR (`homa_ir`) | Matthews DR et al. *Diabetologia.* 1985;28(7):412-419. | HOMA-IR = (Glycémie mmol/L × Insuline µU/mL) / 22,5 | Glycémie mmol/L ; insuline µU/mL | Adulte, à jeun | Prélèvement non à jeun | Indice indirect ; seuils dépendants de la population et du dosage d'insuline |
 | Glycémie moyenne estimée — eAG (`estimated_average_glucose_adag`) | Nathan DM et al. (ADAG). *Diabetes Care.* 2008;31(8):1473-1478. | eAG (mg/dL) = 28,7 × HbA1c(%) − 46,7 | HbA1c % (NGSP) | Adulte | Hémoglobinopathie, anémie hémolytique, carence martiale, grossesse, IRC terminale | Estimation de population, peut différer de la moyenne individuelle réelle |
-| Panel LDL (Friedewald / Sampson), non-HDL, ratios, cholestérol résiduel (`ldl_panel`) | Friedewald WT et al. *Clin Chem.* 1972;18(6):499-502. ; Sampson M et al. *JAMA Cardiol.* 2020;5(5):540-548. | Friedewald : LDL = TC−HDL−TG/5 (mg/dL). Sampson : équation NIH-2 (cf. code) | Cholestérol et TG mg/dL (formules) | Adulte | Friedewald : TG ≥ 4,52 mmol/L (400 mg/dL). Sampson : TG ≥ 800 mg/dL. Chylomicronémie/dysbêtalipoprotéinémie type III non détectable | Martin-Hopkins non implémenté (table à 180 cellules, risque de transcription) |
+| Panel LDL (Friedewald / Sampson / Martin-Hopkins), non-HDL, ratios, cholestérol résiduel (`ldl_panel`) | Friedewald WT et al. *Clin Chem.* 1972;18(6):499-502. ; Sampson M et al. *JAMA Cardiol.* 2020;5(5):540-548. ; Martin SS et al. *JAMA.* 2013;310(19):2061-2068. | Friedewald : LDL = TC−HDL−TG/5 (mg/dL). Sampson : équation NIH-2 (cf. code) | Cholestérol et TG mg/dL (formules) | Adulte | Friedewald : TG ≥ 4,52 mmol/L (400 mg/dL). Sampson : TG ≥ 800 mg/dL. Chylomicronémie/dysbêtalipoprotéinémie type III non détectable | Martin-Hopkins (v2) : tableau saisi par le validateur, non confronté à la source (FV-PREP-017) |
 | Indice athérogène du plasma — AIP (`atherogenic_index_of_plasma`) | Dobiásová M, Frohlich J. *Clin Biochem.* 2001;34(7):583-588. | AIP = log10(TG mmol/L / HDL mmol/L) | **mmol/L obligatoire** (conversion préalable) | Adulte | — | Ne pas confondre avec le ratio TG/HDL simple (mg/dL, convention différente) |
 
 ## Ionogramme, gaz du sang et biochimie générale
@@ -69,9 +69,9 @@ embarqué). Aucun seuil interprétatif clinique n'est codé en dur comme univers
 
 ## Points signalés plutôt que devinés
 
-- **LDL Martin-Hopkins** : volontairement non implémenté (table de facteurs ajustés à 180 cellules ;
-  risque de transcription jugé trop élevé sans validation externe formelle). Friedewald et Sampson
-  couvrent la majorité des cas d'usage.
+- **LDL Martin-Hopkins** (version 2 du panel lipidique, 2026-10-04) : implémenté avec le tableau de 180 facteurs
+  **saisi par le validateur**, recopié par programme et **non confronté à la publication par l'assistant** ;
+  dossier FV-PREP-017 (une cellule à vérifier, astérisque de « ≥ 400 » à expliciter).
 - **Facteur insuline µU/mL → pmol/L (×6,945)** : dépend de l'étalon international du dosage
   (1ʳᵉ préparation de référence OMS 66/304) — affiché avec cette réserve, jamais silencieusement.
 - **Facteur transferrine → CTF (×1,42)** et **saturation transferrine** : facteurs usuels de

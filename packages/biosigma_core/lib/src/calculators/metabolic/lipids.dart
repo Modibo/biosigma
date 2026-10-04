@@ -6,12 +6,14 @@ import '../../models/result.dart';
 import '../../units/analyte.dart';
 import '../../units/unit_registry.dart';
 import '../../validation.dart';
+import 'martin_hopkins.dart';
 import 'shared_formulas.dart';
 
 /// Équation utilisée pour estimer le LDL-cholestérol calculé.
 enum LdlFormula {
   friedewald('Friedewald 1972'),
-  sampson('Sampson 2020 (équation NIH 2)');
+  sampson('Sampson 2020 (équation NIH 2)'),
+  martinHopkins('Martin-Hopkins 2013 (tableau saisi)');
 
   const LdlFormula(this.label);
 
@@ -27,14 +29,16 @@ const FormulaMeta ldlPanelMeta = FormulaMeta(
   shortName: 'Panel lipidique (LDL calculé)',
   category: CalculatorCategory.metabolic,
   version:
-      "Friedewald 1972 ou Sampson 2020 (équation NIH 2), selon le choix de "
-      "l'utilisateur — voir « Équation LDL » dans les entrées échoïsées",
+      "Friedewald 1972, Sampson 2020 (équation NIH 2) ou Martin-Hopkins 2013 (tableau saisi), "
+      "selon le choix de l'utilisateur — voir « Équation LDL » dans les entrées échoïsées",
   equation:
       'LDL (Friedewald) = CT − HDL − TG/5 (mg/dL ; domaine valide TG < 400 '
       'mg/dL, soit 4,52 mmol/L)  |  '
       'LDL (Sampson, NIH éq. 2) = CT/0,948 − HDL/0,971 − '
       '[TG/8,56 + TG×non-HDL/2140 − TG²/16100] − 9,44 (mg/dL ; domaine '
-      'valide TG < 800 mg/dL)  |  non-HDL = CT − HDL  |  CT/HDL = CT/HDL  |  '
+      'valide TG < 800 mg/dL)  |  '
+      'LDL (Martin-Hopkins) = CT − HDL − TG/F (mg/dL), F = facteur du tableau à 180 cellules '
+      '(30 strates de TG × 6 de non-HDL-C)  |  non-HDL = CT − HDL  |  CT/HDL = CT/HDL  |  '
       'TG/HDL (mg/dL) = TG/HDL  |  Cholestérol résiduel = non-HDL − LDL',
   sources: [
     Reference(
@@ -52,6 +56,14 @@ const FormulaMeta ldlPanelMeta = FormulaMeta(
           'Normolipidemia and/or Hypertriglyceridemia. JAMA Cardiol. '
           '2020;5(5):540-548.',
       note: 'équation Sampson / NIH équation 2',
+    ),
+    Reference(
+      citation:
+          'Martin SS, Blaha MJ, Elshazly MB, et al. Comparison of a novel method vs the Friedewald '
+          'equation for estimating low-density lipoprotein cholesterol levels from the standard lipid '
+          'profile. JAMA. 2013;310(19):2061-2068.',
+      note: 'méthode Martin-Hopkins ; tableau des facteurs saisi par le validateur, non confronté à la '
+          'publication par l\'assistant',
     ),
     Reference(
       citation:
@@ -77,11 +89,9 @@ const FormulaMeta ldlPanelMeta = FormulaMeta(
         'type III (non détectable à partir des seules valeurs saisies).',
   ],
   limitations: [
-    "L'équation Martin-Hopkins (table de facteurs ajustés) n'est pas "
-        "implémentée dans cette version : risque de transcription d'une "
-        "table à 180 cellules jugé trop élevé sans validation externe "
-        "formelle ; Friedewald et Sampson couvrent la majorité des cas "
-        "d'usage.",
+    "Martin-Hopkins : le tableau de 180 facteurs a été saisi par le validateur ; il n'a pas été "
+        "confronté à la publication par l'assistant (dossier FV-PREP-017). Le résultat ne vaut que ce "
+        "que vaut ce tableau.",
   ],
 );
 
@@ -197,6 +207,33 @@ CalculationResult calculateLdlPanel({
             hdlMgDl / 0.971 -
             (tgMgDl / 8.56 + tgMgDl * nonHdlMgDl / 2140 - tgMgDl * tgMgDl / 16100) -
             9.44;
+      }
+    case LdlFormula.martinHopkins:
+      final nonHdlMgDl = tcMgDl - hdlMgDl;
+      final table = MartinHopkinsTable.entered;
+      final factor = table.factorFor(triglyceridesMgDl: tgMgDl, nonHdlMgDl: nonHdlMgDl);
+      if (factor == null) {
+        warnings.add(const CalculationWarning(
+          'LDL non calculé : triglycérides ou cholestérol non-HDL sous la première strate du '
+          'tableau de Martin-Hopkins saisi (TG ≥ 7 mg/dL et non-HDL-C ≥ 0 requis).',
+          severity: WarningSeverity.blocking,
+        ));
+      } else {
+        ldlMgDl = nonHdlMgDl - tgMgDl / factor;
+        warnings.add(CalculationWarning(
+          'Facteur ajustable F = ${factor.toStringAsFixed(1).replaceAll('.', ',')} lu dans le tableau de '
+          'Martin-Hopkins saisi par le validateur (non confronté à la publication par l\'assistant : '
+          'dossier FV-PREP-017).',
+          severity: WarningSeverity.info,
+        ));
+        if (tgMgDl >= table.lastTgLowerEdge) {
+          warnings.add(CalculationWarning(
+            'Triglycérides ≥ ${table.lastTgLowerEdge.toStringAsFixed(0)} mg/dL : dernière ligne du tableau, '
+            'marquée d\'un astérisque dans le tableau saisi ; la signification de cet astérisque est à '
+            'confirmer avant de s\'appuyer sur ce résultat (comparer avec Sampson ou une mesure directe).',
+            severity: WarningSeverity.caution,
+          ));
+        }
       }
   }
 

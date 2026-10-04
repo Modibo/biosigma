@@ -20,5 +20,6 @@ Un dossier par élément et par version. Les fichiers `FV-PREP-…` sont des **b
 | [FV-PREP-014](FV-PREP-014-quicki.md) | QUICKI | brouillon préparé, non signé |
 | [FV-PREP-015](FV-PREP-015-conversions-frequentes.md) | Conversions fréquentes (8 analytes) | brouillon préparé, non signé |
 | [FV-PREP-016](FV-PREP-016-incertitude-gum.md) | Propagation d'incertitude (GUM), mode Expert | brouillon préparé, non signé |
+| [FV-PREP-017](FV-PREP-017-martin-hopkins.md) | LDL Martin-Hopkins (panel lipidique, version 2) | brouillon préparé, non signé — **tableau saisi par le validateur, non confronté à la source ; 1 cellule à vérifier (93–96 / ≥ 220)** |
 
 Rappel : **aucun de ces dossiers n'est signé ; aucun élément n'est « VALIDÉ ».** Le registre `../registre-validation.csv` pointe vers ces dossiers (colonne `prepared_dossier`).

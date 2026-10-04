@@ -831,3 +831,10 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **P6-04** : documents ; script de veille exécuté (état des paquets relevé dans `docs/veille-dependances.md`).
 - **Totaux** : moteur et application, voir la dernière exécution ci-dessous.
 
+## Martin-Hopkins : tableau saisi par le validateur (2026-10-04, version 1.20.0)
+
+- **Données** : 180 facteurs collés par l'utilisateur, recopiés par programme (`martin_hopkins_table_data.dart`) ; **non confrontés à la publication par l'assistant**. Contrôles : 30 strates contiguës, 6 colonnes, somme 949,4 (empreinte testée, recalculée en Python à partir du texte collé), aucun facteur croissant avec le non-HDL-C, une seule décroissance avec les TG (93–96 → 97–100, colonne ≥ 220).
+- **Panel lipidique, version 2** : 15 tests nouveaux (structure, repères, empreinte, monotonie, 6 cas Python à 10⁻⁹, TG ≥ 400 avec mise en garde, TG < 7 bloquant, bornes incluses, bruit flottant). Moteur : **618 tests**.
+- **Défaut trouvé par un test** : un CT de 215 mg/dL et un HDL de 85 mg/dL donnaient un non-HDL-C de 129,99999999999997 après l'aller-retour des unités, donc le facteur de la colonne 100–129 (3,9) au lieu de 130–159 (3,7) : LDL 117,18 au lieu de 116,49. Corrigé par une tolérance de 10⁻⁶ mg/dL aux bornes des strates.
+- **Golden master** : 1 cas ajouté (`ldl_panel#formula=2`, 59 lignes), **aucun cas existant modifié** (diff : 0 suppression).
+

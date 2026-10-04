@@ -50,18 +50,20 @@ void main() {
 
     test('version 1 pour toutes les entrées sauf celles modifiées depuis ; libellé de version conservé', () {
       for (final r in EquationRegistry.all) {
-        final modified = r.legacyId == 'ckd_epi_creatinine_cystatin_c_2021';
+        final modified = const {'ckd_epi_creatinine_cystatin_c_2021', 'ldl_panel'}.contains(r.legacyId);
         expect(r.version, modified ? 2 : 1, reason: r.legacyId);
         expect(r.changeNotes.isNotEmpty, modified, reason: r.legacyId);
         expect(r.versionLabel, r.meta.version);
       }
       expect(EquationRegistry.resolve('ckd_epi_creatinine_cystatin_c_2021')!.changeNotes.single,
           contains('coefficients α'));
+      expect(EquationRegistry.resolve('ldl_panel')!.changeNotes.single, contains('Martin-Hopkins'));
     });
 
     test('le registre de validation exige la version courante : 2 pour CKD-EPI combiné', () {
       expect(validationKnownVersions()['RENAL_CKD_EPI_CREATININE_CYSTATIN_C_2021_001'], 2);
       expect(validationKnownVersions()['RENAL_CKD_EPI_CREATININE_2021_001'], 1);
+      expect(validationKnownVersions()['METAB_LDL_PANEL_001'], 2);
     });
   });
 

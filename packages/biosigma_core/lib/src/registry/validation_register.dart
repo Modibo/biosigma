@@ -30,6 +30,7 @@ final Map<String, String> preparedDossiers = {
       'fiches-de-validation/FV-PREP-012-cha2ds2-vasc.md',
   'HEMO_HAS_BLED_SCORE_001': 'fiches-de-validation/FV-PREP-013-has-bled.md',
   'METAB_QUICKI_001': 'fiches-de-validation/FV-PREP-014-quicki.md',
+  'METAB_LDL_PANEL_001': 'fiches-de-validation/FV-PREP-017-martin-hopkins.md',
   'LAB_LAB_UNCERTAINTY_001': 'fiches-de-validation/FV-PREP-016-incertitude-gum.md',
   for (final a in const [
     'creatinine',
@@ -49,6 +50,7 @@ const Map<String, String> _equationFlags = {
   'tyg_index': 'Exemple de seuil « TyG > 4,5 » retiré le 2026-10-04 (incohérent avec la convention mg/dL), texte à relire (voir FV-PREP-005)',
   'albi_score': 'Coefficient albumine −0,0852 dans le code ; l\'article original donne −0,085 selon ma mémoire (non vérifié) : à confronter à la source primaire',
   'ckd_epi_creatinine_cystatin_c_2021': 'Version 2 (2026-10-04) : coefficients α corrigés ; relire le dossier FV-PREP-009',
+  'ldl_panel': 'Version 2 : Martin-Hopkins ajoutée (tableau saisi, non confronté à la source) : relire FV-PREP-017, notamment la cellule 93–96 / ≥ 220 et l\'astérisque de « ≥ 400 »',
   'apri': 'Référence à reconfirmer (R-08 : citée sans lecture du texte source)',
   'padua_prediction_score': 'Référence à reconfirmer (R-08)',
   'has_bled_score': 'Référence à reconfirmer (R-08)',

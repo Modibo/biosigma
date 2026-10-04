@@ -103,6 +103,13 @@ class EquationRegistry {
   /// modification de formule, constante, unité ou domaine crée une version) ;
   /// les autres sont en version 1. Une fiche de validation ne couvre que sa version.
   static const Map<String, (int, List<String>)> _versions = {
+    'ldl_panel': (
+      2,
+      [
+        '2026-10-04 — version 2 : ajout de l\'équation LDL de Martin-Hopkins (tableau de 180 facteurs saisi par '
+            'le validateur, dossier FV-PREP-017). Friedewald et Sampson sont inchangées (résultats identiques).',
+      ],
+    ),
     'ckd_epi_creatinine_cystatin_c_2021': (
       2,
       [

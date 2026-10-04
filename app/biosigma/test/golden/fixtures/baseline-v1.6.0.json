@@ -1594,6 +1594,65 @@
         }
       }
     },
+    "ldl_panel#formula=2": {
+      "inputs": {
+        "totalCholesterol": "5.2 mmol/L",
+        "hdl": "1.3 mmol/L",
+        "triglycerides": "1.5 mmol/L",
+        "formula": "Martin-Hopkins 2013 (tableau saisi)"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "LDL calculé (Martin-Hopkins 2013 (tableau saisi))",
+            "value": 3.2523125730505935,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol non-HDL",
+            "value": 3.9000000000000004,
+            "unit": "mmol/L",
+            "precision": 2
+          },
+          {
+            "label": "Ratio CT/HDL",
+            "value": 4.0,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Ratio TG/HDL (mg/dL)",
+            "value": 2.640571817562968,
+            "unit": "",
+            "precision": 2
+          },
+          {
+            "label": "Cholestérol résiduel (non-HDL − LDL)",
+            "value": 0.6476874269494068,
+            "unit": "mmol/L",
+            "precision": 2
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Facteur ajustable F = 5,3 lu dans le tableau de Martin-Hopkins saisi par le validateur (non confronté à la publication par l'assistant : dossier FV-PREP-017)."
+          },
+          {
+            "severity": "info",
+            "message": "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proche du cadre historique NCEP ATP III) : quasi optimal (100-129 mg/dL, soit 2,6-3,3 mmol/L). Cette catégorie est purement descriptive : la cible thérapeutique réelle dépend de la catégorie de risque cardiovasculaire global du patient (faible/modéré/élevé/très élevé, ex. ESC SCORE2), que ce calculateur ne détermine pas — ne jamais lire cette catégorie comme un objectif de traitement individualisé."
+          }
+        ],
+        "echoed": {
+          "Cholestérol total": "5.20 mmol/L (5.200 mmol/L, 201.1 mg/dL)",
+          "HDL-cholestérol": "1.30 mmol/L (1.300 mmol/L, 50.3 mg/dL)",
+          "Triglycérides": "1.50 mmol/L (1.500 mmol/L, 132.7 mg/dL)",
+          "Équation LDL": "Martin-Hopkins 2013 (tableau saisi)"
+        }
+      }
+    },
     "ldl_panel#totalCholesterol@g/L": {
       "inputs": {
         "totalCholesterol": "5.2 g/L",
