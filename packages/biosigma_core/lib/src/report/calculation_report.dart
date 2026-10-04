@@ -79,6 +79,9 @@ class CalculationReport {
     if (reference != null && reference!.trim().isNotEmpty) {
       b.writeln('Référence : ${reference!.trim()}');
     }
+    for (final note in _record?.changeNotes ?? const <String>[]) {
+      b.writeln('Historique : $note');
+    }
     b
       ..writeln()
       ..writeln('Version de l\'équation : ${f.version}')
@@ -165,6 +168,9 @@ class CalculationReport {
       ..writeln('</style></head><body>')
       ..writeln('<h1>${e(f.name)}</h1>')
       ..writeln('<div class="meta">Édité le ${e(generatedAt)} · BioSigma ${e(appVersion)}<br>${e(_statusLine)}');
+    for (final note in _record?.changeNotes ?? const <String>[]) {
+      b.writeln('<br>${e('Historique : $note')}');
+    }
     if (reference != null && reference!.trim().isNotEmpty) {
       b.writeln('<br>Référence : ${e(reference!.trim())}');
     }

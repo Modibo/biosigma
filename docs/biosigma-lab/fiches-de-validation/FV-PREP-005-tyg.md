@@ -38,10 +38,10 @@ Calculés en Python à partir de la formule ci-dessus (pas avec le code Dart) ; 
 
 ### 4. Points à relire en particulier
 
-1. **Cohérence du seuil cité — constat de l'auteur, à trancher.** Le texte affiché donne en exemple « **TyG > 4,5** évocateur d'une insulinorésistance ». Avec la convention implémentée (mg/dL), un sujet ordinaire a un TyG **de l'ordre de 8 à 10** (cas ci-dessus) : **tout résultat dépasserait 4,5**. Ce seuil correspond-il à une autre convention de notation ? Il risque d'être inapplicable ici. **Décision à prendre** : retirer ce seuil du texte, ou le remplacer par un seuil de la même convention avec sa source. Aucune modification n'a été faite.
+1. **Cohérence du seuil cité — RÉSOLU le 2026-10-04 (texte corrigé, à relire).** L'exemple « TyG > 4,5 » était incohérent avec la convention implémentée (mg/dL ; valeurs de l'ordre de 8 à 10). Il a été **retiré** : le texte dit désormais que les seuils dépendent de la convention de calcul et de la population, avec un ordre de grandeur de 8–10 pour la convention mg/dL, sans seuil chiffré consensuel. **Les résultats n'ont pas changé** (golden master : texte d'avertissement seul). Le validateur confirme ce libellé.
 2. **Conversion mmol/L → mg/dL par facteurs arrondis** : le TyG calculé avec des entrées en mmol/L diffère d'environ **0,0004** de celui obtenu avec les masses molaires exactes (TG −0,056 %, glucose +0,013 %). Acceptable ?
 3. **Convention** : « / 2 » et logarithme népérien — à confirmer dans la source primaire.
-4. **Seuils** : aucun seuil consensuel ; le texte le dit, mais cite quand même une valeur (point 1).
+4. **Seuils** : aucun seuil consensuel ; le texte ne cite plus de valeur (point 1).
 
 ### 5. Tests du dépôt associés
 

@@ -492,10 +492,12 @@ CalculationResult calculateFib4({
     ],
     warnings: [
       CalculationWarning(
-        '$interpretation Seuils largement repris par les sociétés savantes '
-        "d'hépatologie (ex. EASL 2021) pour l'évaluation non invasive de "
-        'la fibrose hépatique, dérivés de la cohorte de dérivation '
-        'originale (Sterling et al. 2006).',
+        '$interpretation Seuils 1,30 et 2,67 largement repris par les sociétés '
+        "savantes d'hépatologie (ex. EASL 2021) pour l'évaluation non invasive "
+        "de la fibrose hépatique. L'étude de dérivation originale (Sterling et "
+        'al. 2006, patients co-infectés VIH/VHC) avait proposé d\'autres '
+        'seuils (1,45 et 3,25) : les seuils dépendent de la population et du '
+        'contexte, à valider localement.',
         severity: WarningSeverity.info,
       ),
     ],

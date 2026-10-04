@@ -25,6 +25,8 @@ class FormulaReferenceSection extends StatelessWidget {
             _section(context, 'Identifiant et statut',
                 '${record.stableId} · version ${record.version} · statut : ${record.status.label}'),
           ],
+          if (EquationRegistry.resolve(meta.id)?.changeNotes case final notes? when notes.isNotEmpty)
+            _bulletSection(context, 'Historique des versions', notes),
           _section(context, 'Version', meta.version),
           _section(context, 'Formule', meta.equation, monospace: true),
           _section(context, 'Population d\'application', meta.applicablePopulation),

@@ -48,11 +48,20 @@ void main() {
       expect(EquationRegistry.resolve('lab_dilution_c1v1')!.stableId, 'LAB_LAB_DILUTION_C1V1_001');
     });
 
-    test('version entière 1 pour toutes les entrées actuelles, libellé de version conservé', () {
+    test('version 1 pour toutes les entrées sauf celles modifiées depuis ; libellé de version conservé', () {
       for (final r in EquationRegistry.all) {
-        expect(r.version, 1);
+        final modified = r.legacyId == 'ckd_epi_creatinine_cystatin_c_2021';
+        expect(r.version, modified ? 2 : 1, reason: r.legacyId);
+        expect(r.changeNotes.isNotEmpty, modified, reason: r.legacyId);
         expect(r.versionLabel, r.meta.version);
       }
+      expect(EquationRegistry.resolve('ckd_epi_creatinine_cystatin_c_2021')!.changeNotes.single,
+          contains('coefficients α'));
+    });
+
+    test('le registre de validation exige la version courante : 2 pour CKD-EPI combiné', () {
+      expect(validationKnownVersions()['RENAL_CKD_EPI_CREATININE_CYSTATIN_C_2021_001'], 2);
+      expect(validationKnownVersions()['RENAL_CKD_EPI_CREATININE_2021_001'], 1);
     });
   });
 

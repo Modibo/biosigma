@@ -809,3 +809,11 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Limite** : les cas indépendants sont écrits par l'auteur à partir de la même connaissance des formules ; la confrontation à des
   sources externes réduit ce risque sans l'éliminer. La validation reste l'acte du validateur sur les sources primaires.
 
+## Corrections et dossiers du lot 2 (2026-10-04, version 1.17.1)
+
+- **Défaut de calcul corrigé** : DFG CKD-EPI créatinine-cystatine C 2021, coefficients α (−0,219 femme / −0,144 homme au lieu de −0,241 / −0,302). Effet uniquement quand la créatinine est inférieure à κ (0,7 mg/dL femme, 0,9 mg/dL homme) : surestimation jusqu'à ≈ 9,7 % (homme, Scr 0,5, Cys 0,7, 40 ans : 143,97 au lieu de 131,20). Les tests existants ne l'avaient pas vu : leurs valeurs attendues venaient du code, et les cas au-dessus de κ ne dépendent pas de α. Constantes confrontées à la page NKF (2026-10-04). Équation en version 2 du registre, avec notes de version affichées (fiche de l'équation, compte rendu).
+- **Golden master** : deux mises à jour, diff vérifié cas par cas. (1) Texte d'avertissement seul : `tyg_index` (3 cas), `fib4` (valeurs identiques). (2) Une valeur : `ckd_epi_creatinine_cystatin_c_2021#sex=1`, 93,3113 → 91,4396 ; les 143 autres cas identiques.
+- **Nouveaux tests indépendants** (valeurs calculées hors du code) : CKD-EPI (8 cas créatinine + 8 combinés + régression), cystatine 2012 ×4, Schwartz ×3, MELD/MELD-Na ×5, QUICKI ×4, CHA₂DS₂-VASc (192 combinaisons), HAS-BLED (512 combinaisons), 9 conversions fréquentes (6 tests). Moteur : **545 tests**, analyse sans remarque.
+- **Dossiers FV-PREP-008 à 015** préparés et reliés au registre (`registre-validation.csv`, colonne `prepared_dossier`). **Aucun n'est signé ; aucun élément n'est « VALIDÉ ».**
+- **Limite** : les valeurs « indépendantes » sont écrites par l'auteur du code ; la confrontation à des sources secondaires réduit le risque sans le supprimer. Seule la relecture du validateur sur les sources primaires valide.
+

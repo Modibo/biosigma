@@ -5,24 +5,49 @@ import 'validation.dart';
 /// Éléments validables et leur version courante : équations (identifiant
 /// stable) et analytes (`analyte:<id>`).
 Map<String, int> validationKnownVersions() => {
-      for (final r in EquationRegistry.all) r.stableId: r.version,
-      for (final a in AnalyteBase.all) 'analyte:${a.id}': 1,
-    };
+  for (final r in EquationRegistry.all) r.stableId: r.version,
+  for (final a in AnalyteBase.all) 'analyte:${a.id}': 1,
+};
 
 /// Dossiers de validation déjà préparés (brouillons non signés).
-const Map<String, String> preparedDossiers = {
-  'RENAL_CKD_EPI_CREATININE_2021_001': 'fiches-de-validation/FV-PREP-001-ckd-epi-creatinine-2021.md',
+final Map<String, String> preparedDossiers = {
+  'RENAL_CKD_EPI_CREATININE_2021_001':
+      'fiches-de-validation/FV-PREP-001-ckd-epi-creatinine-2021.md',
   'analyte:glucose': 'fiches-de-validation/FV-PREP-002-conversion-glucose.md',
   'IONO_FIB4_001': 'fiches-de-validation/FV-PREP-003-fib-4.md',
   'HEMO_INR_001': 'fiches-de-validation/FV-PREP-004-inr.md',
   'METAB_TYG_INDEX_001': 'fiches-de-validation/FV-PREP-005-tyg.md',
   'METAB_BMI_001': 'fiches-de-validation/FV-PREP-006-imc.md',
   'METAB_HOMA_IR_001': 'fiches-de-validation/FV-PREP-007-homa-ir.md',
+  'RENAL_CKD_EPI_CYSTATIN_C_2012_001':
+      'fiches-de-validation/FV-PREP-008-ckd-epi-cystatine-2012.md',
+  'RENAL_CKD_EPI_CREATININE_CYSTATIN_C_2021_001':
+      'fiches-de-validation/FV-PREP-009-ckd-epi-creatinine-cystatine-2021.md',
+  'RENAL_SCHWARTZ_BEDSIDE_PEDIATRIC_001':
+      'fiches-de-validation/FV-PREP-010-schwartz-bedside.md',
+  'IONO_MELD_NA_001': 'fiches-de-validation/FV-PREP-011-meld-na.md',
+  'HEMO_CHA2DS2_VASC_SCORE_001':
+      'fiches-de-validation/FV-PREP-012-cha2ds2-vasc.md',
+  'HEMO_HAS_BLED_SCORE_001': 'fiches-de-validation/FV-PREP-013-has-bled.md',
+  'METAB_QUICKI_001': 'fiches-de-validation/FV-PREP-014-quicki.md',
+  for (final a in const [
+    'creatinine',
+    'urea',
+    'urea_nitrogen',
+    'calcium',
+    'cholesterol',
+    'triglycerides',
+    'bilirubin',
+    'sodium',
+  ])
+    'analyte:$a': 'fiches-de-validation/FV-PREP-015-conversions-frequentes.md',
 };
 
 const Map<String, String> _equationFlags = {
-  'fib4': 'CONSTAT : seuils 1,30/2,67 attribués à Sterling 2006, la source secondaire donne 1,45/3,25 pour Sterling (voir FV-PREP-003)',
-  'tyg_index': 'CONSTAT : seuil cité « TyG > 4,5 » incohérent avec la convention mg/dL (valeurs de 8 à 10) (voir FV-PREP-005)',
+  'fib4': 'Texte d\'attribution des seuils corrigé le 2026-10-04 (1,30/2,67 « largement repris » ; Sterling 2006 : 1,45/3,25), à relire (voir FV-PREP-003)',
+  'tyg_index': 'Exemple de seuil « TyG > 4,5 » retiré le 2026-10-04 (incohérent avec la convention mg/dL), texte à relire (voir FV-PREP-005)',
+  'albi_score': 'Coefficient albumine −0,0852 dans le code ; l\'article original donne −0,085 selon ma mémoire (non vérifié) : à confronter à la source primaire',
+  'ckd_epi_creatinine_cystatin_c_2021': 'Version 2 (2026-10-04) : coefficients α corrigés ; relire le dossier FV-PREP-009',
   'apri': 'Référence à reconfirmer (R-08 : citée sans lecture du texte source)',
   'padua_prediction_score': 'Référence à reconfirmer (R-08)',
   'has_bled_score': 'Référence à reconfirmer (R-08)',
@@ -45,9 +70,24 @@ String exportValidationRegisterCsv({
   List<ValidationRecord>? existing,
 }) {
   const header = [
-    'item_id', 'type', 'name', 'item_version', 'current_status', 'source_cited', 'points_to_review',
-    'prepared_dossier', 'validator', 'reviewer', 'approver', 'date', 'scope', 'sources_reviewed',
-    'independent_cases', 'sheet_ref', 'decision', 'comments',
+    'item_id',
+    'type',
+    'name',
+    'item_version',
+    'current_status',
+    'source_cited',
+    'points_to_review',
+    'prepared_dossier',
+    'validator',
+    'reviewer',
+    'approver',
+    'date',
+    'scope',
+    'sources_reviewed',
+    'independent_cases',
+    'sheet_ref',
+    'decision',
+    'comments',
   ];
   final b = StringBuffer()..writeln(header.join(';'));
 
@@ -65,19 +105,34 @@ String exportValidationRegisterCsv({
       r.fromCatalog ? 'équation' : 'outil Lab',
       r.name,
       '${r.version}',
-      validationStatusFor(r.stableId, r.version, records: existing ?? validationRecords).label,
+      validationStatusFor(
+        r.stableId,
+        r.version,
+        records: existing ?? validationRecords,
+      ).label,
       r.meta.sources.isEmpty ? '' : r.meta.sources.first.citation,
       flags.join(' ; '),
       preparedDossiers[r.stableId] ?? '',
-      validator, validator, validator, '', '', '', '', '', '', '',
+      validator,
+      validator,
+      validator,
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
     ]);
   }
   for (final a in AnalyteBase.all) {
     final id = 'analyte:${a.id}';
     final flags = <String>[
       switch (a.kind) {
-        AnalyteKind.molecular => 'Forme chimique${a.valence != null ? ' et valence' : ''} à relire',
-        AnalyteKind.massOnly => 'Conversions massiques seulement : unités à relire',
+        AnalyteKind.molecular =>
+          'Forme chimique${a.valence != null ? ' et valence' : ''} à relire',
+        AnalyteKind.massOnly =>
+          'Conversions massiques seulement : unités à relire',
         AnalyteKind.legacy => 'Facteur du moteur existant (arrondi) : à relire',
         _ => 'Unités et définitions à relire',
       },
@@ -94,7 +149,16 @@ String exportValidationRegisterCsv({
           : 'Définitions des unités (BIPM)',
       flags.join(' ; '),
       preparedDossiers[id] ?? '',
-      validator, validator, validator, '', '', '', '', '', '', '',
+      validator,
+      validator,
+      validator,
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
     ]);
   }
   return b.toString();

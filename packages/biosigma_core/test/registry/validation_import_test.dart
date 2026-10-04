@@ -234,6 +234,15 @@ void main() {
         'METAB_TYG_INDEX_001',
         'METAB_BMI_001',
         'METAB_HOMA_IR_001',
+        'RENAL_CKD_EPI_CYSTATIN_C_2012_001',
+        'RENAL_CKD_EPI_CREATININE_CYSTATIN_C_2021_001',
+        'RENAL_SCHWARTZ_BEDSIDE_PEDIATRIC_001',
+        'IONO_MELD_NA_001',
+        'HEMO_CHA2DS2_VASC_SCORE_001',
+        'HEMO_HAS_BLED_SCORE_001',
+        'METAB_QUICKI_001',
+        'analyte:creatinine',
+        'analyte:sodium',
       ]) {
         final row = rows.firstWhere((r) => r.first == id);
         expect(
@@ -243,7 +252,7 @@ void main() {
         );
       }
       final fib4 = rows.firstWhere((r) => r.first == 'IONO_FIB4_001');
-      expect(fib4[col('points_to_review')], contains('CONSTAT'));
+      expect(fib4[col('points_to_review')], contains('corrigé le 2026-10-04'));
       final tyg = rows.firstWhere((r) => r.first == 'METAB_TYG_INDEX_001');
       expect(tyg[col('points_to_review')], contains('4,5'));
       final apri = rows.firstWhere((r) => r.first == 'IONO_APRI_001');

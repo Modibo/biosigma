@@ -117,12 +117,13 @@ const CalculationWarning _noConsensusThresholdQuicki = CalculationWarning(
 
 const CalculationWarning _noConsensusThresholdTyg = CalculationWarning(
   "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une "
-  "société savante (ADA/EASD/IDF) pour l'indice TyG ; à titre purement "
-  'informatif, des seuils ont été proposés dans certaines études de '
-  "population (ex. TyG > 4,5 évocateur d'une insulinorésistance), mais ce "
-  "sont des seuils de recherche spécifiques à leur population d'étude (et à "
-  "la convention de notation utilisée), à ne pas généraliser ni utiliser "
-  'comme seuil diagnostique universel.',
+  "société savante (ADA/EASD/IDF) pour l'indice TyG. Des seuils ont été "
+  "proposés dans des études de population, mais ils dépendent de la "
+  "convention de notation et de la population d'étude : ici TyG = ln[TG "
+  "(mg/dL) × glycémie (mg/dL) / 2], dont l'ordre de grandeur est de 8 à 10 "
+  "pour des valeurs courantes. Ne jamais appliquer un seuil publié sans "
+  "vérifier qu'il correspond exactement à cette convention, et ne pas "
+  "l'utiliser comme seuil diagnostique universel.",
   severity: WarningSeverity.info,
 );
 

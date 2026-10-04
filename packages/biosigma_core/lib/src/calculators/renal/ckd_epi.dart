@@ -97,10 +97,11 @@ const FormulaMeta ckdEpiCreatinineCystatinC2021Meta = FormulaMeta(
   name: 'DFG estimé — CKD-EPI créatinine-cystatine C 2021',
   shortName: 'CKD-EPI créatinine-cystatine C 2021',
   category: CalculatorCategory.renal,
-  version: 'CKD-EPI créatinine-cystatine C 2021',
+  version: 'CKD-EPI créatinine-cystatine C 2021 (version 2 du registre : α corrigés)',
   equation:
       'DFG = 135 × min(Scr/κ,1)^α × max(Scr/κ,1)^-0,544 × min(Cys/0,8,1)^-0,323 '
-      '× max(Cys/0,8,1)^-0,778 × 0,9961^Âge × 0,963 [si femme]',
+      '× max(Cys/0,8,1)^-0,778 × 0,9961^Âge × 0,963 [si femme]  '
+      '(Scr en mg/dL ; Cys en mg/L ; κ=0,7 femme/0,9 homme ; α=-0,219 femme/-0,144 homme)',
   sources: [
     Reference(
       citation:
@@ -350,7 +351,11 @@ CalculationResult calculateCkdEpiCreatinineCystatinC2021({
       UnitRegistry.toCanonical(Analyte.cystatinC, cystatinCValue, cystatinCUnit);
 
   final kappa = sex == Sex.female ? 0.7 : 0.9;
-  final alpha = sex == Sex.female ? -0.241 : -0.302;
+  // Équation combinée 2021 : α = −0,219 (femme) / −0,144 (homme), DIFFÉRENT de
+  // l'équation à la créatinine seule (−0,241 / −0,302). Corrigé en version 2
+  // de l'équation (la version 1 reprenait par erreur les α de la créatinine
+  // seule : surestimation du DFG quand la créatininémie est < κ).
+  final alpha = sex == Sex.female ? -0.219 : -0.144;
   final egfr = 135 *
       math.pow(math.min(scrMgDl / kappa, 1), alpha) *
       math.pow(math.max(scrMgDl / kappa, 1), -0.544) *

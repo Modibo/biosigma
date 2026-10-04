@@ -194,7 +194,7 @@
         "values": [
           {
             "label": "DFG CKD-EPI créatinine-cystatine C 2021",
-            "value": 93.31126309728072,
+            "value": 91.43958817234767,
             "unit": "mL/min/1,73 m²",
             "precision": 1
           }
@@ -1267,7 +1267,7 @@
         "warnings": [
           {
             "severity": "info",
-            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. TyG > 4,5 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude (et à la convention de notation utilisée), à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG. Des seuils ont été proposés dans des études de population, mais ils dépendent de la convention de notation et de la population d'étude : ici TyG = ln[TG (mg/dL) × glycémie (mg/dL) / 2], dont l'ordre de grandeur est de 8 à 10 pour des valeurs courantes. Ne jamais appliquer un seuil publié sans vérifier qu'il correspond exactement à cette convention, et ne pas l'utiliser comme seuil diagnostique universel."
           }
         ],
         "echoed": {
@@ -1296,7 +1296,7 @@
         "warnings": [
           {
             "severity": "info",
-            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. TyG > 4,5 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude (et à la convention de notation utilisée), à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG. Des seuils ont été proposés dans des études de population, mais ils dépendent de la convention de notation et de la population d'étude : ici TyG = ln[TG (mg/dL) × glycémie (mg/dL) / 2], dont l'ordre de grandeur est de 8 à 10 pour des valeurs courantes. Ne jamais appliquer un seuil publié sans vérifier qu'il correspond exactement à cette convention, et ne pas l'utiliser comme seuil diagnostique universel."
           }
         ],
         "echoed": {
@@ -1325,7 +1325,7 @@
         "warnings": [
           {
             "severity": "info",
-            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG ; à titre purement informatif, des seuils ont été proposés dans certaines études de population (ex. TyG > 4,5 évocateur d'une insulinorésistance), mais ce sont des seuils de recherche spécifiques à leur population d'étude (et à la convention de notation utilisée), à ne pas généraliser ni utiliser comme seuil diagnostique universel."
+            "message": "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une société savante (ADA/EASD/IDF) pour l'indice TyG. Des seuils ont été proposés dans des études de population, mais ils dépendent de la convention de notation et de la population d'étude : ici TyG = ln[TG (mg/dL) × glycémie (mg/dL) / 2], dont l'ordre de grandeur est de 8 à 10 pour des valeurs courantes. Ne jamais appliquer un seuil publié sans vérifier qu'il correspond exactement à cette convention, et ne pas l'utiliser comme seuil diagnostique universel."
           }
         ],
         "echoed": {
@@ -3534,7 +3534,7 @@
         "warnings": [
           {
             "severity": "info",
-            "message": "FIB-4 entre 1,30 et 2,67 : zone indéterminée. Seuils largement repris par les sociétés savantes d'hépatologie (ex. EASL 2021) pour l'évaluation non invasive de la fibrose hépatique, dérivés de la cohorte de dérivation originale (Sterling et al. 2006)."
+            "message": "FIB-4 entre 1,30 et 2,67 : zone indéterminée. Seuils 1,30 et 2,67 largement repris par les sociétés savantes d'hépatologie (ex. EASL 2021) pour l'évaluation non invasive de la fibrose hépatique. L'étude de dérivation originale (Sterling et al. 2006, patients co-infectés VIH/VHC) avait proposé d'autres seuils (1,45 et 3,25) : les seuils dépendent de la population et du contexte, à valider localement."
           }
         ],
         "echoed": {

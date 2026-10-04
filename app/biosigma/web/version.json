@@ -1,5 +1,5 @@
 {
-  "latest": "1.17.0",
+  "latest": "1.17.1",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Nouveau : Diagnostic de l'appareil (À propos) pour vérifier le mode hors connexion, le stockage et l'impression sur votre téléphone ou navigateur, et copier un rapport de test. Aucune donnée n'est envoyée."
+  "notes": "Correction : DFG CKD-EPI créatinine-cystatine C 2021 — coefficients α rectifiés ; l'ancienne version surestimait le DFG (jusqu'à environ 10 %) lorsque la créatinine était inférieure à κ (0,7 mg/dL femme, 0,9 mg/dL homme). Textes d'interprétation du FIB-4 et du TyG précisés. Les calculs enregistrés dans l'historique avec l'ancienne version peuvent se rejouer comme « différents »."
 }

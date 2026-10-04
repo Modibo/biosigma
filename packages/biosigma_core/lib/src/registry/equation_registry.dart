@@ -36,6 +36,7 @@ class EquationRecord {
     required this.status,
     required this.fromCatalog,
     required this.meta,
+    this.changeNotes = const [],
   });
 
   /// Identifiant stable `FAMILLE_NOM_NNN` : jamais réutilisé, jamais renommé.
@@ -49,6 +50,10 @@ class EquationRecord {
   /// Numéro de version entier de l'équation : toute modification de formule,
   /// de constante, d'unité ou de domaine l'incrémente.
   final int version;
+
+  /// Notes des changements de version (le plus ancien en premier) ; vide pour
+  /// une équation jamais modifiée depuis son entrée au registre.
+  final List<String> changeNotes;
 
   /// Version déclarée dans `FormulaMeta` (texte libre, conservé tel quel).
   final String versionLabel;
@@ -92,16 +97,33 @@ class EquationRegistry {
     qualityMeta,
   ];
 
+  /// Versions des équations modifiées depuis leur entrée au registre (toute
+  /// modification de formule, constante, unité ou domaine crée une version) ;
+  /// les autres sont en version 1. Une fiche de validation ne couvre que sa version.
+  static const Map<String, (int, List<String>)> _versions = {
+    'ckd_epi_creatinine_cystatin_c_2021': (
+      2,
+      [
+        '2026-10-04 — version 2 : correction des coefficients α (−0,219 femme / −0,144 homme au lieu de '
+            '−0,241 / −0,302, valeurs de l\'équation à la créatinine seule). La version 1 surestimait le DFG '
+            'lorsque la créatininémie était inférieure à κ (jusqu\'à ≈ 10 % pour une créatininémie très basse).',
+      ],
+    ),
+  };
+
   static EquationRecord _record(FormulaMeta meta, {required bool fromCatalog}) {
     final family = _family[meta.category]!;
+    final versionInfo = _versions[meta.id];
+    final version = versionInfo?.$1 ?? 1;
     return EquationRecord(
       stableId: '${family}_${meta.id.toUpperCase()}_001',
       legacyId: meta.id,
       name: meta.name,
       family: family,
-      version: 1,
+      version: version,
+      changeNotes: versionInfo?.$2 ?? const [],
       versionLabel: meta.version,
-      status: validationStatusFor('${family}_${meta.id.toUpperCase()}_001', 1),
+      status: validationStatusFor('${family}_${meta.id.toUpperCase()}_001', version),
       fromCatalog: fromCatalog,
       meta: meta,
     );
