@@ -63,7 +63,7 @@ Calculés en Python à partir de l'équation ci-dessus (pas avec le code Dart) ;
 | Écarts constatés | |
 | **Décision** | ☐ approuvé ☐ à corriger ☐ rejeté |
 | Validateur | Dr Modibo Mouctar Coulibaly · fonction : ______ · date : ______ · signature : ______ |
-| Relecteur technique | (à désigner) |
-| Approbateur | (à désigner ou à confirmer : même personne que le validateur ?) |
+| Relecteur technique | Dr Modibo Mouctar Coulibaly · date : ______ · signature : ______ |
+| Approbateur | Dr Modibo Mouctar Coulibaly · fonction : ______ · date : ______ · signature : ______ (cumul des trois rôles consigné) |
 
-**Après signature** : ajouter la fiche à `validationRecords` (`packages/biosigma_core/lib/src/registry/validation.dart`) avec `itemId: 'RENAL_CKD_EPI_CREATININE_2021_001'`, `itemVersion: 1`, `independentCases: 2` au minimum et la référence de la fiche archivée ; relancer les tests ; publier une nouvelle version.
+**Après signature** : ajouter la fiche à `validationRecords` (`packages/biosigma_core/lib/src/registry/validation.dart`) avec `itemId: 'RENAL_CKD_EPI_CREATININE_2021_001'`, `itemVersion: 1`, `independentCases: 2` au minimum, les noms du validateur, du relecteur technique et de l'approbateur, et la référence de la fiche archivée ; relancer les tests ; publier une nouvelle version.

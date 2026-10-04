@@ -21,10 +21,10 @@ BioSigma affiche des calculs que des professionnels peuvent utiliser pour des d�
 |---|---|
 | Auteur | Assistant de développement (IA) — ne valide jamais |
 | **Validateur scientifique** | **Dr Modibo Mouctar Coulibaly** (PharmD, CLMS, PhD, Maître de Recherche, Hôpital Sominé Dolo, Mopti) — désigné par lui-même |
-| Relecteur technique | **Non désigné** (D-01) |
-| Approbateur | **Non désigné** : à préciser s'il est le même que le validateur |
+| **Relecteur technique** | **Dr Modibo Mouctar Coulibaly** (désigné par lui-même) |
+| **Approbateur** | **Dr Modibo Mouctar Coulibaly** (désigné par lui-même) |
 
-La séparation auteur / validateur est respectée (l'auteur est l'assistant, le validateur est un humain). **Restent à décider** : le relecteur technique et l'approbateur. Un **second regard** (collègue ou relecteur externe) est recommandé pour les éléments à fort impact. Tant que le relecteur technique n'est pas nommé, les fiches signées par le seul validateur sont enregistrées avec la mention « relecteur technique : non désigné ».
+**Cumul des trois rôles par une seule personne — consigné.** La séparation auteur / validateur est respectée (l'auteur est l'assistant, les trois rôles sont tenus par un humain). Ce cumul est admis ici car le laboratoire est de petite taille (§2), mais il a une conséquence à connaître : **il n'existe alors aucun regard humain indépendant** entre l'élément et son approbation. Pour les éléments à fort impact clinique, la gouvernance recommande un **second regard** (collègue ou relecteur externe) ; il reste facultatif et peut être ajouté plus tard sans rien changer au reste. Chaque fiche enregistre les trois noms ; le logiciel indique quand ils sont identiques (`rolesCumulated`).
 
 ## 3. Ce qui se valide, et à quelle granularité
 
@@ -69,7 +69,7 @@ Nouvelle version corrigée + note ; les enregistrements d'historique concernés 
 ## 8. Ce que fait le logiciel (déjà implémenté)
 
 - Le statut affiché (« NON VALIDÉ », « VALIDÉ », « RETIRÉ ») est **calculé** à partir de la liste des fiches de validation (`validationRecords`, vide à ce jour). Aucun élément ne devient « VALIDÉ » par un simple changement de drapeau.
-- Une fiche **incomplète** (validateur, rôle, périmètre, sources, référence manquants, ou moins de deux cas indépendants) est **ignorée**.
+- Une fiche **incomplète** (validateur, rôle, relecteur technique, approbateur, périmètre, sources, référence manquants, ou moins de deux cas indépendants) est **ignorée**.
 - Une fiche valable pour la version 1 **ne valide pas** la version 2.
 - Une fiche **rejetée** marque l'élément « RETIRÉ ».
 - Les tests `validation_test.dart` et `extended_units_and_analytes_test.dart` protègent ces règles.

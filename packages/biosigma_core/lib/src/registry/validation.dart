@@ -22,6 +22,8 @@ class ValidationRecord {
     required this.sourcesReviewed,
     required this.independentCases,
     required this.sheetReference,
+    required this.technicalReviewerName,
+    required this.approverName,
     this.decision = ValidationDecision.approved,
   });
 
@@ -43,7 +45,20 @@ class ValidationRecord {
 
   /// Référence de la fiche signée (numéro, emplacement).
   final String sheetReference;
+
+  /// Relecteur technique et approbateur (rôles de la gouvernance, D-12). Une
+  /// même personne peut cumuler les trois rôles dans un petit laboratoire ;
+  /// ce cumul est alors visible ([rolesCumulated]) mais n'empêche pas la
+  /// validation. L'auteur (l'assistant) ne peut pas figurer ici.
+  final String technicalReviewerName;
+  final String approverName;
   final ValidationDecision decision;
+
+  /// Validateur, relecteur technique et approbateur sont la même personne.
+  bool get rolesCumulated {
+    String n(String s) => s.trim().toLowerCase();
+    return n(validatorName) == n(technicalReviewerName) && n(validatorName) == n(approverName);
+  }
 
   /// Fiche exploitable : tous les champs renseignés, au moins 2 cas indépendants.
   bool get isComplete =>
@@ -54,6 +69,8 @@ class ValidationRecord {
       scope.trim().isNotEmpty &&
       sourcesReviewed.trim().isNotEmpty &&
       sheetReference.trim().isNotEmpty &&
+      technicalReviewerName.trim().isNotEmpty &&
+      approverName.trim().isNotEmpty &&
       independentCases >= 2;
 }
 

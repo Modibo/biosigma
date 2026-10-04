@@ -554,6 +554,8 @@ void main() {
         sourcesReviewed: 'Source de test',
         independentCases: 2,
         sheetReference: 'FV-TEST',
+        technicalReviewerName: 'Dr Exemple',
+        approverName: 'Dr Exemple',
       );
       expect(
         AnalyteBase.statusOf('glucose', records: [fiche]),

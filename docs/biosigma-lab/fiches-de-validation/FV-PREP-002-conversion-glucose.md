@@ -50,6 +50,7 @@ Ces valeurs sont aussi dans les tests (`extended_units_and_analytes_test.dart`).
 | Écarts constatés | |
 | **Décision** | ☐ approuvé ☐ à corriger ☐ rejeté |
 | Validateur | Dr Modibo Mouctar Coulibaly · fonction : ______ · date : ______ · signature : ______ |
-| Relecteur technique / Approbateur | (à désigner) |
+| Relecteur technique | Dr Modibo Mouctar Coulibaly · date : ______ · signature : ______ |
+| Approbateur | Dr Modibo Mouctar Coulibaly · date : ______ · signature : ______ (cumul des trois rôles consigné) |
 
 **Après signature** : `ValidationRecord(itemId: 'analyte:glucose', itemVersion: 1, …)` dans `validationRecords`.
