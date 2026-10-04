@@ -9,6 +9,16 @@ import 'lab/prepare_screen.dart';
 import 'lab/quality_screen.dart';
 import 'lab/smart_solver_screen.dart';
 
+/// Écran d'un module Lab (utilisé par l'onglet Lab et par la recherche).
+Widget labModuleScreen(LabModule m) => switch (m) {
+      LabModule.convert => const ConvertScreen(),
+      LabModule.dilute => const DiluteScreen(),
+      LabModule.prepare => const PrepareScreen(),
+      LabModule.count => const CountScreen(),
+      LabModule.microbiology => const MicrobiologyScreen(),
+      LabModule.quality => const QualityScreen(),
+    };
+
 /// Onglet « Lab » : accueil des modules de laboratoire (décision D-13 :
 /// l'accueil enveloppe les domaines existants sans rien remplacer).
 /// Seuls les modules réellement disponibles ouvrent un écran ; les autres
@@ -21,15 +31,7 @@ class LabScreen extends StatelessWidget {
     void open(Widget screen) =>
         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => screen));
     void goToCalcul() => DefaultTabController.of(context).animateTo(0);
-    Widget screenFor(LabModule m) => switch (m) {
-          LabModule.convert => const ConvertScreen(),
-          LabModule.dilute => const DiluteScreen(),
-          LabModule.prepare => const PrepareScreen(),
-          LabModule.count => const CountScreen(),
-          LabModule.microbiology => const MicrobiologyScreen(),
-          LabModule.quality => const QualityScreen(),
-        };
-    void openModule(LabModule m) => open(screenFor(m));
+    void openModule(LabModule m) => open(labModuleScreen(m));
 
     return SafeArea(
       top: false,

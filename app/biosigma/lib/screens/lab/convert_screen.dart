@@ -13,7 +13,13 @@ import '../../widgets/numeric_unit_field.dart';
 /// courantes, masse molaire et valence saisies si la nature change) ou d'un
 /// analyte de la base (masse molaire calculée à partir de sa formule brute).
 class ConvertScreen extends StatefulWidget {
-  const ConvertScreen({super.key});
+  const ConvertScreen({super.key, this.initialAnalyteId, this.initialUnit});
+
+  /// Ouvre directement le mode Analyte sur cet analyte (recherche universelle).
+  final String? initialAnalyteId;
+
+  /// Ouvre le mode Unités sur la famille de cette unité, en départ.
+  final String? initialUnit;
 
   @override
   State<ConvertScreen> createState() => _ConvertScreenState();
@@ -39,6 +45,27 @@ class _ConvertScreenState extends State<ConvertScreen> {
   LabAnalyte _analyte = AnalyteBase.byId('glucose')!;
   String _analyteFrom = 'mg/dL';
   String _analyteTo = 'mmol/L';
+
+  @override
+  void initState() {
+    super.initState();
+    final analyte = widget.initialAnalyteId == null ? null : AnalyteBase.byId(widget.initialAnalyteId!);
+    if (analyte != null) {
+      _mode = _Mode.analyte;
+      _analyte = analyte;
+      _analyteFrom = analyte.units.first;
+      final compatible = analyte.compatibleUnits(_analyteFrom).where((u) => u != _analyteFrom);
+      _analyteTo = compatible.isEmpty ? _analyteFrom : compatible.first;
+    } else if (widget.initialUnit != null) {
+      final matches = LabUnits.families.where((f) => f.units.contains(widget.initialUnit));
+      if (matches.isNotEmpty) {
+        final family = matches.first;
+        _familyKey = family.key;
+        _from = widget.initialUnit!;
+        _to = family.units.firstWhere((u) => u != _from, orElse: () => _from);
+      }
+    }
+  }
 
   List<String> get _familyUnits => LabUnits.families.firstWhere((f) => f.key == _familyKey).units;
 

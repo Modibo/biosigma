@@ -6,6 +6,7 @@ import 'home_screen.dart';
 import 'lab_screen.dart';
 import 'references_screen.dart';
 import 'settings_screen.dart';
+import 'universal_search_screen.dart';
 
 /// Écran racine de BioSigma : six onglets en haut de l'écran (Calcul, Lab,
 /// Entraînement, Références, Réglages, À propos), sous une AppBar commune
@@ -41,6 +42,16 @@ class RootTabScreen extends StatelessWidget {
               const Text('BioSigma'),
             ],
           ),
+          actions: [
+            Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.search),
+                tooltip: 'Rechercher partout',
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute<void>(builder: (_) => const UniversalSearchScreen())),
+              ),
+            ),
+          ],
           bottom: const TabBar(isScrollable: true, tabs: _tabs),
         ),
         body: const TabBarView(

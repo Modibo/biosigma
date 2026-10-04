@@ -62,6 +62,8 @@ export 'src/lab/microbiology.dart';
 export 'src/lab/quality.dart';
 export 'src/lab/smart_solver.dart';
 export 'src/lab/pipette.dart';
+export 'src/search/fold.dart';
+export 'src/search/universal_search.dart';
 
 export 'src/catalog.dart';
 export 'src/rounding.dart';

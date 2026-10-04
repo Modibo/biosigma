@@ -270,6 +270,15 @@ Aucune source normative n'est citée pour ces relations de définition : chaque 
 (« à relire par le laboratoire »). Les références de Sigma, d'erreur totale et du tampon sont à compléter
 et à valider (décision D-12).
 
+## Recherche universelle (backlog P5-02)
+
+La loupe de la barre du haut ouvre une recherche qui couvre **tout** : les calculs (par nom, abréviation ou
+synonyme courant : DFG, IMC, VGM, TP, TCA, CIVD, TIH…), les **186 analytes** (ouverture directe de Convert sur
+l'analyte), les **unités** (ouverture de Convert sur la bonne grandeur) et les **modules Lab**. Elle ignore la
+casse et les accents, exige que tous les mots saisis correspondent, et fonctionne hors connexion. Une **phrase
+libre** (« diluer 100 µL dans 900 µL ») propose un module **à confirmer** : rien n'est calculé ni rempli à
+votre place. Les synonymes sont de simples aides à la recherche, sans donnée scientifique.
+
 ## Socle de traçabilité (phase 1)
 
 - **Registre d'équations** (`EquationRegistry`) : chaque équation a un identifiant stable

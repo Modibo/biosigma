@@ -1,3 +1,4 @@
+import '../search/fold.dart';
 import 'lab_units.dart';
 
 /// Modules proposés par le Smart Solver.
@@ -51,22 +52,8 @@ const Map<LabModule, List<String>> _keywords = {
   LabModule.quality: [' cv', 'coefficient de variation', 'biais', 'sigma', 'justesse', 'fidelite', 'recuperation', 'ecart-type', 'ecart type', 'erreur totale'],
 };
 
-const Map<String, String> _accents = {
-  'à': 'a', 'â': 'a', 'ä': 'a', 'á': 'a', 'ã': 'a', 'ç': 'c', 'é': 'e', 'è': 'e', 'ê': 'e',
-  'ë': 'e', 'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i', 'ñ': 'n', 'ó': 'o', 'ò': 'o', 'ô': 'o',
-  'ö': 'o', 'õ': 'o', 'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u', 'ý': 'y', 'ÿ': 'y', 'œ': 'oe',
-  'æ': 'ae', 'µ': 'u', 'μ': 'u',
-};
-
 /// Minuscules sans accents, entourées d'espaces (pour les mots-clés « mot entier »).
-String _fold(String s) {
-  final b = StringBuffer(' ');
-  for (final ch in s.toLowerCase().split('')) {
-    b.write(_accents[ch] ?? ch);
-  }
-  b.write(' ');
-  return b.toString();
-}
+String _fold(String s) => ' ${foldText(s)} ';
 
 /// Analyse déterministe par mots-clés, hors connexion : propose un module,
 /// liste les quantités repérées, et laisse l'utilisateur confirmer.

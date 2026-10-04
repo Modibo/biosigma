@@ -711,3 +711,14 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - Rejeu T-TRC-001 étendu : 59 équations génériques (57 + 2).
 - Citation primaire des définitions (attribuées à Wintrobe) **non vérifiée** : signalée « à compléter » dans la fiche de chaque équation.
 
+## Recherche universelle (2026-10-04, backlog P5-02)
+
+- Moteur (`search/universal_search.dart`) : **17 tests** (moteur : 439 au total). Propriétés vérifiées : **chaque** calcul du
+  catalogue est retrouvé par son nom court, **chaque** analyte par son nom, chaque module par son libellé ; chaque synonyme
+  désigne un calcul existant ; ET entre les mots ; résultats triés ; pas de doublons ; insensible aux accents et à la casse.
+- Application : **9 tests de widgets** (94 au total) : ouverture depuis la loupe, « dfg » → calcul, « glucose »/« sodium » →
+  Convert prérempli (formule et masse molaire affichées), « mmhg » → Convert sur la grandeur Pression, « dilution » → Dilute,
+  phrase libre → module « à confirmer » sans résultat calculé, aucun résultat → message.
+- Limites : classement heuristique (aucun jeu de requêtes réelles de la section 41 du cahier des charges n'a été fourni) ;
+  synonymes écrits à la main, non exhaustifs ; pas de correction de fautes de frappe.
+

@@ -1,5 +1,5 @@
 {
-  "latest": "1.12.0",
+  "latest": "1.13.0",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Hématologie : constantes érythrocytaires (VGM, TCMH, CCMH) et valeurs absolues leucocytaires (ANC, ALC) à partir de la NFS. Aucun intervalle de référence ni seuil n'est appliqué. Le catalogue compte 61 calculs."
+  "notes": "Recherche universelle : la loupe en haut de l'écran trouve un calcul, un analyte, une unité ou un module Lab, par nom, abréviation (DFG, IMC, VGM…) ou phrase. Ouvre directement Convert sur l'analyte ou l'unité choisi."
 }
