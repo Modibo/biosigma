@@ -3728,10 +3728,16 @@
             "precision": 0
           }
         ],
-        "warnings": [],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "La valeur mesurée est compatible avec une compensation attendue."
+          }
+        ],
         "echoed": {
           "Trouble primaire supposé": "Acidose métabolique",
-          "HCO3 mesuré": "15.0 mmol/L"
+          "HCO3 mesuré": "15.0 mmol/L",
+          "PaCO2 mesurée": "30.0 mmHg"
         }
       }
     },
@@ -3757,10 +3763,16 @@
             "precision": 0
           }
         ],
-        "warnings": [],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "La valeur mesurée est compatible avec une compensation attendue."
+          }
+        ],
         "echoed": {
           "Trouble primaire supposé": "Alcalose métabolique",
-          "HCO3 mesuré": "15.0 mmol/L"
+          "HCO3 mesuré": "15.0 mmol/L",
+          "PaCO2 mesurée": "30.0 mmHg"
         }
       }
     },
@@ -3786,10 +3798,16 @@
             "precision": 0
           }
         ],
-        "warnings": [],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "La valeur mesurée est hors de la fourchette attendue, ce qui peut suggérer un trouble acido-basique surajouté (mixte) — à corréler cliniquement."
+          }
+        ],
         "echoed": {
           "Trouble primaire supposé": "Acidose respiratoire aiguë",
-          "PaCO2 mesurée": "30.0 mmHg"
+          "PaCO2 mesurée": "30.0 mmHg",
+          "HCO3 mesuré": "15.0 mmol/L"
         }
       }
     },
@@ -3815,10 +3833,16 @@
             "precision": 0
           }
         ],
-        "warnings": [],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "La valeur mesurée est hors de la fourchette attendue, ce qui peut suggérer un trouble acido-basique surajouté (mixte) — à corréler cliniquement."
+          }
+        ],
         "echoed": {
           "Trouble primaire supposé": "Acidose respiratoire chronique",
-          "PaCO2 mesurée": "30.0 mmHg"
+          "PaCO2 mesurée": "30.0 mmHg",
+          "HCO3 mesuré": "15.0 mmol/L"
         }
       }
     },
@@ -3844,10 +3868,16 @@
             "precision": 0
           }
         ],
-        "warnings": [],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "La valeur mesurée est hors de la fourchette attendue, ce qui peut suggérer un trouble acido-basique surajouté (mixte) — à corréler cliniquement."
+          }
+        ],
         "echoed": {
           "Trouble primaire supposé": "Alcalose respiratoire aiguë",
-          "PaCO2 mesurée": "30.0 mmHg"
+          "PaCO2 mesurée": "30.0 mmHg",
+          "HCO3 mesuré": "15.0 mmol/L"
         }
       }
     },
@@ -3873,10 +3903,16 @@
             "precision": 0
           }
         ],
-        "warnings": [],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "La valeur mesurée est hors de la fourchette attendue, ce qui peut suggérer un trouble acido-basique surajouté (mixte) — à corréler cliniquement."
+          }
+        ],
         "echoed": {
           "Trouble primaire supposé": "Alcalose respiratoire chronique",
-          "PaCO2 mesurée": "30.0 mmHg"
+          "PaCO2 mesurée": "30.0 mmHg",
+          "HCO3 mesuré": "15.0 mmol/L"
         }
       }
     },

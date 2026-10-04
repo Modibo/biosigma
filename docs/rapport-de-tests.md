@@ -817,3 +817,8 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Dossiers FV-PREP-008 à 015** préparés et reliés au registre (`registre-validation.csv`, colonne `prepared_dossier`). **Aucun n'est signé ; aucun élément n'est « VALIDÉ ».**
 - **Limite** : les valeurs « indépendantes » sont écrites par l'auteur du code ; la confrontation à des sources secondaires réduit le risque sans le supprimer. Seule la relecture du validateur sur les sources primaires valide.
 
+## P3-02 et P3-04 (2026-10-04, version 1.18.0)
+
+- **P3-02 — ISI de l'INR** : paramètre requis, sans valeur par défaut (moteur et champ de l'écran). 5 tests moteur (ISI qui change le résultat, INR = 1 quand TP = TP moyen normal, ISI nul/négatif refusé, ISI rappelé, garde de signature) et 2 tests d'écran (champ non prérempli ; sans ISI, aucun INR). Aucun résultat modifié.
+- **P3-04 — comparaison acido-basique** : l'écran passe désormais la seconde valeur saisie (PaCO2 pour un trouble métabolique, HCO3 pour un trouble respiratoire) au moteur, qui la comparait déjà à la fourchette attendue. Texte purement descriptif. 5 tests d'écran. **Golden master** : 6 cas modifiés (`expected_acid_base_compensation` et ses 5 variantes), diff vérifié : une mention d'information et l'entrée rappelée en plus, valeurs numériques identiques ; les 138 autres cas inchangés.
+

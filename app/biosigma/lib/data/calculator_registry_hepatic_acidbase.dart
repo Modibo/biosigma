@@ -95,7 +95,9 @@ final CalculatorDefinition expectedAcidBaseCompensationDefinition = CalculatorDe
       helpText:
           'Choisir le trouble primaire, puis saisir le HCO3 mesuré '
           '(troubles métaboliques) ou la PaCO2 mesurée (troubles '
-          'respiratoires) dans le champ correspondant ci-dessous.',
+          'respiratoires) dans le champ correspondant ci-dessous. '
+          "L'autre valeur, si vous la saisissez, est comparée à la "
+          'fourchette attendue (comparaison descriptive).',
       enumOptions: [
         EnumFieldOption(
           value: PrimaryAcidBaseDisorder.acidoseMetabolique,
@@ -125,23 +127,25 @@ final CalculatorDefinition expectedAcidBaseCompensationDefinition = CalculatorDe
     ),
     const CalculatorFieldSpec(
       id: 'hco3',
-      label: 'HCO3 mesuré (troubles métaboliques)',
+      label: 'HCO3 mesuré',
       kind: FieldKind.numberFixedUnit,
       fixedUnitLabel: 'mmol/L',
       required: false,
       helpText:
-          "À remplir uniquement si le trouble primaire choisi est une "
-          'acidose ou une alcalose métabolique.',
+          "Trouble métabolique : valeur de départ du calcul (requise). "
+          'Trouble respiratoire : facultatif, comparé à la fourchette de '
+          'HCO3 attendue.',
     ),
     const CalculatorFieldSpec(
       id: 'paco2',
-      label: 'PaCO2 mesurée (troubles respiratoires)',
+      label: 'PaCO2 mesurée',
       kind: FieldKind.numberFixedUnit,
       fixedUnitLabel: 'mmHg',
       required: false,
       helpText:
-          "À remplir uniquement si le trouble primaire choisi est une "
-          'acidose ou une alcalose respiratoire (aiguë ou chronique).',
+          "Trouble respiratoire : valeur de départ du calcul (requise). "
+          'Trouble métabolique : facultatif, comparée à la fourchette de '
+          'PaCO2 attendue.',
     ),
   ],
   compute: (values) {
@@ -159,9 +163,12 @@ final CalculatorDefinition expectedAcidBaseCompensationDefinition = CalculatorDe
         ),
       ]);
     }
+    // L'autre valeur, si elle est saisie, sert à la comparaison descriptive
+    // avec la fourchette attendue (P3-04).
     return calculateExpectedAcidBaseCompensation(
       disorder: disorder,
       measuredValue: measuredValue,
+      measuredCompensatoryValue: disorder.isMetabolic ? paco2.value : hco3.value,
     );
   },
 );
