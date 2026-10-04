@@ -30,6 +30,9 @@ class AppState extends ChangeNotifier {
   /// Pipettes décrites par l'utilisateur (aucune n'est embarquée).
   List<Pipette> pipettes;
 
+  /// Des données stockées illisibles ont été mises de côté (quarantaine).
+  bool get hasQuarantinedData => _storage.quarantinedKeys().isNotEmpty;
+
   Future<void> updateSettings(AppSettings Function(AppSettings) update) async {
     settings = update(settings);
     await _storage.saveSettings(settings);

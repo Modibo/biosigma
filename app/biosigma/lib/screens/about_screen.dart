@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../app_version.dart';
+import 'diagnostic_screen.dart';
 
 /// Écran « À propos » : ce que BioSigma apporte, ses avertissements
 /// d'usage, l'auteur et un contact pour les remarques, corrections de
@@ -90,6 +91,25 @@ class AboutScreen extends StatelessWidget {
             child: const Text(
               'Conçu et développé par le Dr Modibo Mouctar Coulibaly, PharmD, CLMS, PhD, Maître '
               'de recherche à l\'Hôpital Sominé Dolo de Mopti (Mali).',
+            ),
+          ),
+          _Section(
+            title: 'Diagnostic',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Vérifie l\'état de BioSigma sur cet appareil (mode hors connexion, stockage, impression…) '
+                  'et produit un rapport à copier pour un compte rendu de test. Aucune donnée n\'est envoyée.',
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.health_and_safety_outlined),
+                  label: const Text('Diagnostic de l\'appareil'),
+                  onPressed: () => Navigator.of(context)
+                      .push(MaterialPageRoute<void>(builder: (_) => const DiagnosticScreen())),
+                ),
+              ],
             ),
           ),
           _Section(

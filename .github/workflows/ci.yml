@@ -43,6 +43,13 @@ jobs:
         working-directory: app/biosigma
         run: flutter test
 
-      - name: Application — impression web (navigateur)
+      - name: Application — impression et diagnostic web (navigateur)
         working-directory: app/biosigma
-        run: flutter test --platform chrome test/web_print_test.dart
+        run: flutter test --platform chrome test/web_print_test.dart test/web_diagnostic_test.dart
+
+      - name: Application — build web et budget de poids (D-14, provisoire)
+        working-directory: app/biosigma
+        run: |
+          flutter build web --release --no-web-resources-cdn
+          sh tool/stamp_sw.sh build/web
+          sh tool/check_bundle_size.sh build/web

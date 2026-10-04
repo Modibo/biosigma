@@ -767,3 +767,17 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Non fait** : essais avec VoiceOver/TalkBack, clavier sur Safari/Firefox, appareil réel, audit expert (checklist dans
   `accessibilite.md`).
 
+## Performance et diagnostic (2026-10-04, backlog P6-02 / P6-03)
+
+- **Mesures** : voir `performance.md` (poids par fichier, évolution 1.6.0 → 1.16.0 : +9 %, démarrage à cache chaud ≈ 0,19 s sur machine
+  de développement, durées de téléchargement calculées). La version 1.6.0 a été reconstruite à partir de son étiquette Git pour
+  mesurer l'évolution.
+- **Contrôle de budget** `tool/check_bundle_size.sh` : vérifié dans les deux sens (passe dans le budget, échoue — code de sortie 1 —
+  avec un budget volontairement trop bas) ; ajouté à la CI avec un build web.
+- **Diagnostic de l'appareil** : **5 tests de widgets** (version, plateforme, historique, quarantaine, copie du rapport, lien depuis À
+  propos) et **1 test dans un vrai navigateur** (`--platform chrome` : navigateur, service worker, caches, stockage local « OK »,
+  presse-papiers, préférences) ; application : 166 tests. Deux défauts de test corrigés en route (lecture de `MediaQuery` hors du bon
+  cycle de vie ; attente non simulée dans un test de widget).
+- **Non fait** : aucune mesure sur appareil réel ; budget non confirmé (D-14) ; objectif de démarrage non fixé ; tests Safari/Firefox,
+  Android et iOS à faire par les testeurs avec le protocole.
+

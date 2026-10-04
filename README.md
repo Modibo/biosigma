@@ -276,6 +276,17 @@ Aucune source normative n'est citée pour ces relations de définition : chaque 
 (« à relire par le laboratoire »). Les références de Sigma, d'erreur totale et du tampon sont à compléter
 et à valider (décision D-12).
 
+## Performance et tests sur appareils (backlog P6-02 / P6-03)
+
+- **Poids mesuré** (1.16.0) : premier chargement ≈ **3,4 Mo** compressés sous Chrome/Edge (dont 2,06 Mo de moteur graphique
+  Flutter, hors de notre contrôle, et 1,16 Mo pour l'application, qui n'a grossi que de 9 % depuis la 1.6.0) ; visites
+  suivantes ≈ **0 octet** grâce au mode hors connexion. Budget **provisoire** (D-14 à confirmer) vérifié par
+  `tool/check_bundle_size.sh` dans la CI. Détails et durées de téléchargement : `docs/biosigma-lab/performance.md`.
+- **Diagnostic de l'appareil** (À propos) : contrôle mode hors connexion, stockage, installation, impression, presse-papiers,
+  préférences d'accessibilité, et produit un rapport à copier. Rien n'est envoyé.
+- **Protocole de tests sur appareils réels** : `docs/biosigma-lab/protocole-tests-appareils.md` (16 scénarios, modèle de
+  compte rendu). **Aucun essai sur appareil réel n'a encore eu lieu** : Android, iOS, Safari et Firefox restent non testés.
+
 ## Accessibilité (backlog P6-01)
 
 Cible de travail **WCAG 2.1 AA** (décision D-15 à confirmer). Vérifié automatiquement sur les écrans principaux, en
