@@ -6,6 +6,7 @@ import '../../models/result.dart';
 import '../../units/analyte.dart';
 import '../../units/unit_registry.dart';
 import '../../validation.dart';
+import 'shared_formulas.dart';
 
 /// Équation utilisée pour estimer le LDL-cholestérol calculé.
 enum LdlFormula {
@@ -204,7 +205,7 @@ CalculationResult calculateLdlPanel({
       : null;
 
   final nonHdl = tcMmolL - hdlMmolL;
-  final ctHdlRatio = tcMmolL / hdlMmolL;
+  final ctHdlRatio = totalToHdlCholesterolRatio(tcMmolL, hdlMmolL);
   final tgHdlRatioMgDl = tgMgDl / hdlMgDl;
   final remnantCholesterol = ldlMmolL != null ? nonHdl - ldlMmolL : null;
 

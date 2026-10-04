@@ -26,6 +26,11 @@ export 'src/calculators/metabolic/glycemic_conversions.dart';
 export 'src/calculators/metabolic/lipids.dart';
 export 'src/calculators/metabolic/anthropometric_and_ratios.dart';
 export 'src/calculators/metabolic/cardiovascular_risk_scores.dart';
+export 'src/calculators/metabolic/shared_formulas.dart';
+export 'src/calculators/metabolic/martin_hopkins.dart';
+export 'src/lab/uncertainty.dart';
+export 'src/lab/unit_interpreter.dart';
+export 'src/teaching/exercises.dart';
 
 // Calculateurs — ionogramme / biochimie générale
 export 'src/calculators/ionogram/anion_gap.dart';

@@ -7,6 +7,7 @@ import '../lab/dilution_planner.dart' show dilutionPlannerMeta;
 import '../lab/microbiology.dart';
 import '../lab/prepare.dart';
 import '../lab/quality.dart';
+import '../lab/uncertainty.dart';
 import '../models/formula_meta.dart';
 import 'validation.dart';
 
@@ -95,6 +96,7 @@ class EquationRegistry {
     differentialMeta,
     cfuMeta,
     qualityMeta,
+    uncertaintyMeta,
   ];
 
   /// Versions des équations modifiées depuis leur entrée au registre (toute

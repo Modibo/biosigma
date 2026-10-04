@@ -11,6 +11,8 @@ import 'package:biosigma/screens/lab/microbiology_screen.dart';
 import 'package:biosigma/screens/lab/prepare_screen.dart';
 import 'package:biosigma/screens/lab/quality_screen.dart';
 import 'package:biosigma/screens/lab/smart_solver_screen.dart';
+import 'package:biosigma/screens/lab/uncertainty_screen.dart';
+import 'package:biosigma/screens/exercises_screen.dart';
 import 'package:biosigma/screens/universal_search_screen.dart';
 import 'package:biosigma/services/app_storage_service.dart';
 import 'package:biosigma/state/app_state.dart';
@@ -57,6 +59,8 @@ final Map<String, Widget Function()> _screens = {
   'Microbiology': () => const MicrobiologyScreen(),
   'Quality': () => const QualityScreen(),
   'Smart Solver': () => SmartSolverScreen(openModule: (_) {}),
+  'Incertitude': () => const UncertaintyScreen(),
+  'Exercices de calcul': () => const ExercisesScreen(initialSeed: 1, initialKindId: 'bmi'),
   'calculateur (IMC)': () =>
       CalculatorScreen(definition: allCalculators.firstWhere((d) => d.meta.id == 'bmi')),
 };

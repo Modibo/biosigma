@@ -7,6 +7,7 @@ import '../../models/result.dart';
 import '../../units/analyte.dart';
 import '../../units/unit_registry.dart';
 import '../../validation.dart';
+import 'shared_formulas.dart';
 
 /// QUICKI (Quantitative Insulin Sensitivity Check Index).
 const FormulaMeta quickiMeta = FormulaMeta(
@@ -212,7 +213,7 @@ CalculationResult calculateTyg({
       UnitRegistry.toCanonical(Analyte.glucose, fastingGlucoseValue, fastingGlucoseUnit);
   final glucoseMgDl = UnitRegistry.fromCanonical(Analyte.glucose, glucoseCanonicalMmolL, 'mg/dL');
 
-  final tyg = math.log((tgMgDl * glucoseMgDl) / 2);
+  final tyg = tygIndexFromMgDl(tgMgDl, glucoseMgDl);
 
   return CalculationResult(
     formula: tygMeta,

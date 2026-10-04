@@ -8,6 +8,7 @@ import 'lab/microbiology_screen.dart';
 import 'lab/prepare_screen.dart';
 import 'lab/quality_screen.dart';
 import 'lab/smart_solver_screen.dart';
+import 'lab/uncertainty_screen.dart';
 
 /// Écran d'un module Lab (utilisé par l'onglet Lab et par la recherche).
 Widget labModuleScreen(LabModule m) => switch (m) {
@@ -17,6 +18,7 @@ Widget labModuleScreen(LabModule m) => switch (m) {
       LabModule.count => const CountScreen(),
       LabModule.microbiology => const MicrobiologyScreen(),
       LabModule.quality => const QualityScreen(),
+      LabModule.uncertainty => const UncertaintyScreen(),
     };
 
 /// Onglet « Lab » : accueil des modules de laboratoire (décision D-13 :
@@ -80,6 +82,13 @@ class LabScreen extends StatelessWidget {
             subtitle: 'CV, biais, récupération, erreur totale, Sigma. L\'ETa et le coefficient k sont '
                 'saisis par vous ; aucun verdict.',
             onTap: () => openModule(LabModule.quality),
+          ),
+          _Tile(
+            icon: Icons.stacked_line_chart,
+            title: 'Incertitude (mode Expert)',
+            subtitle: 'Propagation d\'incertitude selon le GUM : incertitude composée et élargie. '
+                'Incertitudes-types et facteur k saisis par vous.',
+            onTap: () => openModule(LabModule.uncertainty),
           ),
           _Tile(
             icon: Icons.lightbulb_outline,

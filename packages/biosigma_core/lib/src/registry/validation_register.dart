@@ -54,6 +54,7 @@ const Map<String, String> _equationFlags = {
   'cha2ds2_vasc_score': 'Référence à reconfirmer (R-08)',
   'red_cell_indices': 'Citation primaire des définitions à compléter',
   'absolute_leukocyte_counts': 'Citation primaire des définitions à compléter',
+  'lab_uncertainty': 'GUM (JCGM 100:2008) lu le 2026-10-04 (éq. 10, 12, 5, 7 ; §§ 6.2-6.3) : relire le périmètre (premier ordre, grandeurs non corrélées)',
   'lab_quality': 'Citations Sigma / erreur totale à compléter ; ETa et k saisis par l\'utilisateur',
   'lab_prepare_buffer': 'Citation Henderson-Hasselbalch à vérifier',
 };

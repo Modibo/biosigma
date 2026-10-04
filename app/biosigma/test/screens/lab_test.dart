@@ -28,9 +28,9 @@ Future<void> _pump(WidgetTester tester, Widget screen) async {
 }
 
 void main() {
-  testWidgets('l\'onglet Lab propose les sept modules et ouvre chacun', (tester) async {
+  testWidgets('l\'onglet Lab propose les huit modules et ouvre chacun', (tester) async {
     await _pump(tester, const DefaultTabController(length: 1, child: LabScreen()));
-    for (final t in ['Convert', 'Dilute', 'Prepare', 'Count', 'Microbiology', 'Quality', 'Smart Solver']) {
+    for (final t in ['Convert', 'Dilute', 'Prepare', 'Count', 'Microbiology', 'Quality', 'Incertitude (mode Expert)', 'Smart Solver']) {
       expect(find.text(t), findsOneWidget, reason: t);
     }
     expect(find.text('Prévus — pas encore disponibles'), findsNothing);

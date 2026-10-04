@@ -8,7 +8,8 @@ enum LabModule {
   prepare('Prepare'),
   count('Count'),
   microbiology('Microbiology'),
-  quality('Quality');
+  quality('Quality'),
+  uncertainty('Incertitude');
 
   const LabModule(this.label);
   final String label;
@@ -50,6 +51,7 @@ const Map<LabModule, List<String>> _keywords = {
   LabModule.count: ['numeration', 'cellule', 'chambre', 'formule leuco', 'differentiel', 'spermato', 'compter', 'comptage', 'neubauer'],
   LabModule.microbiology: ['ufc', 'cfu', 'colonie', 'boite', 'gelose', 'inoculum', 'mcfarland', 'denombrement', 'germes'],
   LabModule.quality: [' cv', 'coefficient de variation', 'biais', 'sigma', 'justesse', 'fidelite', 'recuperation', 'ecart-type', 'ecart type', 'erreur totale'],
+  LabModule.uncertainty: ['incertitude', 'gum', 'propagation', 'k=2', 'facteur d\'elargissement', 'type a', 'type b'],
 };
 
 /// Minuscules sans accents, entourées d'espaces (pour les mots-clés « mot entier »).

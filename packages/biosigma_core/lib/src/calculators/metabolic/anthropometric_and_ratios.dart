@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 
 import '../../models/errors.dart';
 import '../../models/formula_meta.dart';
@@ -7,6 +6,7 @@ import '../../models/result.dart';
 import '../../units/analyte.dart';
 import '../../units/unit_registry.dart';
 import '../../validation.dart';
+import 'shared_formulas.dart';
 
 /// Indice de masse corporelle (IMC / BMI).
 ///
@@ -351,7 +351,7 @@ CalculationResult calculateTygBmi({
   final glucoseMgDl =
       UnitRegistry.fromCanonical(Analyte.glucose, glucoseCanonicalMmolL, 'mg/dL');
 
-  final tyg = math.log((tgMgDl * glucoseMgDl) / 2);
+  final tyg = tygIndexFromMgDl(tgMgDl, glucoseMgDl);
   final bmi = _bmiFromWeightHeight(weightKgValue, heightCmValue);
   final tygBmi = tyg * bmi;
 
@@ -446,7 +446,7 @@ CalculationResult calculateCtHdlRatio({
   final hdlMmolL =
       UnitRegistry.toCanonical(Analyte.cholesterol, hdlValue, hdlUnit);
 
-  final ratio = tcMmolL / hdlMmolL;
+  final ratio = totalToHdlCholesterolRatio(tcMmolL, hdlMmolL);
 
   return CalculationResult(
     formula: ctHdlRatioMeta,

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../data/quiz/quiz_registry.dart';
 import '../models/quiz_question.dart';
 import '../state/app_state.dart';
+import 'exercises_screen.dart';
 import 'quiz_module_screen.dart';
 
 /// Onglet Entraînement : une série de [kQuizSessionSize] questions tirées
@@ -32,6 +33,20 @@ class EntrainementScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 16),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.calculate_outlined),
+              title: const Text('Exercices de calcul'),
+              subtitle: const Text(
+                'Cas fictifs générés au hasard (IMC, HOMA-IR, FIB-4, INR, DFG, dilution…), corrigé et solution '
+                'détaillée. Mode enseignement : équations non validées, entraînement uniquement.',
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const ExercisesScreen()),
+              ),
+            ),
+          ),
           ...allQuizModules.map((module) => _QuizModuleCard(module: module)),
         ],
       ),

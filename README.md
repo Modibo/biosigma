@@ -9,6 +9,7 @@ connexion** : tous les calculs s'exécutent sur l'appareil, aucun compte ni serv
 
 ## Sommaire
 
+- [Documentation](#documentation)
 - [Architecture](#architecture)
 - [Prérequis](#prérequis)
 - [Installer et lancer l'application](#installer-et-lancer-lapplication)
@@ -20,6 +21,12 @@ connexion** : tous les calculs s'exécutent sur l'appareil, aucun compte ni serv
 - [Décisions qui dépendent de la validation du laboratoire](#décisions-qui-dépendent-de-la-validation-du-laboratoire)
 - [Confidentialité](#confidentialité)
 - [État du projet : ce qui est construit et testé, ce qui reste à faire](#état-du-projet--ce-qui-est-construit-et-testé-ce-qui-reste-à-faire)
+
+## Documentation
+
+- **[Guide de l'utilisateur](docs/guide-utilisateur.md)** : prise en main, calculs, outils Lab, entraînement, confidentialité, signification de « NON VALIDÉ ».
+- **[Veille de dépendances](docs/veille-dependances.md)** : procédure, état des paquets, rapport hebdomadaire (`.github/workflows/veille.yml`).
+- **[Audit, architecture et registre des décisions](docs/biosigma-lab/00-audit-et-architecture.md)** ; [rapport de tests](docs/rapport-de-tests.md) ; [traçabilité scientifique](docs/tracabilite-scientifique.md) ; [gouvernance de validation](docs/biosigma-lab/gouvernance-validation.md).
 
 ## Architecture
 
@@ -248,6 +255,9 @@ Deux modules sont disponibles ; ils ne font pas partie du catalogue des 61 calcu
     comparées à PubChem et au résolveur NCI/CADD (aucune différence) ; la fiche de relecture
     `docs/biosigma-lab/relecture-analytes.md` liste chaque analyte pour validation. Les calculateurs existants gardent leurs facteurs arrondis ;
     l'écart éventuel est indiqué sous le résultat.
+- **Saisie rapide (Convert)** : « 88 umol/l en mg/dl » remplit valeur et unités ; toute réécriture est affichée
+  (« casse corrigée : à confirmer »), une unité douteuse n'est jamais devinée (propositions), « G/L » avertit qu'il désigne
+  des cellules et non des g/L, un séparateur ambigu est refusé.
 - **Dilute** : dilution simple (C1·V1 = C2·V2), dilutions en série, résultat après dilution avec
   contrôle de l'intervalle de linéarité saisi par l'utilisateur, et **planificateur** : à partir d'un facteur
   de dilution, d'un volume final et de **vos pipettes**, il cherche la stratégie réalisable la plus simple
@@ -257,7 +267,7 @@ Deux modules sont disponibles ; ils ne font pas partie du catalogue des 61 calcu
   volume final minimal pour une étape. Les volumes supérieurs à votre plus grande pipette sont refusés
   (pas de pipetages multiples). Calcul théorique : exactitude réelle, volume mort réel et mélange non modélisés.
 
-Cinq autres modules sont disponibles. Pour chacun, **toute valeur qui exigerait une source n'est pas
+Six autres modules sont disponibles. Pour chacun, **toute valeur qui exigerait une source n'est pas
 embarquée : l'utilisateur la saisit** (et le résultat le rappelle).
 
 - **Prepare** : masse à peser (concentration massique ou molaire, pureté), solutions en pourcentage
@@ -269,6 +279,10 @@ embarquée : l'utilisateur la saisit** (et le résultat le rappelle).
   dénombrables est saisi. **Aucune équivalence McFarland ↔ UFC** n'est proposée.
 - **Quality** : moyenne, écart-type, CV, biais, récupération, erreur totale (k saisi), Sigma (ETa
   saisie) — **sans verdict d'interprétation**.
+- **Incertitude (mode Expert)** : propagation d'incertitude selon le GUM (JCGM 100:2008, éq. 10 et 12), au premier ordre,
+  grandeurs non corrélées ; modèles dilution C2 = C1·V1/V2, produit/quotient et somme pondérée ; incertitude composée,
+  élargie (k saisi) et part de chaque grandeur ; aides pour les incertitudes-types de type A (s/√n), de type B rectangulaire
+  (a/√3) et U/k. Aucune incertitude n'est embarquée.
 - **Smart Solver** : analyse locale par mots-clés d'une phrase ; **propose** un module à confirmer et
   repère les quantités écrites, sans rien calculer ni remplir. Aucune donnée n'est envoyée.
 
@@ -365,6 +379,14 @@ Correction immédiate avec explication sourcée après chaque réponse ; score d
 localement uniquement (`AppStorageService`, jamais transmis en ligne), effaçable depuis Réglages.
 C'est un outil d'auto-évaluation pédagogique — il ne remplace ni une formation validante ni un
 jugement clinique, rappelé en bandeau sur chaque écran d'entraînement.
+
+### Exercices de calcul (mode enseignement, P5-05)
+
+Dix types d'exercices générés de façon **déterministe** à partir d'un numéro (IMC, HOMA-IR, QUICKI, TyG, FIB-4, INR,
+DFG CKD-EPI 2021, trou anionique, conversion de la créatinine, dilution : `packages/biosigma_core/lib/src/teaching/`).
+Cas **fictifs** ; le corrigé est calculé par le moteur de l'application, et les tests le **recalculent indépendamment**
+à partir des données de l'énoncé (200 numéros par type). Chaque exercice rappelle le **statut de validation** de
+l'équation (aujourd'hui « NON VALIDÉ ») : entraînement uniquement (décision D-16 du journal). Rien n'est enregistré.
 
 ## Décisions qui dépendent de la validation du laboratoire
 

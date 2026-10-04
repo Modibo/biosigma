@@ -208,6 +208,7 @@ const Map<LabModule, List<String>> _moduleTerms = {
   LabModule.count: ['numeration', 'chambre', 'neubauer', 'formule leucocytaire', 'compteur', 'spermatozoides'],
   LabModule.microbiology: ['microbiologie', 'ufc', 'cfu', 'colonies', 'denombrement'],
   LabModule.quality: ['qualite', 'cv', 'biais', 'sigma', 'recuperation', 'erreur totale'],
+  LabModule.uncertainty: ['incertitude', 'gum', 'propagation', 'facteur d\'elargissement', 'metrologie'],
 };
 
 const Map<LabModule, String> _moduleSummary = {
@@ -217,4 +218,5 @@ const Map<LabModule, String> _moduleSummary = {
   LabModule.count: 'Numération en chambre, formule leucocytaire',
   LabModule.microbiology: 'UFC/mL à partir de boîtes dénombrées',
   LabModule.quality: 'CV, biais, récupération, Sigma',
+  LabModule.uncertainty: 'Propagation d\'incertitude (GUM), incertitude élargie',
 };

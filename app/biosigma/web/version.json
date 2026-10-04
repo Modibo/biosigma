@@ -1,5 +1,5 @@
 {
-  "latest": "1.18.0",
+  "latest": "1.19.0",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Compensation acido-basique : si vous saisissez aussi la seconde valeur (PaCO2 ou HCO3), elle est comparée à la fourchette attendue, à titre descriptif. Le DFG CKD-EPI créatinine-cystatine C 2021 est corrigé (voir 1.17.1) : l'ancienne version surestimait le DFG lorsque la créatinine était basse."
+  "notes": "Nouveau : saisie rapide des unités dans Convert (« 88 umol/l en mg/dl »), outil Incertitude (mode Expert, GUM), exercices de calcul dans Entraînement (cas fictifs, équations non validées), guide de l'utilisateur. Rappel : le DFG CKD-EPI créatinine-cystatine C 2021 a été corrigé en 1.17.1 (surestimation si la créatinine est basse)."
 }

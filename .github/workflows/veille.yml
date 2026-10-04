@@ -1,0 +1,24 @@
+# Veille de dépendances (backlog P6-04) : rapport hebdomadaire informatif.
+# Ne modifie rien et n'échoue jamais : la décision de mise à jour est humaine
+# (voir docs/veille-dependances.md).
+name: Veille de dépendances
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # chaque lundi à 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  rapport:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'
+          channel: stable
+          cache: true
+      - name: Paquets en retard
+        run: |
+          sh app/biosigma/tool/veille_dependances.sh | tee veille.txt
+          { echo '## Veille de dépendances'; echo '```'; cat veille.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
