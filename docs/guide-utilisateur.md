@@ -31,7 +31,7 @@ BioSigma est une application de calculs de biochimie clinique, d'hémostase et d
 
 À savoir :
 - **Séparateur décimal.** Par défaut la virgule (« 1,5 »). Une saisie ambiguë, par exemple « 1.5 » en mode virgule, est **refusée avec un message** plutôt que lue comme 15 : corrigez ou changez le réglage. Les espaces de milliers sont acceptés (« 1 000 »).
-- **Interprétation.** Les repères d'interprétation (stades, seuils) sont des repères de la littérature, affichés à part, « à valider localement ». Les seuils propres à votre laboratoire se saisissent dans **Réglages → Seuils locaux**.
+- **Alertes et niveaux de lecture.** Sous le résultat, les messages sont rangés par blocs : **Alertes** (à lire en premier), **Précisions analytiques et limites** (ce qui conditionne la validité du résultat), **Repères d'interprétation** (stades, catégories, seuils de la littérature, « à valider localement ») et **Recommandations publiées (aide à la décision)** (indications ou cibles de traitement reproduites avec leur source). BioSigma ne formule aucune décision : ces recommandations ne s'appliquent qu'après une évaluation clinique individuelle. L'impression et l'export reprennent les mêmes blocs. Les seuils propres à votre laboratoire se saisissent dans **Réglages → Seuils locaux**.
 - **Résultat incomplet.** Si une donnée obligatoire manque, l'application l'indique au lieu de deviner.
 - **Version de l'équation.** Quand une équation a été corrigée, un encadré « Historique des versions » le dit (par exemple le DFG CKD-EPI créatinine-cystatine C 2021, version 2).
 

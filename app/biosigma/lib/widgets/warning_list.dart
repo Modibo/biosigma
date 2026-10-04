@@ -9,8 +9,9 @@ import '../theme/app_theme.dart';
 ///
 /// Niveaux de résultat (backlog P1-16) : la valeur calculée est affichée
 /// au-dessus (niveau « calcul ») ; ici, les **alertes** (`blocking`,
-/// `caution`) sont séparées des **informations et repères d'interprétation**
-/// (`info`), présentés comme généraux et non validés localement. BioSigma ne
+/// `caution`) sont séparées des messages d'information (`info`), eux-mêmes
+/// regroupés par niveau : précisions analytiques, repères d'interprétation,
+/// recommandations publiées (aide à la décision, avec leur source). BioSigma ne
 /// formule aucune décision clinique.
 class WarningList extends StatelessWidget {
   const WarningList({super.key, required this.warnings});
@@ -21,7 +22,7 @@ class WarningList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (warnings.isEmpty) return const SizedBox.shrink();
     final alerts = warnings.where((w) => w.severity != WarningSeverity.info).toList(growable: false);
-    final infos = warnings.where((w) => w.severity == WarningSeverity.info).toList(growable: false);
+    final levels = groupInfoByLevel(warnings);
     final theme = Theme.of(context);
     Widget heading(String title, {String? caption}) => Padding(
           padding: const EdgeInsets.only(top: 8, bottom: 2),
@@ -37,13 +38,9 @@ class WarningList extends StatelessWidget {
           heading('Alertes'),
           ...alerts.map((w) => _WarningTile(warning: w)),
         ],
-        if (infos.isNotEmpty) ...[
-          heading(
-            'Informations et repères d\'interprétation',
-            caption: 'Repères généraux, non validés localement : ils ne remplacent ni le contexte '
-                'clinique ni le jugement du professionnel.',
-          ),
-          ...infos.map((w) => _WarningTile(warning: w)),
+        for (final entry in levels.entries) ...[
+          heading(entry.key.title, caption: entry.key.caption),
+          ...entry.value.map((w) => _WarningTile(warning: w)),
         ],
       ],
     );

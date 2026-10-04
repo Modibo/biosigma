@@ -45,7 +45,8 @@ void main() {
       expect(t, contains('SOURCES'));
       expect(t, contains('LIMITES D\'EMPLOI'));
       expect(t, contains(CalculationReport.disclaimer));
-      expect(t, contains('INFORMATIONS ET REPÈRES D\'INTERPRÉTATION'));
+      expect(t, contains('PRÉCISIONS ANALYTIQUES ET LIMITES'));
+      expect(t, isNot(contains('RECOMMANDATIONS PUBLIÉES')));
     });
 
     test('virgule ou point décimal selon le réglage', () {
@@ -83,7 +84,7 @@ void main() {
       expect(t, contains('[BLOQUANT]'));
       expect(
         t.indexOf('ALERTES'),
-        lessThan(t.indexOf('INFORMATIONS ET REPÈRES')),
+        lessThan(t.indexOf('PRÉCISIONS ANALYTIQUES')),
       );
 
       final incomplete = calculateOutOfRangeDilution(

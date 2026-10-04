@@ -844,3 +844,8 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Strates lues sur valeurs arrondies au mg/dL entier** (0,5 vers le haut, tolérance 10⁻⁶) : TG 132,4 → ligne 127–132 (LDL 125,0189) ; 132,5 et 132,86 → ligne 133–138 (125,4630 ; 125,3963) ; non-HDL-C 129,6 → colonne 130–159 (108,7667). Valeurs recalculées en Python. Moteur : **620 tests**.
 - **Golden master** : seul le cas `ldl_panel#formula=2` change (3 lignes : valeur du LDL, cholestérol résiduel, texte du facteur) ; aucun autre cas.
 
+## P1-16 : niveaux de résultat (2026-10-04, version 1.21.0)
+
+- **Revue des messages** : les 78 messages d'information distincts du golden master ont été relus et classés ; 6 équations produisent des recommandations publiées (CHA₂DS₂-VASc, Padua, Caprini, HAS-BLED, eAG/ADA, INR), 8 messages sont des précisions analytiques, le reste des repères d'interprétation. **Résultats et textes inchangés** : le golden master est identique (aucun cas modifié).
+- **Tests** : 6 tests moteur (classement, ordre, regroupement, rapport texte et HTML), 3 tests d'instantané (`warning-levels.json`, ensemble des équations à recommandations, équations « recommandation seule »), 2 tests d'écran (ordre et titres des blocs). Moteur : **626 tests** ; application : **198 tests**.
+

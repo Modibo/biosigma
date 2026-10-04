@@ -1,0 +1,337 @@
+{
+  "absolute_leukocyte_counts": {
+    "analytical": [
+      "Aucun seuil n'est appliqué : neutropénie, lymphopénie ou leur gravité dépendent …"
+    ]
+  },
+  "albi_score": {
+    "interpretation": [
+      "Grade ALBI 1 (ALBI ≤ −2,60) — grades publiés par Johnson et al. 2015, fournis ic…",
+      "Grade ALBI 2 (−2,60 < ALBI ≤ −1,39) — grades publiés par Johnson et al. 2015, fo…"
+    ]
+  },
+  "anion_gap": {
+    "interpretation": [
+      "La correction pour l'albuminémie vise à démasquer un trou anionique élevé fausse…",
+      "Trou anionique (sans potassium) : normal (repère habituel ≈ 8-12 mmol/L, enseign…"
+    ]
+  },
+  "apob_apoa1_ratio": {
+    "interpretation": [
+      "Aucun seuil diagnostique unique consensuel n'est actuellement recommandé par une…"
+    ]
+  },
+  "apri": {
+    "interpretation": [
+      "APRI entre 0,5 et 1,5 : zone intermédiaire."
+    ]
+  },
+  "aptt_ratio": {
+    "analytical": [
+      "Il n'existe pas de seuil universel pour le ratio TCA : la plage normale dépend d…"
+    ]
+  },
+  "ast_alt_ratio_de_ritis": {
+    "interpretation": [
+      "Rapport entre 1 et 2 : zone intermédiaire, sans orientation typique selon ce rep…"
+    ]
+  },
+  "atherogenic_index_of_plasma": {
+    "interpretation": [
+      "Catégories proposées par les auteurs de l'indice (Dobiásová, Frohlich) dans leur…"
+    ]
+  },
+  "bicarbonate_chloride_ratio": {
+    "interpretation": [
+      "Aucun seuil consensuel établi par une société savante n'existe pour ce rapport s…"
+    ]
+  },
+  "bmi": {
+    "interpretation": [
+      "Classification OMS 2000 (WHO Technical Report Series 894) : poids normal (18,5-2…"
+    ]
+  },
+  "calculated_osmolarity_osmolar_gap": {
+    "interpretation": [
+      "Trou osmolaire : non élevé (seuil classiquement enseigné en toxicologie clinique…"
+    ]
+  },
+  "caprini_score": {
+    "decisionSupport": [
+      "Score ≥ 5 : risque élevé selon les catégories ACCP/CHEST (Gould et al. 2012) — u…"
+    ]
+  },
+  "cha2ds2_vasc_score": {
+    "decisionSupport": [
+      "Score CHA₂DS₂-VASc = 4/9. Anticoagulation orale recommandée (recommandation de c…"
+    ]
+  },
+  "ckd_epi_creatinine_2021": {
+    "interpretation": [
+      "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-5…",
+      "Stade KDIGO G2 : DFG légèrement diminué (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 4…",
+      "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G…"
+    ]
+  },
+  "ckd_epi_creatinine_cystatin_c_2021": {
+    "interpretation": [
+      "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-5…",
+      "Stade KDIGO G2 : DFG légèrement diminué (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 4…",
+      "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G…"
+    ]
+  },
+  "ckd_epi_cystatin_c_2012": {
+    "interpretation": [
+      "Stade KDIGO G2 : DFG légèrement diminué (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 4…"
+    ]
+  },
+  "corrected_calcium_albumin": {
+    "interpretation": [
+      "Calcium corrigé : hypocalcémie (repères usuels de biochimie clinique standard, a…",
+      "Calcium corrigé : normal (repères usuels de biochimie clinique standard, appliqu…"
+    ]
+  },
+  "corrected_sodium_hyperglycemia": {
+    "analytical": [
+      "Correction peu pertinente pour une glycémie ≤ 1,00 g/L (5,55 mmol/L)."
+    ],
+    "interpretation": [
+      "Repères habituels (mêmes bandes que le sodium non corrigé, biochimie clinique st…"
+    ]
+  },
+  "creatinine_clearance_timed": {
+    "analytical": [
+      "Approximation informative : la clairance mesurée de la créatinine n'est pas stri…"
+    ],
+    "interpretation": [
+      "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-5…",
+      "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G…"
+    ]
+  },
+  "ct_hdl_ratio": {
+    "interpretation": [
+      "Seuils descriptifs souvent cités dans l'enseignement (héritage de l'ère NCEP) : …"
+    ]
+  },
+  "drvvt_normalized_ratio": {
+    "interpretation": [
+      "Un rapport normalisé dRVVT élevé est évocateur d'un anticoagulant lupique, mais …"
+    ]
+  },
+  "england_fraser_index": {
+    "interpretation": [
+      "Indice d'England & Fraser positif : profil plutôt évocateur d'une carence martia…"
+    ]
+  },
+  "estimated_average_glucose_adag": {
+    "decisionSupport": [
+      "Objectif glycémique habituel selon l'American Diabetes Association (ADA) : HbA1c…"
+    ]
+  },
+  "expected_acid_base_compensation": {
+    "interpretation": [
+      "La valeur mesurée est compatible avec une compensation attendue.",
+      "La valeur mesurée est hors de la fourchette attendue, ce qui peut suggérer un tr…"
+    ]
+  },
+  "fib4": {
+    "interpretation": [
+      "FIB-4 entre 1,30 et 2,67 : zone indéterminée. Seuils 1,30 et 2,67 largement repr…"
+    ]
+  },
+  "four_ts_score": {
+    "interpretation": [
+      "Score 0-3 : probabilité clinique faible de TIH, selon Lo et al. (2006).",
+      "Score 4-5 : probabilité clinique intermédiaire de TIH, selon Lo et al. (2006).",
+      "Score 6-8 : probabilité clinique élevée de thrombopénie induite par l'héparine (…"
+    ]
+  },
+  "fractional_excretion_sodium": {
+    "interpretation": [
+      "FeNa évocatrice d'une cause prérénale (hypoperfusion rénale) plutôt que d'une né…",
+      "FeNa évocatrice d'une cause rénale intrinsèque (nécrose tubulaire aiguë) plutôt …"
+    ]
+  },
+  "fractional_excretion_urea": {
+    "interpretation": [
+      "FeUrée évocatrice d'une cause prérénale (repères classiques, utiles notamment so…",
+      "FeUrée évocatrice d'une cause rénale intrinsèque (nécrose tubulaire aiguë) (repè…"
+    ]
+  },
+  "framingham_risk_score": {
+    "interpretation": [
+      "Catégorie de risque selon le cadre du NCEP ATP III (2002), habituellement utilis…"
+    ]
+  },
+  "globulins_ag_ratio": {
+    "interpretation": [
+      "Rapport A/G bas ou inversé (< 1) : repère d'enseignement classique de biochimie …",
+      "Rapport A/G ≥ 1 : dans la zone habituelle (repère d'enseignement classique de bi…"
+    ]
+  },
+  "green_king_index": {
+    "interpretation": [
+      "Indice de Green & King > 72 : profil plutôt évocateur d'une carence martiale (se…"
+    ]
+  },
+  "has_bled_score": {
+    "decisionSupport": [
+      "Score HAS-BLED = 3/9 : risque hémorragique élevé (catégorisation usuelle 0-1 = f…"
+    ]
+  },
+  "homa_beta": {
+    "interpretation": [
+      "Aucun seuil consensuel de société savante (ADA/EASD/IDF) n'existe pour interprét…"
+    ]
+  },
+  "homa_ir": {
+    "interpretation": [
+      "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une sociét…"
+    ]
+  },
+  "improve_bleeding_score": {
+    "interpretation": [
+      "Score < 7 : pas de risque hémorragique accru identifié selon les critères origin…"
+    ]
+  },
+  "indirect_bilirubin": {
+    "interpretation": [
+      "Repère habituel (enseignement de biochimie clinique, pas de guideline dédiée) : …"
+    ]
+  },
+  "inr": {
+    "decisionSupport": [
+      "La cible thérapeutique de l'INR dépend entièrement de l'indication clinique et n…"
+    ]
+  },
+  "isth_dic_score": {
+    "interpretation": [
+      "Score ≥ 5 : compatible avec une CIVD manifeste (décompensée), seuil diagnostique…"
+    ]
+  },
+  "ldl_panel": {
+    "analytical": [
+      "Facteur ajustable F = 5,4 lu dans le tableau de Martin-Hopkins (TG 133 mg/dL, no…"
+    ],
+    "interpretation": [
+      "Catégorie descriptive du LDL-C en population générale, cadre ESC/EAS 2019 (proch…"
+    ]
+  },
+  "meld_na": {
+    "interpretation": [
+      "MELD-Na ≈ 17.8 : risque de mortalité à court terme (≈ 90 jours) modéré, par corr…",
+      "MELD-Na ≈ 40.0 : risque de mortalité à court terme (≈ 90 jours) très élevé, par …"
+    ]
+  },
+  "mentzer_index": {
+    "interpretation": [
+      "Indice de Mentzer < 13 : profil plutôt évocateur d'un trait thalassémique qu'une…"
+    ]
+  },
+  "padua_prediction_score": {
+    "decisionSupport": [
+      "Score ≥ 4 : risque élevé de maladie thromboembolique veineuse selon les critères…"
+    ]
+  },
+  "proteinuria_24h": {
+    "interpretation": [
+      "Protéinurie de rang néphrotique (27.00 g/24h (estimation ramenée à 24 h)) : seui…",
+      "Protéinurie de rang néphrotique (4.50 g/24h) : seuil classiquement retenu en pra…",
+      "Protéinurie de rang néphrotique (450.00 g/24h) : seuil classiquement retenu en p…",
+      "Protéinurie non néphrotique (0.45 g/24h) : en dessous du seuil classiquement ret…"
+    ]
+  },
+  "quicki": {
+    "interpretation": [
+      "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une sociét…"
+    ]
+  },
+  "rdw_index": {
+    "interpretation": [
+      "RDWI ≥ 220 : profil plutôt évocateur d'une carence martiale (seuil de 220 rappor…"
+    ]
+  },
+  "red_cell_indices": {
+    "analytical": [
+      "Aucun intervalle de référence n'est comparé : il dépend de l'âge, du sexe et de …"
+    ]
+  },
+  "reticulocyte_indices_panel": {
+    "interpretation": [
+      "RPI < 2 : évocateur d'une réponse médullaire inadaptée (hypoproliférative), comp…"
+    ]
+  },
+  "rosner_index": {
+    "interpretation": [
+      "Indice de Rosner ≥ 15 % : évocateur d'une absence de correction du TCA par le mé…"
+    ]
+  },
+  "schwartz_bedside_pediatric": {
+    "interpretation": [
+      "Stade KDIGO G1 : DFG normal ou élevé (grille KDIGO — G1 ≥ 90, G2 60-89, G3a 45-5…",
+      "Stade KDIGO G5 : DFG insuffisance rénale terminale (ou proche) (grille KDIGO — G…"
+    ]
+  },
+  "score2_risk": {
+    "interpretation": [
+      "Catégorie de risque selon les recommandations ESC 2021 (Visseren et al.), pour l…"
+    ]
+  },
+  "serial_value_trend": {
+    "interpretation": [
+      "Tendance en hausse par rapport à la valeur précédente (18.8 %). Cette observatio…"
+    ]
+  },
+  "shine_lal_index": {
+    "interpretation": [
+      "Indice de Shine & Lal < 1760 : profil plutôt évocateur d'un trait thalassémique …"
+    ]
+  },
+  "sic_score": {
+    "interpretation": [
+      "Score ≥ 4 : compatible avec une coagulopathie induite par le sepsis (SIC) selon …"
+    ]
+  },
+  "sii_index": {
+    "interpretation": [
+      "Aucun seuil clinique consensuel n'est actuellement recommandé par une société sa…"
+    ]
+  },
+  "siri_index": {
+    "interpretation": [
+      "Aucun seuil clinique consensuel n'est actuellement recommandé par une société sa…"
+    ]
+  },
+  "tibc_from_transferrin": {
+    "interpretation": [
+      "Repère général (enseignement de biochimie clinique, pas de guideline unique dédi…"
+    ]
+  },
+  "transferrin_saturation": {
+    "interpretation": [
+      "Saturation dans la zone intermédiaire usuelle (20-45 %), ni évocatrice de carenc…"
+    ]
+  },
+  "tyg_bmi": {
+    "interpretation": [
+      "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une sociét…"
+    ]
+  },
+  "tyg_index": {
+    "interpretation": [
+      "Aucun seuil diagnostique consensuel n'est actuellement recommandé par une sociét…"
+    ]
+  },
+  "urine_albumin_creatinine_ratio": {
+    "interpretation": [
+      "Catégorie KDIGO A1 : albuminurie normale à légèrement augmentée (grille KDIGO — …",
+      "Catégorie KDIGO A2 : albuminurie modérément augmentée (grille KDIGO — A1 < 30 mg…",
+      "Catégorie KDIGO A3 : albuminurie sévèrement augmentée (grille KDIGO — A1 < 30 mg…"
+    ]
+  },
+  "urine_protein_creatinine_ratio": {
+    "interpretation": [
+      "Il n'existe pas de catégorisation KDIGO formelle du rapport protéines/créatinine…"
+    ]
+  }
+}

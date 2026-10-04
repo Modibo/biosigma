@@ -1,4 +1,5 @@
 import '../models/result.dart';
+import '../models/warning_level.dart';
 import '../registry/equation_registry.dart';
 import '../rounding.dart';
 
@@ -60,8 +61,7 @@ class CalculationReport {
 
   List<CalculationWarning> get _alerts =>
       result.warnings.where((w) => w.severity != WarningSeverity.info).toList(growable: false);
-  List<CalculationWarning> get _infos =>
-      result.warnings.where((w) => w.severity == WarningSeverity.info).toList(growable: false);
+  Map<ResultLevel, List<CalculationWarning>> get _infoLevels => groupInfoByLevel(result.warnings);
 
   String get _statusLine {
     final r = _record;
@@ -103,11 +103,11 @@ class CalculationReport {
         b.writeln('  [${w.severity == WarningSeverity.blocking ? 'BLOQUANT' : 'ATTENTION'}] ${w.message}');
       }
     }
-    if (_infos.isNotEmpty) {
+    for (final entry in _infoLevels.entries) {
       b
         ..writeln()
-        ..writeln('INFORMATIONS ET REPÈRES D\'INTERPRÉTATION (généraux, non validés localement)');
-      for (final w in _infos) {
+        ..writeln('${entry.key.title.toUpperCase()} (${entry.key.caption})');
+      for (final w in entry.value) {
         b.writeln('  - ${w.message}');
       }
     }
@@ -195,10 +195,9 @@ class CalculationReport {
             '<b>${w.severity == WarningSeverity.blocking ? 'Bloquant' : 'Attention'}</b> — ${e(w.message)}</div>');
       }
     }
-    if (_infos.isNotEmpty) {
-      b.writeln('<h2>Informations et repères d\'interprétation</h2>'
-          '<div class="small">Repères généraux, non validés localement : ils ne remplacent ni le contexte clinique ni le jugement du professionnel.</div>');
-      for (final w in _infos) {
+    for (final entry in _infoLevels.entries) {
+      b.writeln('<h2>${e(entry.key.title)}</h2><div class="small">${e(entry.key.caption)}</div>');
+      for (final w in entry.value) {
         b.writeln('<div class="info">• ${e(w.message)}</div>');
       }
     }
