@@ -30,6 +30,7 @@ final Map<String, String> preparedDossiers = {
       'fiches-de-validation/FV-PREP-012-cha2ds2-vasc.md',
   'HEMO_HAS_BLED_SCORE_001': 'fiches-de-validation/FV-PREP-013-has-bled.md',
   'METAB_QUICKI_001': 'fiches-de-validation/FV-PREP-014-quicki.md',
+  'LAB_LAB_UNCERTAINTY_001': 'fiches-de-validation/FV-PREP-016-incertitude-gum.md',
   for (final a in const [
     'creatinine',
     'urea',

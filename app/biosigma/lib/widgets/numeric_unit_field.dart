@@ -36,7 +36,7 @@ class NumericUnitField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final initialText =
-        value == null ? '' : NumberFormatService.format(value!, decimalSeparator, precision: 6);
+        value == null ? '' : NumberFormatService.formatCompact(value!, decimalSeparator);
     final numberField = Semantics(
       label: semanticsLabel ?? label,
       child: TextFormField(

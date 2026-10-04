@@ -66,6 +66,16 @@ class NumberFormatService {
     return value;
   }
 
+  /// Comme [format] mais sans zéros inutiles en fin de partie décimale
+  /// (« 88,000000 » → « 88 », « 0,500000 » → « 0,5 ») : pour réafficher une
+  /// valeur saisie ou lue, sans changer sa valeur.
+  static String formatCompact(double value, DecimalSeparator separator, {int precision = 6}) {
+    final text = format(value, separator, precision: precision);
+    final sep = separator == DecimalSeparator.comma ? ',' : '.';
+    if (!text.contains(sep)) return text;
+    return text.replaceFirst(RegExp('${RegExp.escape(sep)}?0+\$'), '');
+  }
+
   static String format(double value, DecimalSeparator separator, {int precision = 2}) {
     if (!value.isFinite) return '—';
     final text = RoundingPolicy.format(value, precision);

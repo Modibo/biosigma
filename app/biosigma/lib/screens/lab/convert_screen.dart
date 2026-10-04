@@ -202,7 +202,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
     }
     notes.insert(
       0,
-      'Lu : ${NumberFormatService.format(value, sep, precision: 6)} $fromSymbol'
+      'Lu : ${NumberFormatService.formatCompact(value, sep)} $fromSymbol'
       '${toSymbol == null ? '' : ' → $toSymbol'}.',
     );
     finish();

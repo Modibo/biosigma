@@ -2,7 +2,7 @@ name: biosigma
 description: "BioSigma — calculs de biochimie clinique et d'hémostase, hors connexion"
 publish_to: 'none'
 
-version: 1.19.0+24
+version: 1.19.1+25
 
 environment:
   sdk: ^3.13.4

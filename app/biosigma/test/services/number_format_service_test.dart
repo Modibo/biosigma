@@ -81,5 +81,20 @@ void main() {
       expect(NumberFormatService.format(1.5, DecimalSeparator.comma, precision: 2), '1,50');
       expect(NumberFormatService.format(1.5, DecimalSeparator.dot, precision: 2), '1.50');
     });
+
+    test('formatCompact retire les zéros inutiles sans changer la valeur', () {
+      const c = DecimalSeparator.comma, d = DecimalSeparator.dot;
+      expect(NumberFormatService.formatCompact(88, c), '88');
+      expect(NumberFormatService.formatCompact(0.5, c), '0,5');
+      expect(NumberFormatService.formatCompact(0.5, d), '0.5');
+      expect(NumberFormatService.formatCompact(100, c), '100');
+      expect(NumberFormatService.formatCompact(1234.5678, c), '1234,5678');
+      expect(NumberFormatService.formatCompact(0.000001, c), '0,000001');
+      expect(NumberFormatService.formatCompact(10, d), '10');
+      // La valeur relue est celle de départ.
+      for (final v in [88.0, 0.5, 1234.5678, 0.000001, 100.0]) {
+        expect(NumberFormatService.parse(NumberFormatService.formatCompact(v, c), c), v);
+      }
+    });
   });
 }
