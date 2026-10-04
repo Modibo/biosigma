@@ -10,4 +10,5 @@ IconData categoryIcon(CalculatorCategory category) => switch (category) {
       CalculatorCategory.ionogram => Icons.science_outlined,
       CalculatorCategory.hemostasis => Icons.bloodtype_outlined,
       CalculatorCategory.hematology => Icons.biotech_outlined,
+      CalculatorCategory.laboratory => Icons.science,
     };

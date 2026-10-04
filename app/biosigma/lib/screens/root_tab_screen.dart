@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'about_screen.dart';
 import 'entrainement_screen.dart';
 import 'home_screen.dart';
+import 'lab_screen.dart';
 import 'references_screen.dart';
 import 'settings_screen.dart';
 
-/// Écran racine de BioSigma : cinq onglets en haut de l'écran (Calcul,
+/// Écran racine de BioSigma : six onglets en haut de l'écran (Calcul, Lab,
 /// Entraînement, Références, Réglages, À propos), sous une AppBar commune
 /// qui affiche le logo — visible en permanence, y compris à l'ouverture de
 /// chaque onglet, puisque l'AppBar ne se reconstruit pas au changement
@@ -16,6 +17,7 @@ class RootTabScreen extends StatelessWidget {
 
   static const _tabs = [
     Tab(icon: Icon(Icons.calculate_outlined), text: 'Calcul'),
+    Tab(icon: Icon(Icons.science_outlined), text: 'Lab'),
     Tab(icon: Icon(Icons.school_outlined), text: 'Entraînement'),
     Tab(icon: Icon(Icons.menu_book_outlined), text: 'Références'),
     Tab(icon: Icon(Icons.settings_outlined), text: 'Réglages'),
@@ -44,6 +46,7 @@ class RootTabScreen extends StatelessWidget {
         body: const TabBarView(
           children: [
             _KeepAlive(child: HomeScreen()),
+            _KeepAlive(child: LabScreen()),
             _KeepAlive(child: EntrainementScreen()),
             _KeepAlive(child: ReferencesScreen()),
             _KeepAlive(child: SettingsScreen()),

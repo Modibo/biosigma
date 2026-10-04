@@ -7,7 +7,11 @@ enum CalculatorCategory {
   metabolic('Glucides, insulinorésistance et cardiométabolisme'),
   ionogram('Ionogramme, gaz du sang et biochimie générale'),
   hemostasis('Hémostase'),
-  hematology('Hématologie — NFS et réticulocytes');
+  hematology('Hématologie — NFS et réticulocytes'),
+
+  /// Outils de laboratoire (Convert, Dilute…) : hors du catalogue des
+  /// 59 calculs cliniques, absents de `CalculatorCatalog.all`.
+  laboratory('Outils de laboratoire');
 
   const CalculatorCategory(this.label);
 

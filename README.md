@@ -229,6 +229,23 @@ bedside, protéinurie des 24 h, QUICKI et TyG.
 Les références complètes (citations) sont embarquées dans le code (`FormulaMeta.sources`) et
 consultables hors connexion depuis l'écran « Références et limites » de l'application.
 
+## Onglet Lab (phase 1 de BioSigma Lab)
+
+Deux modules sont disponibles ; ils ne font pas partie du catalogue des 59 calculs cliniques.
+
+- **Convert** : conversion de grandeurs par préfixes SI (masse, volume, quantité de matière,
+  équivalents, concentrations). Pour changer de nature (masse → mol → équivalents), la **masse molaire
+  et la valence sont saisies par l'utilisateur** : BioSigma n'embarque aucune masse molaire nouvelle.
+  Un second mode convertit les 11 analytes cliniques déjà gérés, avec leurs facteurs existants
+  (arrondis, non validés).
+- **Dilute** : dilution simple (C1·V1 = C2·V2), dilutions en série, résultat après dilution avec
+  contrôle de l'intervalle de linéarité saisi par l'utilisateur.
+
+Les modules Prepare, Count, Microbiology, Quality et Smart Solver sont affichés comme **prévus et
+non disponibles** : ils attendent des données sourcées et validées (masses molaires, pKa, chambres de
+numération, norme, limites d'erreur) — aucune valeur n'est inventée. Voir
+`docs/biosigma-lab/00-audit-et-architecture.md` (backlog P1-xx, P2-xx).
+
 ## Onglet Entraînement
 
 Quatre banques de questions (une par domaine : rénal, cardiométabolique, ionogramme, hémostase —

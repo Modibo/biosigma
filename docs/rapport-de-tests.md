@@ -604,3 +604,19 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
   les clés retirées sont relus normalement.
 - Vérification : `flutter analyze` sans remarque ; 37 tests de l'application verts (dont 4 nouveaux pour D-03/D-04) ;
   golden master inchangé.
+
+## Phase 1 — onglet Lab : Convert et Dilute (2026-10-03)
+
+- Moteur (`biosigma_core`, `src/lab/`) : unités par préfixes SI (`lab_units.dart`), conversion
+  (`convert.dart`), dilutions (`dilution.dart`). **42 tests ajoutés** (282 au total pour le moteur),
+  valeurs attendues calculées à la main (ex. 100 mg/dL avec M = 180,16 g/mol → 1000/180,16 mmol/L ;
+  1 g/L, 100 µL dans 1 mL → 100 mg/L ; facteur 2, 4 tubes → 1/16 et 6,25 pour 100).
+- Application : 8 tests de widgets ajoutés (`test/screens/lab_test.dart`) ; 45 tests d'application au total.
+- Les 59 calculs existants sont inchangés (golden master vert ; le catalogue compte toujours 59
+  équations, la catégorie « Outils de laboratoire » est hors catalogue).
+- Vérifié visuellement dans le navigateur (build web de production) : onglet Lab et écran Dilute ;
+  les parcours de saisie sont couverts par les tests de widgets, pas par un essai sur téléphone.
+- **Non fait** : base d'analytes avec masses molaires sourcées (P1-11), registre d'équations versionné
+  (P1-13), enregistrement de calcul v2 (P1-14), règle d'arrondi (P1-15), niveaux de résultat (P1-16),
+  intégration continue (P1-00), pipettes et pipetabilité (P2-01).
+

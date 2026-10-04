@@ -38,6 +38,9 @@ Future<void> _tapTab(WidgetTester tester, String label) async {
     of: find.byType(TabBar),
     matching: find.text(label),
   );
+  // La barre d'onglets défile : amener l'onglet visé à l'écran avant le tap.
+  await tester.ensureVisible(tabFinder);
+  await tester.pumpAndSettle();
   await tester.tap(tabFinder);
   await tester.pumpAndSettle();
 }
@@ -50,7 +53,7 @@ void main() {
     expect(find.byType(TextField), findsOneWidget);
     expect(find.text('DFG — panel CKD-EPI'), findsOneWidget);
     expect(find.byType(TabBar), findsOneWidget);
-    for (final label in ['Calcul', 'Entraînement', 'Références', 'Réglages', 'À propos']) {
+    for (final label in ['Calcul', 'Lab', 'Entraînement', 'Références', 'Réglages', 'À propos']) {
       expect(find.descendant(of: find.byType(TabBar), matching: find.text(label)), findsOneWidget,
           reason: 'onglet $label');
     }
