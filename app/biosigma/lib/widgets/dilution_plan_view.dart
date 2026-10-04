@@ -119,3 +119,33 @@ class DilutionPlanDetails extends StatelessWidget {
     ]);
   }
 }
+
+String _vol(double v, DecimalSeparator sep) {
+  final decimals = v >= 100 ? 0 : (v >= 10 ? 1 : 2);
+  return '${NumberFormatService.format(v, sep, precision: decimals)} µL';
+}
+
+String _factor(double f, DecimalSeparator sep) =>
+    (f - f.roundToDouble()).abs() < 1e-9 ? f.toStringAsFixed(0) : NumberFormatService.format(f, sep, precision: 2);
+
+List<String> _planLines(DilutionPlan plan, DecimalSeparator sep) => [
+      for (final s in plan.steps) ...[
+        'Étape ${s.index} — dilution 1/${_factor(s.factor, sep)} (cumulée 1/${_factor(s.cumulativeFactor, sep)}) :',
+        '  prélever ${_vol(s.transfer.volumeUl, sep)} ${s.index == 1 ? 'de la solution mère' : 'du tube ${s.index - 1}'}'
+            ' avec ${s.transfer.best?.pipette.name ?? 'aucune pipette'}'
+            ' (${s.transfer.best?.fit.label ?? '—'}),',
+        '  ajouter ${_vol(s.diluent.volumeUl, sep)} de diluant avec ${s.diluent.best?.pipette.name ?? 'aucune pipette'}'
+            ' (${s.diluent.best?.fit.label ?? '—'}) ; volume du tube ${_vol(s.tubeVolumeUl, sep)}.',
+      ],
+    ];
+
+/// Sections du rapport imprimé pour un résultat du planificateur.
+List<ReportSection> planReportSections(DilutionPlanResult result, DecimalSeparator sep) => [
+      if (result.best != null) ReportSection('Stratégie proposée', _planLines(result.best!, sep)),
+      for (var i = 1; i < result.plans.length; i++)
+        ReportSection('Variante ${i + 1}', _planLines(result.plans[i], sep)),
+      if (result.rejected.isNotEmpty)
+        ReportSection('Stratégies écartées et pourquoi', [
+          for (final r in result.rejected) ...[r.description, for (final x in r.reasons) '  - $x'],
+        ]),
+    ];

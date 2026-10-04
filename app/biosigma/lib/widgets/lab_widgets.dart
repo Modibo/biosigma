@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../models/app_settings.dart';
 import '../services/number_format_service.dart';
+import 'export_dialog.dart';
 import 'formula_reference_section.dart';
 import 'numeric_unit_field.dart';
 import 'result_value_tile.dart';
@@ -15,6 +16,7 @@ class LabResultCard extends StatelessWidget {
     required this.result,
     required this.decimalSeparator,
     this.extra,
+    this.reportSections = const [],
   });
 
   final CalculationResult result;
@@ -22,6 +24,9 @@ class LabResultCard extends StatelessWidget {
 
   /// Contenu supplémentaire sous les valeurs (ex. tableau de dilutions).
   final Widget? extra;
+
+  /// Sections ajoutées au rapport imprimé (ex. étapes d'un plan de dilution).
+  final List<ReportSection> reportSections;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +47,20 @@ class LabResultCard extends StatelessWidget {
                 if (extra != null) ...[const SizedBox(height: 8), extra!],
                 const SizedBox(height: 8),
                 WarningList(warnings: result.warnings),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: OutlinedButton.icon(
+                    onPressed: () => showExportDialog(
+                      context,
+                      result: result,
+                      separator: decimalSeparator,
+                      extraSections: reportSections,
+                    ),
+                    icon: const Icon(Icons.print),
+                    label: const Text('Imprimer / exporter'),
+                  ),
+                ),
               ],
             ),
           ),

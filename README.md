@@ -276,6 +276,18 @@ Aucune source normative n'est citée pour ces relations de définition : chaque 
 (« à relire par le laboratoire »). Les références de Sigma, d'erreur totale et du tampon sont à compléter
 et à valider (décision D-12).
 
+## Impression et export (backlog P3-05, décision D-11)
+
+Chaque résultat (calculateurs et modules Lab) a un bouton **Imprimer / exporter**. Une boîte de **confirmation
+obligatoire** précède toute impression ou copie : le rapport ne contient **aucune identité de patient** (seule une
+référence libre facultative, par exemple un numéro d'échantillon anonyme, peut y figurer) et l'utilisateur doit le
+confirmer. Le rapport rassemble l'équation et sa version, l'identifiant stable et le **statut de validation**,
+la version de l'application, les données saisies, les résultats, les alertes séparées des repères d'interprétation,
+les sources, les limites d'emploi et l'avertissement. Pour le planificateur et les dilutions en série, les étapes
+figurent aussi. Sur le **web**, « Imprimer / PDF » ouvre la boîte d'impression du navigateur (qui propose
+« Enregistrer au format PDF ») : aucune dépendance PDF n'est ajoutée. Ailleurs, le rapport est copié en texte.
+Tout texte saisi est échappé : il ne peut pas être interprété comme du HTML.
+
 ## Recherche universelle (backlog P5-02)
 
 La loupe de la barre du haut ouvre une recherche qui couvre **tout** : les calculs (par nom, abréviation ou

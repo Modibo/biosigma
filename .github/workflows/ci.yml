@@ -42,3 +42,7 @@ jobs:
       - name: Application — tests (dont golden master)
         working-directory: app/biosigma
         run: flutter test
+
+      - name: Application — impression web (navigateur)
+        working-directory: app/biosigma
+        run: flutter test --platform chrome test/web_print_test.dart

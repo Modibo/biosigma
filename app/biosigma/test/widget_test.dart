@@ -68,6 +68,11 @@ void main() {
 
   testWidgets('Parcours complet : ouvrir QUICKI, saisir, calculer, voir le résultat',
       (tester) async {
+    // Fenêtre haute : la liste est paresseuse, et la rangée de boutons (avec
+    // « Imprimer / exporter ») peut repousser la carte de résultat hors écran.
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
     await _pumpApp(tester);
 
     await tester.enterText(find.byType(TextField), 'QUICKI');

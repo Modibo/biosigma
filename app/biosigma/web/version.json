@@ -1,5 +1,5 @@
 {
-  "latest": "1.14.0",
+  "latest": "1.15.0",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Planificateur de dilutions : à partir d'un facteur de dilution et de vos pipettes, BioSigma propose la stratégie la plus simple (une ou plusieurs étapes), indique la pipette à utiliser pour chaque volume et explique pourquoi les autres stratégies sont écartées."
+  "notes": "Impression et export : chaque résultat peut être imprimé ou enregistré en PDF (équation, version, statut de validation, données, résultats, alertes, sources, limites). Une confirmation est demandée : le rapport ne contient aucune identité de patient."
 }

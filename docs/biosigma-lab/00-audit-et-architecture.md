@@ -22,6 +22,7 @@
 | 2026-10-04 | **« On avance sur autre chose »** → choix de l'assistant, en suivant sa recommandation antérieure : **P3-01** (VGM, TCMH, CCMH, ANC, ALC). Définitions pures, sans seuil. **Golden master étendu par ajout** (142 → 144 cas, aucun cas existant modifié). Catalogue : 61 équations | `blood_count_indices.dart`, registre hématologie | Échange du 2026-10-04 |
 | 2026-10-04 | **« Continuer »** → **P5-02 recherche universelle** (suite annoncée à l'utilisateur) : calculs + analytes + unités + modules, sans accents ni casse, phrase libre → module à confirmer (aucun calcul automatique). Aucune donnée scientifique ajoutée (synonymes = aides de recherche). Version 1.13.0 | `search/universal_search.dart`, `universal_search_screen.dart` | Échange du 2026-10-04 |
 | 2026-10-04 | **« Allons avec le planificateur de dilution avec nos pipettes »** → **P5-04** livré dans Dilute (mode « Planificateur »), version 1.14.0. Règle : une stratégie n'est retenue que si chaque volume est pipetable en classe « recommandé » ou « validé » (option : « possible »), sur les pipettes saisies par l'utilisateur (`PIP_CHECK_001`). Rejets motivés affichés. Aucune donnée scientifique ajoutée | `dilution_planner.dart`, `dilution_plan_view.dart` | Échange du 2026-10-04 |
+| 2026-10-04 | **« Continuer »** → **P3-05 impression et export**, avec **confirmation obligatoire** avant toute impression ou copie (D-11 : impression par le navigateur, pas de dépendance PDF). Le rapport ne contient aucune identité de patient ; référence libre facultative ; statut de validation et version d'équation imprimés ; sorties échappées (anti-injection). Version 1.15.0 | `report/calculation_report.dart`, `export_dialog.dart`, `print_html_*.dart` | Échange du 2026-10-04 |
 
 ## Lecture du document
 
@@ -586,7 +587,7 @@ T-REG-001 (golden master) · T-REG-002 · T-REG-003 · T-CLI-001 · T-SAI-001 (l
 | P3-02 | Hémostase : vérifier l'ISI explicite et le ratio TP | 3 | P3 | Fiabilité de l'INR | Revue de `inr.dart` | S | Moyen | Test dédié | À planifier |
 | P3-03 | Clinique : consolidation des doublons (A-18) **sur validation** et Martin-Hopkins (sur validation) | 3 | P3 | Cohérence | P0-02 | M | Moyen | Golden master identique | En attente de décision |
 | P3-04 | Exposer la comparaison acido-basique dans l'interface | 3 | P3 | Fonction déjà présente | — | S | Faible | Test d'interface | À planifier |
-| P3-05 | Export PDF/impression avec confirmation (D-11) | 3 | P3 | Partage | P1-14 | M | Faible | T-EXP-001 | À planifier |
+| P3-05 | Export PDF/impression avec confirmation (D-11) | 3 | P3 | Partage | P1-14 | M | Faible | T-EXP-001 | **Fait (v1)** : rapport texte et HTML imprimable, confirmation obligatoire, impression web via le navigateur ; 12 + 5 + 1 tests ; boîte d'impression non pilotée à la main ; D-11 appliquée |
 | P4-01 | Module Quality (CV, biais, récupération, Sigma, erreur totale) | 4 | P4 | Contrôle qualité | TEa sourcé | M | Moyen | T-QUA-* | **Fait (variante saisie)** : CV, biais, récupération, erreur totale, Sigma ; ETa et k saisis, aucun verdict |
 | P4-02 | Mode Expert : incertitudes | 4 | P4 | Métrologie | Référence GUM lue | L | Élevé | T-INC-* | **Bloqué (référence)** |
 | P5-01 | Saisie intelligente des unités (interface) | 5 | P4 | Confort | P1-10 | M | Moyen | T-SAI-002 | À planifier |

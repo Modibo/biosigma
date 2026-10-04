@@ -740,3 +740,19 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
   choix du volume des tubes intermédiaires par grille (glouton, de la dernière étape à la première) ; pas de pipetages
   multiples ; exactitude et justesse des pipettes non modélisées.
 
+## Impression et export (2026-10-04, backlog P3-05 / D-11)
+
+- Moteur (`report/calculation_report.dart`) : **12 tests** (moteur : 466 au total) — contenu complet (équation, version,
+  statut, entrées, résultats, sources, limites, avertissement), virgule/point décimal, référence libre, alertes séparées
+  des repères, résultat incomplet signalé, **anti-injection HTML** (`<script>`, `<img onerror>`, guillemets, `&` : tout est
+  échappé), et un rapport généré sans plantage pour **chacune des 61 équations** du catalogue.
+- Application : **5 tests de widgets** (104 au total) : sans case cochée, copie et impression impossibles ; Annuler ne
+  copie rien ; confirmé, le rapport copié contient référence, identifiant, statut NON VALIDÉ, résultat à virgule ;
+  hors web, « Copier le rapport » remplace l'impression et le dit ; Convert a aussi le bouton.
+- **Test dans un vrai navigateur** (`flutter test --platform chrome test/web_print_test.dart`, ajouté à la CI) : le
+  document est placé dans un cadre invisible portant le bon contenu. La boîte d'impression elle-même n'a pas été
+  ouverte à la main (pas de pilotage de l'interface d'impression du navigateur).
+- Un test existant (parcours QUICKI) a dû recevoir une fenêtre plus haute : la liste est paresseuse et la nouvelle
+  rangée de boutons repousse la carte de résultat hors écran. Aucun comportement fonctionnel n'est en cause.
+- **Limites** : mise en page A4 simple ; pas de logo ; pas de signature électronique ; PDF obtenu via le navigateur.
+

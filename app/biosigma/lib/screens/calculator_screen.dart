@@ -10,6 +10,7 @@ import '../models/calculation_record.dart';
 import '../models/local_threshold.dart';
 import '../state/app_state.dart';
 import '../widgets/disclaimer_banner.dart';
+import '../widgets/export_dialog.dart';
 import '../widgets/formula_reference_section.dart';
 import '../widgets/numeric_unit_field.dart';
 import '../widgets/result_value_tile.dart';
@@ -231,6 +232,16 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     onPressed: _copyResult,
                     icon: const Icon(Icons.copy),
                     label: const Text('Copier'),
+                  ),
+                if (_result != null)
+                  OutlinedButton.icon(
+                    onPressed: () => showExportDialog(
+                      context,
+                      result: _result!,
+                      separator: settings.decimalSeparator,
+                    ),
+                    icon: const Icon(Icons.print),
+                    label: const Text('Imprimer / exporter'),
                   ),
               ],
             ),

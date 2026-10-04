@@ -444,6 +444,18 @@ class _DiluteScreenState extends State<DiluteScreen> {
                 result: _result!,
                 decimalSeparator: sep,
                 extra: _series == null ? null : _seriesTable(_series!, sep),
+                reportSections: _mode == _Mode.planner && _plan != null
+                    ? planReportSections(_plan!, sep)
+                    : _series == null
+                        ? const []
+                        : [
+                            ReportSection('Tableau de dilutions', [
+                              for (final r in _series!.rows)
+                                'Tube ${r.tube} : prélevé ${r.transferredVolume} $_volumeUnit, diluant '
+                                    '${r.diluentVolume} $_volumeUnit, dilution cumulée 1/${r.cumulativeFactor}, '
+                                    'concentration ${r.concentration} $_stockUnit',
+                            ]),
+                          ],
               ),
               if (_pipetteVolumes().isNotEmpty) PipetabilityCard(volumesUl: _pipetteVolumes()),
             ],
