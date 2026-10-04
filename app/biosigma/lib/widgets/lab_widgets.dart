@@ -2,7 +2,9 @@ import 'package:biosigma_core/biosigma_core.dart';
 import 'package:flutter/material.dart';
 
 import '../models/app_settings.dart';
+import '../services/number_format_service.dart';
 import 'formula_reference_section.dart';
+import 'numeric_unit_field.dart';
 import 'result_value_tile.dart';
 import 'warning_list.dart';
 
@@ -120,3 +122,72 @@ class LabDropdown extends StatelessWidget {
 Map<String, String> fieldErrorMap(CalculationInputException e) => {
       for (final err in e.errors) err.fieldId: err.message,
     };
+
+/// Entier à partir d'un nombre saisi (`null` s'il n'est pas entier).
+int? asInt(double? v) => v != null && v == v.roundToDouble() ? v.toInt() : null;
+
+/// Liste de nombres saisis, séparés par « ; » ou par des retours à la ligne
+/// (la virgule reste le séparateur décimal). Un élément illisible donne `null`.
+List<double?> parseNumberList(String text, DecimalSeparator separator) => [
+      for (final part in text.split(RegExp(r'[;\n]')).map((p) => p.trim()).where((p) => p.isNotEmpty))
+        NumberFormatService.parse(part, separator),
+    ];
+
+/// Aides communes aux formulaires des modules Lab : erreurs par champ,
+/// remise à zéro, champs numériques.
+mixin LabFormMixin<T extends StatefulWidget> on State<T> {
+  Map<String, String> errors = {};
+  int generation = 0;
+  CalculationResult? result;
+
+  /// Exécute un calcul ; une erreur de saisie s'affiche sous le champ concerné.
+  void runCalc(CalculationResult Function() body, {void Function()? onSuccess}) {
+    try {
+      final r = body();
+      setState(() {
+        errors = {};
+        result = r;
+        onSuccess?.call();
+      });
+    } on CalculationInputException catch (e) {
+      setState(() {
+        errors = fieldErrorMap(e);
+        result = null;
+      });
+    }
+  }
+
+  void clearResult() {
+    errors = {};
+    result = null;
+  }
+
+  Widget numberField({
+    required String id,
+    required String label,
+    required double? value,
+    required void Function(double?) set,
+    required DecimalSeparator separator,
+    List<String>? units,
+    String? unit,
+    ValueChanged<String>? onUnit,
+    String? help,
+  }) =>
+      NumericUnitField(
+        key: ValueKey('$id-$generation'),
+        label: label,
+        helpText: help,
+        value: value,
+        unit: unit ?? '',
+        units: units,
+        decimalSeparator: separator,
+        errorText: errors[id],
+        onValueChanged: (v) => setState(() => set(v)),
+        onUnitChanged: (u) => setState(() => onUnit?.call(u)),
+      );
+
+  /// Messages d'erreur dont le champ n'est pas dans [knownIds].
+  Widget otherErrors(Set<String> knownIds) => Column(children: [
+        for (final e in errors.entries.where((e) => !knownIds.contains(e.key))) LabErrorText(e.value),
+      ]);
+}

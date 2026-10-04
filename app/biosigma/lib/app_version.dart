@@ -1,7 +1,7 @@
 /// Version affichée de l'application, à incrémenter à chaque livraison en
 /// même temps que `pubspec.yaml` (`version:`) et `web/version.json` publié
 /// sur le site (voir `lib/widgets/update_checker.dart`).
-const String kAppVersion = '1.7.0';
+const String kAppVersion = '1.8.0';
 
 /// Compare deux versions « X.Y.Z » (partie numérique uniquement, un
 /// éventuel « +build » est ignoré). Renvoie `true` si [remote] est

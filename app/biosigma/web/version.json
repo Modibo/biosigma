@@ -1,5 +1,5 @@
 {
-  "latest": "1.7.0",
+  "latest": "1.8.0",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Nouvel onglet Lab : Convert (conversion d'unités et de grandeurs) et Dilute (dilution simple, en série, hors linéarité). Saisie plus sûre : un nombre ambigu (« 1.5 » en mode virgule) est refusé au lieu d'être lu avec un facteur 10. Interprétations ISTH-CIVD et 4Ts toujours affichées. Seuils locaux rappelés sous le résultat."
+  "notes": "Onglet Lab complet : Convert, Dilute, Prepare (masse à peser, pourcentages, tampons), Count (numération en chambre, formule leucocytaire avec compteur tactile), Microbiology (UFC/mL), Quality (CV, biais, Sigma) et Smart Solver. Les valeurs qui exigent une source (masse molaire, pKa, chambre, ETa…) sont saisies par vous."
 }

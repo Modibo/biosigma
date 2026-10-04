@@ -1,7 +1,13 @@
+import 'package:biosigma_core/biosigma_core.dart';
 import 'package:flutter/material.dart';
 
 import 'lab/convert_screen.dart';
+import 'lab/count_screen.dart';
 import 'lab/dilute_screen.dart';
+import 'lab/microbiology_screen.dart';
+import 'lab/prepare_screen.dart';
+import 'lab/quality_screen.dart';
+import 'lab/smart_solver_screen.dart';
 
 /// Onglet « Lab » : accueil des modules de laboratoire (décision D-13 :
 /// l'accueil enveloppe les domaines existants sans rien remplacer).
@@ -15,6 +21,15 @@ class LabScreen extends StatelessWidget {
     void open(Widget screen) =>
         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => screen));
     void goToCalcul() => DefaultTabController.of(context).animateTo(0);
+    Widget screenFor(LabModule m) => switch (m) {
+          LabModule.convert => const ConvertScreen(),
+          LabModule.dilute => const DiluteScreen(),
+          LabModule.prepare => const PrepareScreen(),
+          LabModule.count => const CountScreen(),
+          LabModule.microbiology => const MicrobiologyScreen(),
+          LabModule.quality => const QualityScreen(),
+        };
+    void openModule(LabModule m) => open(screenFor(m));
 
     return SafeArea(
       top: false,
@@ -36,6 +51,41 @@ class LabScreen extends StatelessWidget {
                 'dilution (hors linéarité).',
             onTap: () => open(const DiluteScreen()),
           ),
+          _Tile(
+            icon: Icons.science_outlined,
+            title: 'Prepare',
+            subtitle: 'Masse à peser, solutions en pourcentage, tampons. Masse molaire, pureté et pKa '
+                'sont saisis par vous.',
+            onTap: () => openModule(LabModule.prepare),
+          ),
+          _Tile(
+            icon: Icons.grid_on,
+            title: 'Count',
+            subtitle: 'Numération en chambre, formule leucocytaire (compteur tactile), nombre total, '
+                'comptages en double. La géométrie de la chambre est saisie par vous.',
+            onTap: () => openModule(LabModule.count),
+          ),
+          _Tile(
+            icon: Icons.coronavirus_outlined,
+            title: 'Microbiology',
+            subtitle: 'UFC/mL à partir de boîtes dénombrées. L\'intervalle de colonies est saisi par vous ; '
+                'aucune équivalence McFarland.',
+            onTap: () => openModule(LabModule.microbiology),
+          ),
+          _Tile(
+            icon: Icons.rule,
+            title: 'Quality',
+            subtitle: 'CV, biais, récupération, erreur totale, Sigma. L\'ETa et le coefficient k sont '
+                'saisis par vous ; aucun verdict.',
+            onTap: () => openModule(LabModule.quality),
+          ),
+          _Tile(
+            icon: Icons.lightbulb_outline,
+            title: 'Smart Solver',
+            subtitle: 'Décrivez votre besoin en une phrase : un module vous est proposé, à confirmer. '
+                'Analyse locale, aucun calcul automatique.',
+            onTap: () => open(SmartSolverScreen(openModule: openModule)),
+          ),
           const _Header('Domaines de calcul existants (onglet Calcul)'),
           _Tile(
             icon: Icons.biotech_outlined,
@@ -54,34 +104,6 @@ class LabScreen extends StatelessWidget {
             title: 'Clinique',
             subtitle: 'Fonction rénale, cardiométabolique, ionogramme.',
             onTap: goToCalcul,
-          ),
-          const _Header('Prévus — pas encore disponibles'),
-          const _Tile(
-            icon: Icons.science_outlined,
-            title: 'Prepare',
-            subtitle: 'Préparation de solutions et tampons. Attend des masses molaires et des '
-                'pKa sourcés et validés : aucune valeur n\'est inventée.',
-          ),
-          const _Tile(
-            icon: Icons.grid_on,
-            title: 'Count',
-            subtitle: 'Numérations et formule leucocytaire. Attend la documentation sourcée '
-                'des chambres de comptage.',
-          ),
-          const _Tile(
-            icon: Icons.coronavirus_outlined,
-            title: 'Microbiology',
-            subtitle: 'UFC/mL, inoculum, McFarland. Attend le choix de la norme de référence.',
-          ),
-          const _Tile(
-            icon: Icons.rule,
-            title: 'Quality',
-            subtitle: 'CV, biais, Sigma. Attend des limites d\'erreur totale admissibles sourcées.',
-          ),
-          const _Tile(
-            icon: Icons.lightbulb_outline,
-            title: 'Smart Solver',
-            subtitle: 'Résolution guidée à partir d\'une phrase. Prévu après les modules de calcul.',
           ),
         ],
       ),

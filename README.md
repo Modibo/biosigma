@@ -241,10 +241,24 @@ Deux modules sont disponibles ; ils ne font pas partie du catalogue des 59 calcu
 - **Dilute** : dilution simple (C1·V1 = C2·V2), dilutions en série, résultat après dilution avec
   contrôle de l'intervalle de linéarité saisi par l'utilisateur.
 
-Les modules Prepare, Count, Microbiology, Quality et Smart Solver sont affichés comme **prévus et
-non disponibles** : ils attendent des données sourcées et validées (masses molaires, pKa, chambres de
-numération, norme, limites d'erreur) — aucune valeur n'est inventée. Voir
-`docs/biosigma-lab/00-audit-et-architecture.md` (backlog P1-xx, P2-xx).
+Cinq autres modules sont disponibles. Pour chacun, **toute valeur qui exigerait une source n'est pas
+embarquée : l'utilisateur la saisit** (et le résultat le rappelle).
+
+- **Prepare** : masse à peser (concentration massique ou molaire, pureté), solutions en pourcentage
+  (m/v, v/v), tampons (Henderson-Hasselbalch). Masse molaire, pureté et pKa sont saisis.
+- **Count** : numération en chambre (surface comptée et profondeur saisies — aucune chambre
+  embarquée), formule leucocytaire avec compteur tactile, nombre total, comptages en double (sans
+  seuil d'acceptabilité).
+- **Microbiology** : UFC/mL par boîte et moyenne des boîtes retenues ; l'intervalle de colonies
+  dénombrables est saisi. **Aucune équivalence McFarland ↔ UFC** n'est proposée.
+- **Quality** : moyenne, écart-type, CV, biais, récupération, erreur totale (k saisi), Sigma (ETa
+  saisie) — **sans verdict d'interprétation**.
+- **Smart Solver** : analyse locale par mots-clés d'une phrase ; **propose** un module à confirmer et
+  repère les quantités écrites, sans rien calculer ni remplir. Aucune donnée n'est envoyée.
+
+Aucune source normative n'est citée pour ces relations de définition : chaque fiche l'indique
+(« à relire par le laboratoire »). Les références de Sigma, d'erreur totale et du tampon sont à compléter
+et à valider (décision D-12).
 
 ## Onglet Entraînement
 

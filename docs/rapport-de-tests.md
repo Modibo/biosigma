@@ -620,3 +620,24 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
   (P1-13), enregistrement de calcul v2 (P1-14), règle d'arrondi (P1-15), niveaux de résultat (P1-16),
   intégration continue (P1-00), pipettes et pipetabilité (P2-01).
 
+## Phase 2 — Prepare, Count, Microbiology, Quality, Smart Solver (2026-10-04)
+
+- Moteur (`src/lab/prepare.dart`, `count.dart`, `microbiology.dart`, `quality.dart`,
+  `smart_solver.dart`) : **45 tests ajoutés** (327 au total pour le moteur), valeurs attendues
+  calculées à la main (ex. tampon pH 7,4 / pKa 7,2 : rapport 10^0,2 = 1,58489, base 61,3137 mmol ;
+  UFC : 150 colonies, 10^-3, 0,1 mL → 1,5 × 10⁶ ; Sigma : (10 − 2,0408)/1,41421 = 5,628).
+  Une première valeur attendue calculée à la main était fausse (61,3125 au lieu de 61,3137) :
+  corrigée après recalcul indépendant, le code était juste.
+- Défaut trouvé par les tests de widgets et corrigé : le nombre de décimales d'affichage utilisait
+  `floor(log10(x))`, inexact pour les puissances de dix (1000 s'affichait « 1000,0 »). Remplacé par
+  l'exposant de la notation scientifique ; testé pour 1, 100, 1000, 0,001. Affectait aussi Convert/Dilute.
+- Application : 12 tests de widgets ajoutés (57 au total). Les 59 calculs existants sont inchangés
+  (golden master vert).
+- **Choix de conception** : ces modules étaient marqués « bloqué (données) » dans le dossier d'audit.
+  Ils sont livrés en faisant **saisir par l'utilisateur** toute valeur qui exigerait une source
+  (masse molaire, pKa, géométrie de chambre, intervalle de colonies, ETa, k). Rien n'est embarqué.
+  Non livré volontairement : bibliothèque de chambres de numération, valeurs McFarland, seuils OMS
+  des spermatozoïdes, formules de normes de dénombrement (pondération), tableaux de pKa.
+- Vérifié visuellement : liste des sept modules dans l'onglet Lab (build web de production) ; le détail
+  des parcours est couvert par les tests de widgets, pas par un essai sur téléphone.
+

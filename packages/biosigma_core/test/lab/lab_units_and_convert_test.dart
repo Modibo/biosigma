@@ -51,6 +51,11 @@ void main() {
       expect(LabUnits.decimalsForSignificant(0.00123), 6);
       expect(LabUnits.decimalsForSignificant(1234.5), 0);
       expect(LabUnits.decimalsForSignificant(1e-15), 12);
+      // puissances de dix exactes (log10 flottant donnerait 2,9999…)
+      expect(LabUnits.decimalsForSignificant(1000), 0);
+      expect(LabUnits.decimalsForSignificant(100), 1);
+      expect(LabUnits.decimalsForSignificant(1), 3);
+      expect(LabUnits.decimalsForSignificant(0.001), 6);
     });
   });
 

@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import '../models/errors.dart';
 
 /// Grandeur physique d'une unité de laboratoire.
@@ -151,10 +149,11 @@ class LabUnits {
   /// significatifs (affichage uniquement : la valeur n'est jamais arrondie).
   static int decimalsForSignificant(double value, {int significant = 4}) {
     if (value == 0 || !value.isFinite) return 2;
-    final magnitude = _log10(value.abs()).floor();
+    // L'exposant lu dans la notation scientifique est exact (contrairement
+    // à floor(log10(x)) pour les puissances de dix, ex. 1000).
+    final magnitude = int.parse(value.abs().toStringAsExponential().split('e').last);
     final decimals = significant - 1 - magnitude;
     return decimals.clamp(0, 12);
   }
 
-  static double _log10(double x) => math.log(x) / math.ln10;
 }

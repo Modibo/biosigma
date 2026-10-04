@@ -54,5 +54,10 @@ export 'src/calculators/hematology/inflammation_indices.dart';
 export 'src/lab/lab_units.dart';
 export 'src/lab/convert.dart';
 export 'src/lab/dilution.dart';
+export 'src/lab/prepare.dart';
+export 'src/lab/count.dart';
+export 'src/lab/microbiology.dart';
+export 'src/lab/quality.dart';
+export 'src/lab/smart_solver.dart';
 
 export 'src/catalog.dart';

@@ -1,6 +1,12 @@
 // Modules Lab de la phase 1 : onglet, Convert, Dilute.
 import 'package:biosigma/screens/lab/convert_screen.dart';
+import 'package:biosigma/screens/lab/count_screen.dart';
 import 'package:biosigma/screens/lab/dilute_screen.dart';
+import 'package:biosigma/screens/lab/microbiology_screen.dart';
+import 'package:biosigma/screens/lab/prepare_screen.dart';
+import 'package:biosigma/screens/lab/quality_screen.dart';
+import 'package:biosigma/screens/lab/smart_solver_screen.dart';
+import 'package:biosigma_core/biosigma_core.dart';
 import 'package:biosigma/screens/lab_screen.dart';
 import 'package:biosigma/services/app_storage_service.dart';
 import 'package:biosigma/state/app_state.dart';
@@ -22,21 +28,16 @@ Future<void> _pump(WidgetTester tester, Widget screen) async {
 }
 
 void main() {
-  testWidgets('l\'onglet Lab ouvre Convert et Dilute ; les modules prévus ne s\'ouvrent pas',
-      (tester) async {
+  testWidgets('l\'onglet Lab propose les sept modules et ouvre chacun', (tester) async {
     await _pump(tester, const DefaultTabController(length: 1, child: LabScreen()));
-    expect(find.text('Convert'), findsOneWidget);
-    expect(find.text('Dilute'), findsOneWidget);
-    expect(find.text('Prepare'), findsOneWidget);
-    expect(find.textContaining('aucune valeur n\'est inventée'), findsOneWidget);
+    for (final t in ['Convert', 'Dilute', 'Prepare', 'Count', 'Microbiology', 'Quality', 'Smart Solver']) {
+      expect(find.text(t), findsOneWidget, reason: t);
+    }
+    expect(find.text('Prévus — pas encore disponibles'), findsNothing);
 
     await tester.tap(find.text('Prepare'));
     await tester.pumpAndSettle();
-    expect(find.byType(LabScreen), findsOneWidget);
-
-    await tester.tap(find.text('Dilute'));
-    await tester.pumpAndSettle();
-    expect(find.byType(DiluteScreen), findsOneWidget);
+    expect(find.byType(PrepareScreen), findsOneWidget);
   });
 
   testWidgets('Convert : refuse sans masse molaire, puis convertit avec la masse molaire saisie',
@@ -134,5 +135,160 @@ void main() {
     await tester.tap(find.text('Calculer'));
     await tester.pumpAndSettle();
     expect(find.text('1500'), findsOneWidget);
+  });
+
+  testWidgets('Prepare : 9 g/L dans 500 mL → 4,500 g (sans masse molaire)', (tester) async {
+    await _pump(tester, const PrepareScreen());
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '9');
+    await tester.enterText(fields.at(1), '500');
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.text('4,500'), findsOneWidget);
+    expect(find.textContaining('Pureté non précisée'), findsOneWidget);
+  });
+
+  testWidgets('Prepare : 0,9 % m/v dans 500 mL → 4,500 g', (tester) async {
+    await _pump(tester, const PrepareScreen());
+    await tester.tap(find.text('Pourcentage'));
+    await tester.pumpAndSettle();
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '0,9');
+    await tester.enterText(fields.at(1), '500');
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.text('4,500'), findsOneWidget);
+  });
+
+  testWidgets('Prepare : tampon pH = pKa → rapport 1', (tester) async {
+    await _pump(tester, const PrepareScreen());
+    await tester.tap(find.text('Tampon'));
+    await tester.pumpAndSettle();
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '7');
+    await tester.enterText(fields.at(1), '7');
+    await tester.enterText(fields.at(2), '100');
+    await tester.enterText(fields.at(3), '1');
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.text('1,0000'), findsOneWidget);
+    expect(find.textContaining('pH-mètre'), findsOneWidget);
+  });
+
+  testWidgets('Count : 100 cellules, 1 mm² × 0,1 mm → 1000 cellules/µL', (tester) async {
+    await _pump(tester, const CountScreen());
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '100');
+    await tester.enterText(fields.at(1), '1');
+    await tester.enterText(fields.at(2), '0,1');
+    await tester.enterText(fields.at(3), '1');
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.text('1000'), findsOneWidget);
+    expect(find.textContaining('10.0 %'), findsOneWidget);
+  });
+
+  testWidgets('Count : compteur tactile 3 neutrophiles + 1 lymphocyte → 75,0 % et annulation', (tester) async {
+    await _pump(tester, const CountScreen());
+    await tester.tap(find.text('Formule'));
+    await tester.pumpAndSettle();
+    final plus = find.byIcon(Icons.add);
+    for (var i = 0; i < 3; i++) {
+      await tester.tap(plus.at(0));
+    }
+    await tester.tap(plus.at(1));
+    await tester.pumpAndSettle();
+    expect(find.text('Cellules comptées : 4'), findsOneWidget);
+
+    await tester.tap(find.text('Annuler le dernier')); // retire le lymphocyte
+    await tester.pumpAndSettle();
+    expect(find.text('Cellules comptées : 3'), findsOneWidget);
+    await tester.tap(plus.at(1));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.text('75,0'), findsOneWidget);
+    expect(find.text('25,0'), findsOneWidget);
+  });
+
+  testWidgets('Count : formule sans aucune cellule → message', (tester) async {
+    await _pump(tester, const CountScreen());
+    await tester.tap(find.text('Formule'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.text('Aucune cellule comptée.'), findsOneWidget);
+  });
+
+  testWidgets('Microbiology : 150 colonies, 10^-3, 0,1 mL → 1500000 UFC/mL', (tester) async {
+    await _pump(tester, const MicrobiologyScreen());
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '150');
+    await tester.enterText(fields.at(1), '3');
+    await tester.enterText(fields.at(2), '0,1');
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.text('1500000'), findsWidgets);
+    expect(find.textContaining('Intervalle de dénombrement non précisé'), findsOneWidget);
+  });
+
+  testWidgets('Microbiology : boîte hors intervalle saisi → aucun résultat', (tester) async {
+    await _pump(tester, const MicrobiologyScreen());
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '500');
+    await tester.enterText(fields.at(1), '3');
+    await tester.enterText(fields.at(2), '0,1');
+    await tester.enterText(fields.at(3), '30');
+    await tester.enterText(fields.at(4), '300');
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Aucune boîte exploitable'), findsOneWidget);
+  });
+
+  testWidgets('Quality : série, cible et ETa → CV 1,41 % et Sigma 5,63, sans verdict', (tester) async {
+    await _pump(tester, const QualityScreen());
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '98;100;102;100;100');
+    await tester.enterText(fields.at(3), '98');
+    await tester.enterText(fields.at(4), '10');
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.text('1,41'), findsWidgets);
+    expect(find.text('5,63'), findsOneWidget);
+    expect(find.textContaining('aucune interprétation'), findsWidgets);
+  });
+
+  testWidgets('Quality : valeur illisible dans la liste → message', (tester) async {
+    await _pump(tester, const QualityScreen());
+    await tester.enterText(find.byType(TextFormField).at(0), '98;abc;100');
+    await tester.tap(find.text('Calculer'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Valeur illisible'), findsOneWidget);
+  });
+
+  testWidgets('Smart Solver : propose Dilute, à confirmer ; ne calcule rien', (tester) async {
+    LabModule? opened;
+    await _pump(tester, SmartSolverScreen(openModule: (m) => opened = m));
+    await tester.enterText(find.byType(TextField), 'Diluer 100 µL de sérum dans 900 µL de diluant');
+    await tester.pump();
+    await tester.tap(find.text('Analyser'));
+    await tester.pumpAndSettle();
+    expect(find.text('Module proposé — à confirmer'), findsOneWidget);
+    expect(find.textContaining('100 µL'), findsWidgets);
+    expect(find.text('Résultat'), findsNothing);
+    expect(opened, isNull);
+
+    await tester.tap(find.text('Ouvrir Dilute'));
+    expect(opened, LabModule.dilute);
+  });
+
+  testWidgets('Smart Solver : phrase non reconnue → aucun module', (tester) async {
+    await _pump(tester, SmartSolverScreen(openModule: (_) {}));
+    await tester.enterText(find.byType(TextField), 'bonjour');
+    await tester.pump();
+    await tester.tap(find.text('Analyser'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Aucun module reconnu'), findsOneWidget);
   });
 }
