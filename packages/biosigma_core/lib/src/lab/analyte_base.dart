@@ -214,7 +214,7 @@ class AnalyteBase {
 
   /// Statut de validation d'un analyte (fiches de validation) : `NON VALIDÉ`
   /// tant qu'aucune fiche complète n'existe pour sa version.
-  static EquationStatus statusOf(String id, {List<ValidationRecord> records = validationRecords}) =>
+  static EquationStatus statusOf(String id, {List<ValidationRecord>? records}) =>
       validationStatusFor('analyte:$id', 1, records: records);
 
   static LabAnalyte? byId(String id) {

@@ -1,4 +1,5 @@
 import 'equation_registry.dart' show EquationStatus;
+import 'validation_data.dart';
 
 /// Décision d'une fiche de validation.
 enum ValidationDecision { approved, rejected }
@@ -75,10 +76,12 @@ class ValidationRecord {
 }
 
 /// Fiches de validation signées. **Vide à ce jour** : aucune équation ni
-/// aucun analyte n'a été validé par un biologiste responsable. Une fiche
-/// s'ajoute ici, avec sa référence, après la procédure décrite dans
+/// aucun analyte n'a été validé par un biologiste responsable. Elles sont
+/// importées du registre de validation rempli par le validateur
+/// (`docs/biosigma-lab/registre-validation.csv`) par `tool/import_validations.dart`,
+/// qui écrit `validation_data.dart` — jamais à la main. Voir
 /// `docs/biosigma-lab/gouvernance-validation.md`.
-const List<ValidationRecord> validationRecords = [];
+final List<ValidationRecord> validationRecords = generatedValidationRecords;
 
 /// Statut d'un élément à une version donnée, d'après [records].
 ///
@@ -88,9 +91,9 @@ const List<ValidationRecord> validationRecords = [];
 EquationStatus validationStatusFor(
   String itemId,
   int version, {
-  List<ValidationRecord> records = validationRecords,
+  List<ValidationRecord>? records,
 }) {
-  final matching = records.where((r) => r.itemId == itemId && r.itemVersion == version && r.isComplete);
+  final matching = (records ?? validationRecords).where((r) => r.itemId == itemId && r.itemVersion == version && r.isComplete);
   if (matching.any((r) => r.decision == ValidationDecision.rejected)) {
     return EquationStatus.withdrawn;
   }

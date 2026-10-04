@@ -111,3 +111,16 @@ Entre-temps, les éléments non validés restent utilisables avec leur bandeau �
 
 Pour démarrer, deux dossiers prêts à être complétés et signés sont dans [`fiches-de-validation/`](fiches-de-validation/README.md) : DFG CKD-EPI créatinine 2021 (8 cas indépendants déjà calculés hors du code, constantes confrontées à la page de la NKF) et conversion du glucose. Le validateur y consulte la source primaire, refait au moins deux cas lui-même, puis tranche.
 
+## 12. Valider en masse : le registre de validation (tableur)
+
+Valider 261 éléments un par un par échange de messages n'est pas praticable ; ne **rien** vérifier et tout déclarer validé ne l'est pas non plus (ce serait une fausse trace, §5). Le registre de validation est le moyen intermédiaire : **vous remplissez un tableur, le logiciel n'enregistre que ce qui est complet**.
+
+1. **Ouvrir** [`registre-validation.csv`](registre-validation.csv) dans un tableur (séparateur « ; », UTF-8). Une ligne par élément : 61 équations du catalogue, 14 outils Lab, 186 analytes. Les colonnes `validator`, `reviewer`, `approver` sont préremplies avec vos trois rôles ; `points_to_review` signale ce que l'assistant sait fragile (ex. références à reconfirmer pour APRI, Padua, HAS-BLED, CHA₂DS₂-VASc ; citations à compléter pour VGM/TCMH/CCMH, ANC/ALC, Quality, tampon) ; `prepared_dossier` pointe vers un dossier prêt si l'assistant en a préparé un.
+2. **Pour chaque élément que vous avez réellement relu**, remplir : `date` (JJ/MM/AAAA), `scope` (ce qui est validé), `sources_reviewed` (sources consultées), `independent_cases` (**au moins 2**, refaits hors du code), `sheet_ref` (référence de la fiche signée ; une même fiche de lot peut couvrir plusieurs lignes si elle les liste), puis `decision` = `approuvé` ou `rejeté`. **Laisser `decision` vide pour tout ce qui n'a pas été relu.**
+3. **Importer** : `cd packages/biosigma_core && dart run tool/import_validations.dart ../../docs/biosigma-lab/registre-validation.csv`. L'outil liste chaque ligne refusée et sa raison (champ manquant, moins de 2 cas, date illisible, version ≠ version courante, identifiant inconnu, doublon). Sans `--partial`, **rien n'est écrit** s'il reste un problème ; avec `--partial`, seules les lignes complètes sont écrites.
+4. **Publier** : relancer les tests, relever la version, déployer. Les éléments importés s'affichent alors « VALIDÉ » (fiche de référence, rapports imprimés, Convert).
+
+**Ce que le logiciel refuse, par construction** : une ligne sans décision ne valide rien ; une ligne incomplète n'est jamais enregistrée même en partie ; une fiche ne couvre que sa version ; un élément ne peut apparaître qu'une fois. Le logiciel **ne peut pas vérifier** que vous avez réellement consulté les sources ni refait les cas : cette garantie repose sur votre signature, d'où l'importance de la fiche archivée.
+
+**Ordre de relecture conseillé** : les équations les plus utilisées d'abord (DFG, FIB-4, INR, TyG, IMC), puis les conversions fréquentes (glucose, créatinine, urée, calcium, cholestérol, bilirubine), puis le reste par domaine. Les lignes marquées « référence à reconfirmer » ne devraient pas être validées avant lecture du texte source.
+

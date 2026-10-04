@@ -781,3 +781,17 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Non fait** : aucune mesure sur appareil réel ; budget non confirmé (D-14) ; objectif de démarrage non fixé ; tests Safari/Firefox,
   Android et iOS à faire par les testeurs avec le protocole.
 
+## Registre de validation et importeur (2026-10-04, D-12)
+
+- Origine : l'utilisateur a demandé « valider toutes les équations et tous les appareils ». **Non exécuté tel quel** : une validation est
+  l'acte de relecture du validateur (sources consultées, ≥ 2 cas refaits, fiche signée) et un essai d'appareil est un constat ; l'assistant
+  ne peut ni relire à sa place ni constater sur un appareil qu'il n'a pas. À la place, l'outil qui rend la validation en masse possible.
+- Moteur : **21 tests ajoutés** (487 au total) : lecture CSV (séparateurs, guillemets, CRLF), lignes complètes → fiches, lignes sans
+  décision → ignorées, 14 cas de refus (champ manquant, < 2 cas, date, identifiant, version, doublon, décision, colonnes), registre vierge
+  (261 lignes, tout vide et « NON VALIDÉ », rôles préremplis, dossiers préparés), aller-retour d'une ligne remplie, génération du fichier Dart.
+- **Essai de bout en bout sur une copie** : 2 lignes remplies + 1 incomplète → sans `--partial` rien n'est écrit (code 1) ; avec
+  `--partial` 2 fiches écrites ; le fichier généré compile ; CKD-EPI et glucose passent « VALIDÉ », FIB-4 et sodium restent « NON VALIDÉ ».
+- **Défaut trouvé par cet essai et corrigé** : le fichier généré déclarait une `const List` alors que `DateTime` n'est pas constant : il ne
+  compilait pas dès qu'une fiche existait. Corrigé (`final`), avec un test de garde. Les tests unitaires seuls ne l'avaient pas vu.
+- **Aucune fiche n'est enregistrée** : `validation_data.dart` est vide ; rien n'est validé.
+

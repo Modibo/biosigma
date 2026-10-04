@@ -71,3 +71,5 @@ export 'src/catalog.dart';
 export 'src/rounding.dart';
 export 'src/registry/equation_registry.dart';
 export 'src/registry/validation.dart';
+export 'src/registry/validation_import.dart';
+export 'src/registry/validation_register.dart';

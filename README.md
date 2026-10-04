@@ -276,6 +276,13 @@ Aucune source normative n'est citée pour ces relations de définition : chaque 
 (« à relire par le laboratoire »). Les références de Sigma, d'erreur totale et du tampon sont à compléter
 et à valider (décision D-12).
 
+## Registre de validation (D-12)
+
+`docs/biosigma-lab/registre-validation.csv` liste les **261 éléments validables** (équations, outils Lab, analytes) avec leurs
+points à relire. Le validateur le remplit (décision, date, sources consultées, ≥ 2 cas refaits, référence de la fiche) ;
+`dart run tool/import_validations.dart` n'enregistre que les lignes **complètes**. Aucune validation n'existe à ce jour : tout
+reste « NON VALIDÉ ». Procédure : `docs/biosigma-lab/gouvernance-validation.md` §12.
+
 ## Performance et tests sur appareils (backlog P6-02 / P6-03)
 
 - **Poids mesuré** (1.16.0) : premier chargement ≈ **3,4 Mo** compressés sous Chrome/Edge (dont 2,06 Mo de moteur graphique
