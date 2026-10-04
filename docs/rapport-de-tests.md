@@ -838,3 +838,9 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Défaut trouvé par un test** : un CT de 215 mg/dL et un HDL de 85 mg/dL donnaient un non-HDL-C de 129,99999999999997 après l'aller-retour des unités, donc le facteur de la colonne 100–129 (3,9) au lieu de 130–159 (3,7) : LDL 117,18 au lieu de 116,49. Corrigé par une tolérance de 10⁻⁶ mg/dL aux bornes des strates.
 - **Golden master** : 1 cas ajouté (`ldl_panel#formula=2`, 59 lignes), **aucun cas existant modifié** (diff : 0 suppression).
 
+## Martin-Hopkins : décisions du validateur (2026-10-04, version 1.20.1)
+
+- **Refus à partir de TG 400 mg/dL** (sur le TG arrondi) : 400, 450, 800 refusés ; 399,4 calculé (ligne 293–399, valeur Python 138,5538) ; 399,6 refusé. La ligne « ≥ 400* » n'est plus jamais utilisée.
+- **Strates lues sur valeurs arrondies au mg/dL entier** (0,5 vers le haut, tolérance 10⁻⁶) : TG 132,4 → ligne 127–132 (LDL 125,0189) ; 132,5 et 132,86 → ligne 133–138 (125,4630 ; 125,3963) ; non-HDL-C 129,6 → colonne 130–159 (108,7667). Valeurs recalculées en Python. Moteur : **620 tests**.
+- **Golden master** : seul le cas `ldl_panel#formula=2` change (3 lignes : valeur du LDL, cholestérol résiduel, texte du facteur) ; aucun autre cas.
+

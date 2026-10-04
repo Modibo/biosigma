@@ -71,7 +71,7 @@ embarqué). Aucun seuil interprétatif clinique n'est codé en dur comme univers
 
 - **LDL Martin-Hopkins** (version 2 du panel lipidique, 2026-10-04) : implémenté avec le tableau de 180 facteurs
   **saisi par le validateur**, recopié par programme et **non confronté à la publication par l'assistant** ;
-  dossier FV-PREP-017 (une cellule à vérifier, astérisque de « ≥ 400 » à expliciter).
+  dossier FV-PREP-017 (une cellule à vérifier). Décisions du validateur du 2026-10-04 : calcul refusé à partir de TG 400 mg/dL ; strates lues sur les valeurs arrondies au mg/dL entier.
 - **Facteur insuline µU/mL → pmol/L (×6,945)** : dépend de l'étalon international du dosage
   (1ʳᵉ préparation de référence OMS 66/304) — affiché avec cette réserve, jamais silencieusement.
 - **Facteur transferrine → CTF (×1,42)** et **saturation transferrine** : facteurs usuels de

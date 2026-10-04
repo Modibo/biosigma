@@ -71,15 +71,37 @@ void main() {
       test('CT $tc, HDL $hdl, TG $tg → LDL $expected mg/dL', () {
         final r = _panel(tc, hdl, tg);
         expect(_ldlMgDl(r), closeTo(expected, 1e-9));
-        expect(r.warnings.any((w) => w.message.contains('tableau de Martin-Hopkins saisi')), isTrue);
+        expect(r.warnings.any((w) => w.message.contains('Tableau saisi par le validateur')), isTrue);
         expect(r.warnings.any((w) => w.severity == WarningSeverity.blocking), isFalse);
       });
     }
 
-    test('TG ≥ 400 : calcul avec la dernière ligne, mais mise en garde sur l\'astérisque', () {
-      final r = _panel(300, 35, 450);
-      expect(_ldlMgDl(r), closeTo(197.83582089552237, 1e-9));
-      expect(r.warnings.any((w) => w.severity == WarningSeverity.caution && w.message.contains('astérisque')), isTrue);
+    test('TG ≥ 400 mg/dL : LDL non calculé (bloquant), comme Friedewald ; la ligne « ≥ 400* » n\'est jamais utilisée', () {
+      for (final tg in [400.0, 450.0, 800.0]) {
+        final r = _panel(300, 35, tg);
+        expect(r.values.first.value, isNull, reason: 'TG $tg');
+        expect(r.warnings.any((w) => w.severity == WarningSeverity.blocking && w.message.contains('≥ 400')), isTrue);
+      }
+      // 399,4 mg/dL (arrondi 399) : calculé avec la ligne 293–399 ; 399,6 (arrondi 400) : refusé.
+      expect(_ldlMgDl(_panel(250, 50, 399.4)), closeTo(138.55384615384617, 1e-9));
+      expect(_panel(250, 50, 399.6).values.first.value, isNull);
+    });
+
+    test('strates entières : TG et non-HDL-C arrondis au mg/dL entier (0,5 vers le haut) pour la lecture ; TG/F avec le TG réel', () {
+      // TG 132,4 → 132 (ligne 127–132, F 5,3) ; 132,5 et 132,86 → 133 (ligne 133–138, F 5,4).
+      expect(_ldlMgDl(_panel(200, 50, 132.4)), closeTo(125.01886792452831, 1e-9));
+      expect(_ldlMgDl(_panel(200, 50, 132.5)), closeTo(125.46296296296296, 1e-9));
+      expect(_ldlMgDl(_panel(200, 50, 132.86)), closeTo(125.3962962962963, 1e-9));
+      // non-HDL-C 129,6 → 130 : colonne 130–159 (F 4,8 pour TG 100), pas 100–129 (F 5,1).
+      expect(_ldlMgDl(_panel(179.6, 50, 100)), closeTo(108.76666666666665, 1e-9));
+    });
+
+    test('1,5 mmol/L de TG (132,86 mg/dL) : strate 133–138 (F 5,4) et non plus 127–132', () {
+      final r = calculateLdlPanel(
+        totalCholesterolValue: 5.18, totalCholesterolUnit: 'mmol/L', hdlValue: 1.3, hdlUnit: 'mmol/L',
+        triglyceridesValue: 1.5, triglyceridesUnit: 'mmol/L', formula: LdlFormula.martinHopkins,
+      );
+      expect(r.warnings.any((w) => w.message.contains('F = 5,4')), isTrue);
     });
 
     test('TG exactement 400 : dernière strate ; 399,9 : avant-dernière (borne inférieure incluse)', () {

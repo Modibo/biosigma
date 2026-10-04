@@ -7,12 +7,12 @@
 |---|---|
 | Référence | FV-PREP-017 (brouillon) → à numéroter à la signature |
 | Élément | `METAB_LDL_PANEL_001` (alias historique `ldl_panel`), **version 2** (ajout de Martin-Hopkins ; Friedewald et Sampson inchangées) |
-| Version de l'application | 1.20.0 |
+| Version de l'application | 1.20.1 |
 | Fichiers | `packages/biosigma_core/lib/src/calculators/metabolic/martin_hopkins.dart`, `martin_hopkins_table_data.dart`, `lipids.dart` |
 
 ### 1. Ce qui est à valider
 
-`LDL-C = CT − HDL-C − TG / F` (mg/dL), F lu dans le tableau selon la strate de TG (30 lignes) et la strate de non-HDL-C = CT − HDL-C (6 colonnes). Strates à **borne inférieure incluse** ; la dernière s'étend vers le haut. Si TG < 7 mg/dL ou non-HDL-C < 0 : LDL non calculé (bloquant).
+`LDL-C = CT − HDL-C − TG / F` (mg/dL), F lu dans le tableau selon la strate de TG (30 lignes) et la strate de non-HDL-C = CT − HDL-C (6 colonnes). Strates à **borne inférieure incluse** ; la dernière s'étend vers le haut. Lecture sur les valeurs arrondies au mg/dL entier. Si TG ≥ 400 mg/dL, TG < 7 mg/dL ou non-HDL-C < 0 : LDL non calculé (bloquant).
 
 ### 2. Le tableau tel que saisi (à confronter à la publication)
 
@@ -71,11 +71,11 @@
 ### 4. Points à décider ou à relire
 
 1. **Confrontation cellule par cellule** du tableau à la publication (Martin SS, Blaha MJ, Elshazly MB, et al. *JAMA*. 2013;310(19):2061-2068) : À COMPLÉTER — date : ______.
-2. **La cellule 93–96 / ≥ 220 (4,4) et 97–100 / ≥ 220 (4,3)** (voir §3).
-3. **Astérisque de « ≥ 400* »** : que signifie-t-il ? L'application calcule avec cette ligne mais **avertit** que la signification est à confirmer. Faut-il plutôt **refuser** le calcul à partir de 400 mg/dL (comme Friedewald) ?
-4. **TG non entiers** : les strates publiées sont des entiers (« 127–132 », « 133–138 »). Une valeur de 132,86 mg/dL (1,5 mmol/L) tombe, avec la règle « borne inférieure incluse », dans la strate 127–132. Faut-il **arrondir au mg/dL entier** avant la lecture (133 → strate suivante) ? Règle actuelle : pas d'arrondi.
+2. **La cellule 93–96 / ≥ 220 (4,4) et 97–100 / ≥ 220 (4,3)** (voir §3) : **confirmées par le validateur le 2026-10-04 (« oui »)** comme conformes à la publication ; la confrontation formelle, cellule par cellule, reste à consigner à la signature.
+3. **TG ≥ 400 mg/dL — DÉCIDÉ par le validateur le 2026-10-04 : calcul refusé** (comme Friedewald). La ligne « ≥ 400* » du tableau est conservée dans les données mais **n'est jamais utilisée**. Le refus s'applique au TG arrondi au mg/dL entier (399,6 → 400 : refusé ; 399,4 → 399 : calculé avec la ligne 293–399). La signification de l'astérisque n'a donc plus d'incidence sur l'application ; elle reste à noter à la confrontation.
+4. **TG non entiers — DÉCIDÉ par le validateur le 2026-10-04 : arrondi au mg/dL entier** (0,5 vers le haut) avant la lecture. 132,86 mg/dL (1,5 mmol/L) → 133 → strate 133–138. **Extension faite par l'assistant, par cohérence, à confirmer** : le même arrondi est appliqué au non-HDL-C (colonnes entières 100–129, 130–159…) ; 129,6 → 130 → colonne 130–159. La division TG/F utilise le TG **non arrondi**.
 5. **Tolérance de 10⁻⁶ mg/dL aux bornes** : introduite parce qu'un CT de 215 mg/dL revenait de la conversion en 214,99999999999997 et glissait dans la colonne voisine (défaut trouvé par un test). Sans effet biologique.
-6. **Domaine** : l'équation n'a aucune limite haute de TG propre hormis l'avertissement ci-dessus.
+6. **Domaine** : TG ≥ 400 mg/dL refusé (point 3) ; TG < 7 mg/dL refusé (première strate du tableau).
 
 ### 5. Tests associés
 
@@ -85,7 +85,7 @@
 
 | | |
 |---|---|
-| Périmètre validé | ☐ tableau (180 cellules) ☐ strates et bornes ☐ formule ☐ domaine/TG ≥ 400 ☐ TG non entiers ☐ limites |
+| Périmètre validé | ☐ tableau (180 cellules) ☐ strates et bornes ☐ formule ☐ refus TG ≥ 400 ☐ arrondi des TG et du non-HDL-C ☐ limites |
 | Écarts constatés | |
 | **Décision** | ☐ approuvé ☐ à corriger ☐ rejeté |
 | Validateur | Dr Modibo Mouctar Coulibaly · fonction : ______ · date : ______ · signature : ______ |

@@ -38,7 +38,8 @@ const FormulaMeta ldlPanelMeta = FormulaMeta(
       '[TG/8,56 + TG×non-HDL/2140 − TG²/16100] − 9,44 (mg/dL ; domaine '
       'valide TG < 800 mg/dL)  |  '
       'LDL (Martin-Hopkins) = CT − HDL − TG/F (mg/dL), F = facteur du tableau à 180 cellules '
-      '(30 strates de TG × 6 de non-HDL-C)  |  non-HDL = CT − HDL  |  CT/HDL = CT/HDL  |  '
+      '(30 strates de TG × 6 de non-HDL-C, lues sur les valeurs arrondies au mg/dL entier ; '
+      'non calculé si TG ≥ 400 mg/dL)  |  non-HDL = CT − HDL  |  CT/HDL = CT/HDL  |  '
       'TG/HDL (mg/dL) = TG/HDL  |  Cholestérol résiduel = non-HDL − LDL',
   sources: [
     Reference(
@@ -132,6 +133,11 @@ const FormulaMeta atherogenicIndexOfPlasmaMeta = FormulaMeta(
   displayPrecision: 3,
 );
 
+/// Arrondi au mg/dL entier (0,5 vers le haut) pour choisir une strate du tableau de
+/// Martin-Hopkins ; la tolérance de 10⁻⁶ évite que le bruit de la conversion d'unités
+/// (132,49999999999997 pour 132,5) ne change de strate.
+double _roundForStrata(double mgDl) => (mgDl + 0.5 + 1e-6).floorToDouble();
+
 double _log10(double x) => math.log(x) / math.ln10;
 
 /// Catégorie descriptive du LDL-C en population générale (mg/dL), cadre
@@ -211,27 +217,34 @@ CalculationResult calculateLdlPanel({
     case LdlFormula.martinHopkins:
       final nonHdlMgDl = tcMgDl - hdlMgDl;
       final table = MartinHopkinsTable.entered;
-      final factor = table.factorFor(triglyceridesMgDl: tgMgDl, nonHdlMgDl: nonHdlMgDl);
-      if (factor == null) {
-        warnings.add(const CalculationWarning(
-          'LDL non calculé : triglycérides ou cholestérol non-HDL sous la première strate du '
-          'tableau de Martin-Hopkins saisi (TG ≥ 7 mg/dL et non-HDL-C ≥ 0 requis).',
+      // Les strates du tableau sont des entiers de mg/dL : la lecture se fait sur les valeurs arrondies
+      // au mg/dL entier (0,5 vers le haut) ; la division TG/F utilise le TG non arrondi.
+      final tgKey = _roundForStrata(tgMgDl);
+      final nonHdlKey = _roundForStrata(nonHdlMgDl);
+      if (tgKey >= table.lastTgLowerEdge) {
+        warnings.add(CalculationWarning(
+          'LDL non calculé : triglycérides ≥ ${table.lastTgLowerEdge.toStringAsFixed(0)} mg/dL '
+          '(valeur arrondie au mg/dL entier : ${tgKey.toStringAsFixed(0)}), hors du domaine retenu pour '
+          'l\'équation de Martin-Hopkins dans BioSigma. Choisir l\'équation de Sampson ou recourir à une '
+          'mesure directe.',
           severity: WarningSeverity.blocking,
         ));
       } else {
-        ldlMgDl = nonHdlMgDl - tgMgDl / factor;
-        warnings.add(CalculationWarning(
-          'Facteur ajustable F = ${factor.toStringAsFixed(1).replaceAll('.', ',')} lu dans le tableau de '
-          'Martin-Hopkins saisi par le validateur (non confronté à la publication par l\'assistant : '
-          'dossier FV-PREP-017).',
-          severity: WarningSeverity.info,
-        ));
-        if (tgMgDl >= table.lastTgLowerEdge) {
+        final factor = table.factorFor(triglyceridesMgDl: tgKey, nonHdlMgDl: nonHdlKey);
+        if (factor == null) {
+          warnings.add(const CalculationWarning(
+            'LDL non calculé : triglycérides ou cholestérol non-HDL sous la première strate du '
+            'tableau de Martin-Hopkins saisi (TG ≥ 7 mg/dL et non-HDL-C ≥ 0 requis).',
+            severity: WarningSeverity.blocking,
+          ));
+        } else {
+          ldlMgDl = nonHdlMgDl - tgMgDl / factor;
           warnings.add(CalculationWarning(
-            'Triglycérides ≥ ${table.lastTgLowerEdge.toStringAsFixed(0)} mg/dL : dernière ligne du tableau, '
-            'marquée d\'un astérisque dans le tableau saisi ; la signification de cet astérisque est à '
-            'confirmer avant de s\'appuyer sur ce résultat (comparer avec Sampson ou une mesure directe).',
-            severity: WarningSeverity.caution,
+            'Facteur ajustable F = ${factor.toStringAsFixed(1).replaceAll('.', ',')} lu dans le tableau de '
+            'Martin-Hopkins (TG ${tgKey.toStringAsFixed(0)} mg/dL, non-HDL-C ${nonHdlKey.toStringAsFixed(0)} '
+            'mg/dL, arrondis au mg/dL entier pour choisir la strate). Tableau saisi par le validateur, non '
+            'confronté à la publication par l\'assistant : dossier FV-PREP-017.',
+            severity: WarningSeverity.info,
           ));
         }
       }

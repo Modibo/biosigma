@@ -12,7 +12,8 @@
 //
 // Format : voir MartinHopkinsTable.fromCsv. Première ligne : bornes inférieures du
 // non-HDL-C (0 pour « < 100 »). Colonne 1 : borne inférieure des TG. La dernière
-// ligne (≥ 400) est marquée d'un astérisque dans le tableau saisi.
+// ligne (≥ 400) est marquée d'un astérisque dans le tableau saisi ; elle est conservée mais
+// jamais utilisée par l'application (calcul refusé à partir de 400 mg/dL, décision du 2026-10-04).
 const String martinHopkinsEnteredTableCsv = '''
 TG_min;0;100;130;160;190;220
 7;3,5;3,4;3,3;3,3;3,2;3,1

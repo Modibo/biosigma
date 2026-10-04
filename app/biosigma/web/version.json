@@ -1,5 +1,5 @@
 {
-  "latest": "1.20.0",
+  "latest": "1.20.1",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Nouveau : équation LDL de Martin-Hopkins dans le panel lipidique (tableau de facteurs saisi par le validateur, en cours de confrontation à la publication : résultat à confirmer). Friedewald et Sampson sont inchangées."
+  "notes": "LDL de Martin-Hopkins : calcul refusé à partir de 400 mg/dL de triglycérides, et strates lues sur les valeurs arrondies au mg/dL entier. Tableau de facteurs saisi par le validateur, en cours de confrontation à la publication : résultat à confirmer."
 }
