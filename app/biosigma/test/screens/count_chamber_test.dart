@@ -131,4 +131,73 @@ void main() {
       expect(find.text('Surface comptée (mm²)'), findsOneWidget);
     },
   );
+
+  testWidgets(
+    'toutes les chambres vérifiées sont proposées (14) en plus de « Personnalisée »',
+    (tester) async {
+      await _open(tester);
+      await tester.tap(
+        find.widgetWithText(
+          DropdownButtonFormField<String>,
+          'Chambre de numération',
+        ),
+      );
+      await tester.pumpAndSettle();
+      for (final n in [
+        'Neubauer améliorée',
+        'Neubauer',
+        'Bürker',
+        'Bürker-Türk',
+        'Thoma',
+        'Thoma nouvelle',
+        'Fuchs-Rosenthal',
+        'Nageotte',
+        'Malassez',
+        'Makler (sperme)',
+        'Petroff-Hausser (profondeur 0,02 mm)',
+        'Neubauer améliorée, profondeur 0,01 mm (Petroff)',
+        'Neubauer améliorée, profondeur 0,02 mm (Petroff)',
+        'Thoma (Helber), profondeur 0,02 mm',
+      ]) {
+        expect(find.text(n), findsOneWidget, reason: n);
+      }
+    },
+  );
+
+  testWidgets(
+    'Fuchs-Rosenthal : 2 grands carrés (0,4 µL), 8 cellules, sans dilution → 20 cellules/µL ; usage affiché',
+    (tester) async {
+      await _open(tester);
+      await _choose(tester, 'Chambre de numération', 'Fuchs-Rosenthal');
+      expect(
+        find.textContaining('Usage : liquide cérébro-spinal'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('Profondeur 0,2 mm'), findsWidgets);
+      final f = find.byType(TextFormField);
+      await tester.enterText(f.at(0), '2');
+      await tester.pumpAndSettle();
+      expect(find.textContaining('volume compté : 0,4 µL'), findsOneWidget);
+      await tester.enterText(f.at(1), '8');
+      await tester.enterText(f.at(2), '1');
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+      expect(find.text('20,00'), findsWidgets);
+    },
+  );
+
+  testWidgets(
+    'Makler : une bande de 10 carrés, 150 spermatozoïdes → 150 000 cellules/µL (150 ×10⁶/mL)',
+    (tester) async {
+      await _open(tester);
+      await _choose(tester, 'Chambre de numération', 'Makler (sperme)');
+      final f = find.byType(TextFormField);
+      await tester.enterText(f.at(0), '1');
+      await tester.enterText(f.at(1), '150');
+      await tester.enterText(f.at(2), '1');
+      await tester.tap(find.text('Calculer'));
+      await tester.pumpAndSettle();
+      expect(find.text('150000'), findsWidgets);
+    },
+  );
 }

@@ -24,5 +24,5 @@ Un dossier par élément et par version. Les fichiers `FV-PREP-…` sont des **b
 | [FV-PREP-018](FV-PREP-018-spermatozoides-oms.md) | Spermatozoïdes, OMS 6e éd. (tableaux 2.1, 2.3, 2.4, 8.3) | brouillon préparé, non signé — **tableaux recopiés du PDF ; coquille de l'OMS « 22–36 » (confirmée imprimée) lue « 22–26 »** |
 | [FV-PREP-019](FV-PREP-019-mcfarland.md) | Équivalence McFarland 0,5 ≈ 1,5 × 10⁸ UFC/mL | brouillon préparé, non signé — **valeur saisie ; référence McFarland JAMA 1907 à confronter** |
 
-| [FV-PREP-020](FV-PREP-020-chambres-numeration.md) | Chambres de numération (Malassez, Neubauer améliorée) | brouillon préparé, non signé — **Malassez : valeurs de sources web, à confronter à la fiche de la chambre** |
+| [FV-PREP-020](FV-PREP-020-chambres-numeration.md) | Chambres de numération (14 chambres : Neubauer, Bürker, Thoma, Fuchs-Rosenthal, Nageotte, Malassez, Makler, Petroff-Hausser…) | brouillon préparé, non signé — **valeurs de fiches de fabricants, à confronter à la fiche de votre chambre** |
 Rappel : **aucun de ces dossiers n'est signé ; aucun élément n'est « VALIDÉ ».** Le registre `../registre-validation.csv` pointe vers ces dossiers (colonne `prepared_dossier`).

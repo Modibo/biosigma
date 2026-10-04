@@ -277,8 +277,9 @@ embarquée : l'utilisateur la saisit** (et le résultat le rappelle).
 
 - **Prepare** : masse à peser (concentration massique ou molaire, pureté), solutions en pourcentage
   (m/v, v/v), tampons (Henderson-Hasselbalch). Masse molaire, pureté et pKa sont saisis.
-- **Count** : numération en chambre : **choix de la chambre** (Neubauer améliorée d'après le manuel de l'OMS, Malassez
-  d'après des documents cités, ou « Personnalisée » avec surface comptée et profondeur saisies) ; pour une chambre
+- **Count** : numération en chambre : **choix de la chambre parmi 14** (Neubauer améliorée, Neubauer, Bürker, Bürker-Türk, Thoma, Thoma nouvelle, Fuchs-Rosenthal,
+  Nageotte, Malassez, Makler, Petroff-Hausser, profondeurs spéciales ; valeurs de fiches de fabricants et du manuel de l'OMS,
+  recoupées avec leurs tableaux de surfaces et de volumes) ou « Personnalisée » avec surface comptée et profondeur saisies ; pour une chambre
   choisie, la surface se déduit du nombre d'unités comptées (rectangles, grilles, grands carrés) et la profondeur est celle de la
   chambre, formule leucocytaire avec compteur tactile, nombre total, comptages en double (sans
   seuil d'acceptabilité) ; **mode « Sperme (OMS) »** (P2-06) : méthode du manuel de l'OMS 6e éd., chambre de Neubauer

@@ -135,7 +135,8 @@ class _CountScreenState extends State<CountScreen> with LabFormMixin<CountScreen
         Padding(
           padding: const EdgeInsets.only(bottom: 4),
           child: Text(
-            'Valeurs reprises de documents cités (à confronter à la fiche de votre chambre) : ${chamber.source}',
+            '${chamber.usage.isEmpty ? '' : 'Usage : ${chamber.usage}. '}Valeurs reprises de documents cités '
+            '(à confronter à la fiche de votre chambre) : ${chamber.source}',
             style: theme.textTheme.bodySmall,
           ),
         ),

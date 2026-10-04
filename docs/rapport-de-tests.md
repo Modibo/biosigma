@@ -875,3 +875,8 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Tests** : 10 tests moteur (géométrie recoupée : Malassez 100 × 0,05 mm² × 0,2 mm = 1 µL, 0,01 µL par rectangle, ×10 000 pour 10 rectangles ; Neubauer 100 nL par grille ; calculs à la main ; même résultat que le mode Personnalisée ; refus au-delà du nombre d'unités de la chambre) + 6 tests d'écran. Moteur : **723 tests** ; application : **219 tests**. Golden master inchangé.
 - **Provenance** : Malassez = sources web lues en texte brut (4 sources concordantes), **non saisies par le validateur** : dossier FV-PREP-020.
 
+## Toutes les chambres de numération (2026-10-04, version 1.25.0)
+
+- **14 chambres** : Neubauer améliorée, Neubauer, Bürker, Bürker-Türk, Thoma, Thoma nouvelle, Fuchs-Rosenthal, Nageotte, Malassez, Makler, Petroff-Hausser, Neubauer améliorée 0,01 mm et 0,02 mm, Thoma (Helber) 0,02 mm.
+- **Recoupement** : surface et volume de chaque unité égaux aux colonnes imprimées par Marienfeld (« sqmm », « µl ») ; totaux (9 mm² = 0,9 µL ; Fuchs-Rosenthal 3,2 µL ; Nageotte 100 mm², 50 µL ; Malassez 1 µL ; Petroff 0,02 mm³ par mm²) ; règle du Makler (bande de 10 carrés = 10⁶/mL) retrouvée par le calcul. Moteur : **730 tests** ; application : **222 tests**. Golden master inchangé.
+

@@ -1,5 +1,5 @@
 {
-  "latest": "1.24.0",
+  "latest": "1.25.0",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Count : choix de la chambre de numération (Malassez, Neubauer améliorée, ou personnalisée). La surface comptée se déduit du nombre d unités comptées et la profondeur est celle de la chambre. Valeurs reprises de documents cités : à confronter à la fiche de votre chambre."
+  "notes": "Count : toutes les chambres de numération courantes sont proposées (Neubauer, Bürker, Bürker-Türk, Thoma, Fuchs-Rosenthal, Nageotte, Malassez, Makler, Petroff-Hausser…), avec leur profondeur et leurs unités de comptage reprises de fiches de fabricants. À confronter à la fiche de votre chambre."
 }

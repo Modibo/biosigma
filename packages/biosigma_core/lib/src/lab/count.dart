@@ -153,6 +153,7 @@ class CountingChamber {
     required this.depthMm,
     required this.units,
     required this.source,
+    this.usage = '',
   });
   final String id;
   final String name;
@@ -163,33 +164,200 @@ class CountingChamber {
 
   /// Origine des valeurs (à confronter à la fiche de la chambre du laboratoire).
   final String source;
+
+  /// Usage courant cité par les fabricants (facultatif).
+  final String usage;
 }
 
+const String _marienfeld =
+    'Paul Marienfeld, « Counting grids » (fiche technique des grilles, consultée le 2026-10-04)';
+
 /// Chambres proposées. **Les valeurs sont celles de documents cités**, à confronter à la fiche de
-/// VOTRE chambre : une chambre non listée se saisit en mode « Personnalisée ».
+/// VOTRE chambre : une chambre non listée se saisit en mode « Personnalisée ». Non proposées, faute de fiche
+/// vérifiée en texte brut et parce qu'elles ne servent pas au dénombrement cellulaire médical : McMaster
+/// (œufs de parasites), Sedgewick-Rafter (plancton), Howard (moisissures).
 const List<CountingChamber> countingChambers = [
   CountingChamber(
     id: 'neubauer_improved',
     name: 'Neubauer améliorée',
     depthMm: 0.1,
+    usage: 'sang, liquides biologiques ; sperme (OMS)',
     units: [
       ChamberUnit('grille de 1 mm × 1 mm (100 nL)', 1.0, 9),
       ChamberUnit('grand carré de la grille centrale (1/25 de grille)', 1.0 / 25, 25),
+      ChamberUnit('petit carré (0,05 mm × 0,05 mm)', 0.0025, 400),
     ],
     source: 'Manuel de l\'OMS pour l\'examen du sperme, 6e éd. (§ 2.4.8.2, figure 2.5) : neuf grilles de 1 mm × 1 mm '
-        'par chambre, profondeur 100 µm (0,1 mm), 100 nL par grille, 25 grands carrés dans la grille centrale.',
+        'par chambre, profondeur 100 µm (0,1 mm), 100 nL par grille, 25 grands carrés dans la grille centrale. '
+        '$_marienfeld : groupes de 0,2 mm × 0,2 mm (25), petits carrés de 0,05 mm × 0,05 mm (16 par groupe).',
+  ),
+  CountingChamber(
+    id: 'neubauer',
+    name: 'Neubauer',
+    depthMm: 0.1,
+    usage: 'sang',
+    units: [
+      ChamberUnit('grand carré de 1 mm × 1 mm', 1.0, 9),
+      ChamberUnit('carré de groupe (0,2 mm × 0,2 mm)', 0.04, 16),
+      ChamberUnit('petit carré (0,05 mm × 0,05 mm)', 0.0025, 256),
+    ],
+    source: '$_marienfeld : profondeur 0,1 mm ; quadrillage de 3 mm × 3 mm en 9 grands carrés de 1 mm ; grand carré '
+        'central en 4 × 4 groupes de 0,2 mm × 0,2 mm, chacun en 16 petits carrés de 0,05 mm.',
+  ),
+  CountingChamber(
+    id: 'burker',
+    name: 'Bürker',
+    depthMm: 0.1,
+    usage: 'sang (leucocytes, plaquettes, hématies)',
+    units: [
+      ChamberUnit('grand carré de 1 mm × 1 mm', 1.0, 9),
+      ChamberUnit('petit carré (0,2 mm × 0,2 mm)', 0.04, 144),
+    ],
+    source: '$_marienfeld : profondeur 0,1 mm ; quadrillage de 9 mm² en 9 grands carrés de 1 mm ; 16 petits carrés de '
+        '0,2 mm × 0,2 mm par grand carré.',
+  ),
+  CountingChamber(
+    id: 'burker_turk',
+    name: 'Bürker-Türk',
+    depthMm: 0.1,
+    usage: 'sang',
+    units: [
+      ChamberUnit('grand carré de 1 mm × 1 mm', 1.0, 9),
+      ChamberUnit('petit carré (0,2 mm × 0,2 mm)', 0.04, 144),
+      ChamberUnit('plus petit carré (0,05 mm × 0,05 mm, grand carré central)', 0.0025, 256),
+    ],
+    source: '$_marienfeld : profondeur 0,1 mm ; 9 grands carrés de 1 mm ; 16 petits carrés de 0,2 mm × 0,2 mm par grand '
+        'carré ; dans le grand carré central, chacun des 16 petits carrés est subdivisé en 16 carrés de 0,05 mm.',
+  ),
+  CountingChamber(
+    id: 'thoma',
+    name: 'Thoma',
+    depthMm: 0.1,
+    usage: 'sang',
+    units: [
+      ChamberUnit('grille de 1 mm × 1 mm', 1.0, 1),
+      ChamberUnit('carré de groupe (0,2 mm × 0,2 mm)', 0.04, 25),
+      ChamberUnit('petit carré (0,05 mm × 0,05 mm)', 0.0025, 400),
+    ],
+    source: '$_marienfeld : profondeur 0,1 mm ; quadrillage de 1 mm × 1 mm en carrés de groupe de 0,2 mm (comme le '
+        'système de Neubauer), chacun en 16 petits carrés de 0,05 mm × 0,05 mm = 0,0025 mm² (soit 400 petits carrés).',
+  ),
+  CountingChamber(
+    id: 'thoma_new',
+    name: 'Thoma nouvelle',
+    depthMm: 0.1,
+    usage: 'sang',
+    units: [
+      ChamberUnit('carré de groupe (0,2 mm × 0,2 mm)', 0.04, 16),
+    ],
+    source: '$_marienfeld : profondeur 0,1 mm ; quadrillage de 1,1 mm × 1,1 mm ; 16 carrés de groupe de 0,2 mm de côté '
+        'séparés de 0,1 mm, chacun subdivisé en 16 petits carrés (dimension des petits carrés non indiquée : non proposée).',
+  ),
+  CountingChamber(
+    id: 'fuchs_rosenthal',
+    name: 'Fuchs-Rosenthal',
+    depthMm: 0.2,
+    usage: 'liquide cérébro-spinal, liquides pauvres en cellules',
+    units: [
+      ChamberUnit('grand carré de 1 mm × 1 mm (0,2 µL)', 1.0, 16),
+      ChamberUnit('petit carré (0,25 mm × 0,25 mm)', 0.0625, 256),
+    ],
+    source: '$_marienfeld : profondeur 0,2 mm ; quadrillage de 16 mm² en 16 grands carrés de 1 mm, chacun en 16 petits '
+        'carrés de 0,25 mm ; volume total 3,2 µL ; utilisée pour le liquide cérébro-spinal.',
+  ),
+  CountingChamber(
+    id: 'nageotte',
+    name: 'Nageotte',
+    depthMm: 0.5,
+    usage: 'liquide cérébro-spinal, faibles concentrations de leucocytes',
+    units: [
+      ChamberUnit('bande de 0,25 mm × 10 mm (1,25 µL)', 2.5, 40),
+    ],
+    source: '$_marienfeld : profondeur 0,5 mm ; surface de 100 mm² divisée en 40 bandes de 0,25 mm × 10 mm = 2,5 mm² '
+        '(soit 1,25 µL par bande, 50 µL par quadrillage ; la chambre double compte deux quadrillages).',
   ),
   CountingChamber(
     id: 'malassez',
     name: 'Malassez',
     depthMm: 0.2,
+    usage: 'sang, liquide cérébro-spinal',
     units: [
       ChamberUnit('rectangle (0,20 mm × 0,25 mm)', 0.05, 100),
       ChamberUnit('quadrillage entier (100 rectangles, 5 mm², 1 µL)', 5.0, 1),
+      ChamberUnit('petit carré (0,05 mm × 0,05 mm, 20 par rectangle)', 0.0025, 2000),
     ],
-    source: 'Profondeur 0,2 mm ; quadrillage de 100 rectangles (10 × 10) de 0,20 mm × 0,25 mm, soit 2,5 mm × 2 mm '
-        '(5 mm²) et 1 µL au total (0,01 µL par rectangle) : Wikipédia « Cellule de Malassez », Bioltrop, '
-        'Laboratoires Humeau, Dutscher (consultés le 2026-10-04) ; recoupement : 100 × 0,05 mm² × 0,2 mm = 1 mm³ = 1 µL.',
+    source: '$_marienfeld : profondeur 0,2 mm ; quadrillage de 2 mm × 2,5 mm ; grands rectangles de 0,25 × 0,20 = '
+        '0,05 mm², chacun en 20 petits carrés de 0,05 mm. Recoupé par Wikipédia « Cellule de Malassez », Bioltrop '
+        '(quadrillage total 1 µL, 100 rectangles), Laboratoires Humeau, Dutscher (consultés le 2026-10-04) et par '
+        '100 × 0,05 mm² × 0,2 mm = 1 µL.',
+  ),
+  CountingChamber(
+    id: 'makler',
+    name: 'Makler (sperme)',
+    depthMm: 0.01,
+    usage: 'sperme, sans dilution',
+    units: [
+      ChamberUnit('bande de 10 carrés de 0,1 mm × 0,1 mm (0,1 mm²)', 0.1, 10),
+      ChamberUnit('carré de 0,1 mm × 0,1 mm', 0.01, 100),
+      ChamberUnit('quadrillage de 1 mm × 1 mm (100 carrés)', 1.0, 1),
+    ],
+    source: 'Graticules Optics, fiche « Makler Sperm Counting Chamber » et COLO.Science (consultés le 2026-10-04) : '
+        'profondeur 10 µm ; lamelle quadrillée de carrés de 1 mm dont la zone centrale est subdivisée en carrés de '
+        '0,1 mm (grille de 1 mm² en 100 carrés). Le nombre de spermatozoïdes d\'une bande de 10 carrés donne la '
+        'concentration en millions/mL (vérifié par le calcul : 10 × 0,01 mm² × 0,01 mm = 0,001 µL).',
+  ),
+  CountingChamber(
+    id: 'petroff_hausser',
+    name: 'Petroff-Hausser (profondeur 0,02 mm)',
+    depthMm: 0.02,
+    usage: 'bactéries, sperme',
+    units: [
+      ChamberUnit('grille de 1 mm × 1 mm', 1.0, 9),
+      ChamberUnit('carré de groupe (0,2 mm × 0,2 mm)', 0.04, 25),
+      ChamberUnit('petit carré (0,05 mm × 0,05 mm)', 0.0025, 400),
+    ],
+    source: 'Hausser Scientific (fiche du Petroff-Hausser, via Microscope World, consultée le 2026-10-04) : profondeur '
+        '0,02 mm ; ruling Neubauer amélioré couvrant 9 mm² ; le millimètre carré central est divisé en 25 groupes de '
+        '16 petits carrés ; volume au-dessus d\'un mm² : 0,02 mm³.',
+  ),
+  CountingChamber(
+    id: 'neubauer_improved_depth_001',
+    name: 'Neubauer améliorée, profondeur 0,01 mm (Petroff)',
+    depthMm: 0.01,
+    usage: 'profondeur spéciale',
+    units: [
+      ChamberUnit('grille de 1 mm × 1 mm', 1.0, 9),
+      ChamberUnit('carré de groupe (0,2 mm × 0,2 mm)', 0.04, 25),
+      ChamberUnit('petit carré (0,05 mm × 0,05 mm)', 0.0025, 400),
+    ],
+    source: 'Paul Marienfeld, « Counting chambers with special depth » : Neubauer améliorée (Petroff), profondeur '
+        '0,01 mm (consulté le 2026-10-04) ; grille de la Neubauer améliorée.',
+  ),
+  CountingChamber(
+    id: 'neubauer_improved_depth_002',
+    name: 'Neubauer améliorée, profondeur 0,02 mm (Petroff)',
+    depthMm: 0.02,
+    usage: 'profondeur spéciale',
+    units: [
+      ChamberUnit('grille de 1 mm × 1 mm', 1.0, 9),
+      ChamberUnit('carré de groupe (0,2 mm × 0,2 mm)', 0.04, 25),
+      ChamberUnit('petit carré (0,05 mm × 0,05 mm)', 0.0025, 400),
+    ],
+    source: 'Paul Marienfeld, « Counting chambers with special depth » : Neubauer améliorée (Petroff), profondeur '
+        '0,02 mm (consulté le 2026-10-04) ; grille de la Neubauer améliorée.',
+  ),
+  CountingChamber(
+    id: 'thoma_helber',
+    name: 'Thoma (Helber), profondeur 0,02 mm',
+    depthMm: 0.02,
+    usage: 'profondeur spéciale',
+    units: [
+      ChamberUnit('grille de 1 mm × 1 mm', 1.0, 1),
+      ChamberUnit('carré de groupe (0,2 mm × 0,2 mm)', 0.04, 25),
+      ChamberUnit('petit carré (0,05 mm × 0,05 mm)', 0.0025, 400),
+    ],
+    source: 'Paul Marienfeld, « Counting chambers with special depth » : Thoma (Helber), profondeur 0,02 mm '
+        '(consulté le 2026-10-04) ; grille de la chambre de Thoma.',
   ),
 ];
 
