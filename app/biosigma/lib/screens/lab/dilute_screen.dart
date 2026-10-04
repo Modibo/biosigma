@@ -8,6 +8,7 @@ import '../../state/app_state.dart';
 import '../../widgets/disclaimer_banner.dart';
 import '../../widgets/lab_widgets.dart';
 import '../../widgets/numeric_unit_field.dart';
+import '../../widgets/pipette_widgets.dart';
 
 /// Dilute : dilution simple (C1·V1 = C2·V2), dilutions en série, résultat
 /// après dilution (hors linéarité).
@@ -123,6 +124,36 @@ class _DiluteScreenState extends State<DiluteScreen> {
           });
       }
     });
+  }
+
+  /// Volumes à pipeter (µL) déduits du résultat courant.
+  Map<String, double> _pipetteVolumes() {
+    final r = _result;
+    if (r == null || _mode == _Mode.linearity) return const {};
+    double? ul(double? v, String unit) {
+      final u = LabUnits.parse(unit);
+      return v == null || u == null || u.dimension != LabDimension.volume ? null : v * u.factorToBase * 1e6;
+    }
+
+    final out = <String, double>{};
+    if (_mode == _Mode.simple) {
+      final v1 = r.values.where((v) => v.label.startsWith('V1')).firstOrNull;
+      final fromResult = v1 == null ? null : ul(v1.value, v1.unit);
+      final fromInput = ul(_simpleValues['v1'], _simpleUnits['v1']!);
+      final sample = fromResult ?? fromInput;
+      if (sample != null) out['Volume à prélever (V1)'] = sample;
+      final diluent = r.values.where((v) => v.label.startsWith('Volume de diluant')).firstOrNull;
+      final d = diluent == null ? null : ul(diluent.value, diluent.unit);
+      if (d != null) out['Volume de diluant'] = d;
+    } else {
+      for (final v in r.values) {
+        if (v.label.startsWith('Volume transféré') || v.label.startsWith('Volume de diluant')) {
+          final x = ul(v.value, v.unit);
+          if (x != null) out[v.label] = x;
+        }
+      }
+    }
+    return out;
   }
 
   void _reset() => setState(() {
@@ -307,6 +338,7 @@ class _DiluteScreenState extends State<DiluteScreen> {
                 decimalSeparator: sep,
                 extra: _series == null ? null : _seriesTable(_series!, sep),
               ),
+              if (_pipetteVolumes().isNotEmpty) PipetabilityCard(volumesUl: _pipetteVolumes()),
             ],
             const SizedBox(height: 24),
           ],

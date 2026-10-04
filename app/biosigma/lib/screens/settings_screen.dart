@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../models/app_settings.dart';
 import '../models/local_threshold.dart';
 import '../state/app_state.dart';
+import '../widgets/pipette_widgets.dart';
+import 'history_screen.dart';
 
 /// Écran Réglages : séparateur décimal, historique local (facultatif,
 /// désactivé par défaut), équation LDL présélectionnée, seuils locaux du
@@ -100,6 +102,13 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 if (appState.history.isNotEmpty)
                   ListTile(
+                    leading: const Icon(Icons.history),
+                    title: Text('Voir l\'historique (${appState.history.length} entrée(s))'),
+                    onTap: () => Navigator.of(context)
+                        .push(MaterialPageRoute<void>(builder: (_) => const HistoryScreen())),
+                  ),
+                if (appState.history.isNotEmpty)
+                  ListTile(
                     leading: const Icon(Icons.delete_forever),
                     title: Text(
                       'Effacer l\'historique (${appState.history.length} entrée(s))',
@@ -116,6 +125,46 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Pipettes du laboratoire', style: Theme.of(context).textTheme.titleMedium),
+              IconButton(
+                icon: const Icon(Icons.add_circle_outline),
+                tooltip: 'Ajouter une pipette',
+                onPressed: () => showAddPipetteDialog(context, appState),
+              ),
+            ],
+          ),
+          Text(
+            'Plage de la fiche, seuil recommandé et vérification sont saisis par vous : '
+            'BioSigma n\'embarque aucune pipette. Utilisées par Dilute pour contrôler les volumes.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          const SizedBox(height: 8),
+          if (appState.pipettes.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Text('Aucune pipette enregistrée.'),
+            )
+          else
+            Card(
+              child: Column(
+                children: [
+                  for (final p in appState.pipettes)
+                    ListTile(
+                      title: Text(p.name),
+                      subtitle: Text(pipetteSummary(p, settings.decimalSeparator)),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        tooltip: 'Supprimer cette pipette',
+                        onPressed: () => appState.removePipette(p),
+                      ),
+                    ),
+                ],
+              ),
+            ),
           const SizedBox(height: 24),
           Text(
             'Panel LDL',

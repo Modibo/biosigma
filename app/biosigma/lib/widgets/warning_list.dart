@@ -6,6 +6,12 @@ import '../theme/app_theme.dart';
 /// Liste des avertissements d'un résultat, colorés selon leur sévérité.
 /// Jamais masquée : la sévérité `blocking` doit toujours être visible en
 /// évidence forte, conformément au cahier des charges.
+///
+/// Niveaux de résultat (backlog P1-16) : la valeur calculée est affichée
+/// au-dessus (niveau « calcul ») ; ici, les **alertes** (`blocking`,
+/// `caution`) sont séparées des **informations et repères d'interprétation**
+/// (`info`), présentés comme généraux et non validés localement. BioSigma ne
+/// formule aucune décision clinique.
 class WarningList extends StatelessWidget {
   const WarningList({super.key, required this.warnings});
 
@@ -14,9 +20,32 @@ class WarningList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (warnings.isEmpty) return const SizedBox.shrink();
+    final alerts = warnings.where((w) => w.severity != WarningSeverity.info).toList(growable: false);
+    final infos = warnings.where((w) => w.severity == WarningSeverity.info).toList(growable: false);
+    final theme = Theme.of(context);
+    Widget heading(String title, {String? caption}) => Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 2),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(title, style: theme.textTheme.labelLarge),
+            if (caption != null) Text(caption, style: theme.textTheme.bodySmall),
+          ]),
+        );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: warnings.map((w) => _WarningTile(warning: w)).toList(growable: false),
+      children: [
+        if (alerts.isNotEmpty) ...[
+          heading('Alertes'),
+          ...alerts.map((w) => _WarningTile(warning: w)),
+        ],
+        if (infos.isNotEmpty) ...[
+          heading(
+            'Informations et repères d\'interprétation',
+            caption: 'Repères généraux, non validés localement : ils ne remplacent ni le contexte '
+                'clinique ni le jugement du professionnel.',
+          ),
+          ...infos.map((w) => _WarningTile(warning: w)),
+        ],
+      ],
     );
   }
 }

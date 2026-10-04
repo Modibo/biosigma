@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:biosigma_core/biosigma_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/app_settings.dart';
+import '../models/calculation_record.dart';
 import '../models/history_entry.dart';
 import '../models/local_threshold.dart';
 import '../models/quiz_attempt.dart';
@@ -18,9 +20,11 @@ class AppStorageService {
 
   static const _settingsKey = 'biosigma.settings.v1';
   static const _historyKey = 'biosigma.history.v1';
+  static const _recordsKey = 'biosigma.history.v2';
   static const _favoritesKey = 'biosigma.favorites.v1';
   static const _thresholdsKey = 'biosigma.thresholds.v1';
   static const _quizAttemptsKey = 'biosigma.quiz_attempts.v1';
+  static const _pipettesKey = 'biosigma.pipettes.v1';
   /// Préfixe des copies de sauvegarde créées quand une donnée stockée est
   /// illisible (voir [_quarantine]). Une seule copie par clé d'origine.
   static const quarantinePrefix = 'biosigma.quarantine.';
@@ -111,6 +115,35 @@ class AppStorageService {
 
   Future<void> clearHistory() async {
     await _prefs.remove(_historyKey);
+    await _prefs.remove(_recordsKey);
+  }
+
+  // --- Enregistrements de calcul v2 (reproductibles) ---
+
+  /// Enregistrements v2. Au premier appel, l'ancien historique v1 est
+  /// **converti** (marqué `legacy`) et écrit sous la clé v2 ; la clé v1
+  /// n'est ni modifiée ni supprimée (retour arrière possible). Un v1
+  /// illisible est mis en quarantaine par [loadHistory], jamais perdu.
+  List<CalculationRecord> loadRecords() {
+    if (!_prefs.containsKey(_recordsKey) && _prefs.containsKey(_historyKey)) {
+      final legacy = loadHistory();
+      if (legacy.isNotEmpty) {
+        final converted = legacy.map(CalculationRecord.fromLegacy).toList(growable: false);
+        unawaited(_prefs.setString(
+          _recordsKey,
+          jsonEncode(converted.map((r) => r.toJson()).toList()),
+        ));
+        return converted;
+      }
+    }
+    return _decodeList(_recordsKey, CalculationRecord.fromJson);
+  }
+
+  Future<void> appendRecord(CalculationRecord record) async {
+    final current = loadRecords().toList()..insert(0, record);
+    final trimmed =
+        current.length > _maxHistoryEntries ? current.sublist(0, _maxHistoryEntries) : current;
+    await _prefs.setString(_recordsKey, jsonEncode(trimmed.map((r) => r.toJson()).toList()));
   }
 
   // --- Seuils locaux ---
@@ -123,6 +156,14 @@ class AppStorageService {
       _thresholdsKey,
       jsonEncode(thresholds.map((e) => e.toJson()).toList()),
     );
+  }
+
+  // --- Pipettes du laboratoire ---
+
+  List<Pipette> loadPipettes() => _decodeList(_pipettesKey, Pipette.fromJson);
+
+  Future<void> savePipettes(List<Pipette> pipettes) async {
+    await _prefs.setString(_pipettesKey, jsonEncode(pipettes.map((e) => e.toJson()).toList()));
   }
 
   // --- Scores de quiz (formation) ---
@@ -154,9 +195,11 @@ class AppStorageService {
   Future<void> clearAllLocalData() async {
     await _prefs.remove(_settingsKey);
     await _prefs.remove(_historyKey);
+    await _prefs.remove(_recordsKey);
     await _prefs.remove(_favoritesKey);
     await _prefs.remove(_thresholdsKey);
     await _prefs.remove(_quizAttemptsKey);
+    await _prefs.remove(_pipettesKey);
     for (final key in quarantinedKeys()) {
       await _prefs.remove('$quarantinePrefix$key');
     }

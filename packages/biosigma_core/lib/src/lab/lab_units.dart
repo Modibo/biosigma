@@ -1,4 +1,5 @@
 import '../models/errors.dart';
+import '../rounding.dart';
 
 /// Grandeur physique d'une unité de laboratoire.
 ///
@@ -145,15 +146,8 @@ class LabUnits {
     LabDimension.equivalentConcentration: equivalentConcentrations,
   };
 
-  /// Nombre de décimales à afficher pour garder [significant] chiffres
-  /// significatifs (affichage uniquement : la valeur n'est jamais arrondie).
-  static int decimalsForSignificant(double value, {int significant = 4}) {
-    if (value == 0 || !value.isFinite) return 2;
-    // L'exposant lu dans la notation scientifique est exact (contrairement
-    // à floor(log10(x)) pour les puissances de dix, ex. 1000).
-    final magnitude = int.parse(value.abs().toStringAsExponential().split('e').last);
-    final decimals = significant - 1 - magnitude;
-    return decimals.clamp(0, 12);
-  }
+  /// Voir [RoundingPolicy.decimalsForSignificant] (règle `FMT_ARRONDI_001`).
+  static int decimalsForSignificant(double value, {int significant = 4}) =>
+      RoundingPolicy.decimalsForSignificant(value, significant: significant);
 
 }

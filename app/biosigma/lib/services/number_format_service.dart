@@ -1,3 +1,5 @@
+import 'package:biosigma_core/biosigma_core.dart';
+
 import '../models/app_settings.dart';
 
 /// Formatage et analyse de nombres décimaux selon le réglage
@@ -66,7 +68,7 @@ class NumberFormatService {
 
   static String format(double value, DecimalSeparator separator, {int precision = 2}) {
     if (!value.isFinite) return '—';
-    final text = value.toStringAsFixed(precision);
+    final text = RoundingPolicy.format(value, precision);
     return separator == DecimalSeparator.comma ? text.replaceAll('.', ',') : text;
   }
 }

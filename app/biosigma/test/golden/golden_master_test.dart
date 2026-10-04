@@ -19,6 +19,7 @@ import 'package:biosigma_core/biosigma_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'golden_inputs.dart';
+import 'golden_support.dart';
 
 const _fixturePath = 'test/golden/fixtures/baseline-v1.6.0.json';
 
@@ -31,43 +32,6 @@ class _Case {
   final String id;
   final Map<String, Object?> inputs;
   final CalculationResult Function() run;
-}
-
-String _defaultUnit(CalculatorFieldSpec f) =>
-    f.defaultUnit ?? UnitRegistry.unitsFor(f.analyte!).first;
-
-/// Construit la table de valeurs attendue par `CalculatorDefinition.compute`
-/// (même forme que l'écran), en appliquant des surcharges éventuelles.
-Map<String, dynamic> _buildValues(
-  CalculatorDefinition def,
-  Map<String, Object> base, {
-  String? enumField,
-  int? enumIndex,
-  String? unitField,
-  String? unit,
-}) {
-  final values = <String, dynamic>{};
-  for (final f in def.fields) {
-    final given = base[f.id];
-    switch (f.kind) {
-      case FieldKind.numberWithUnit:
-        final value = given is N ? given.value : null;
-        var u = given is N ? (given.unit ?? _defaultUnit(f)) : _defaultUnit(f);
-        if (f.id == unitField) u = unit!;
-        values[f.id] = NumericEntry(value, u);
-      case FieldKind.numberFixedUnit:
-        values[f.id] = NumericEntry(given is N ? given.value : null, f.fixedUnitLabel ?? '');
-      case FieldKind.boolean:
-        values[f.id] = given is bool ? given : f.defaultBoolValue;
-      case FieldKind.enumSelect:
-        var index = given is E ? given.index : null;
-        if (f.id == enumField) index = enumIndex;
-        values[f.id] = index == null ? null : f.enumOptions![index].value;
-      case FieldKind.text:
-        values[f.id] = given is String ? given : (f.defaultText ?? '');
-    }
-  }
-  return values;
 }
 
 Map<String, Object?> _describeInputs(CalculatorDefinition def, Map<String, dynamic> values) {
@@ -96,14 +60,14 @@ List<_Case> _buildCases() {
       cases.add(_Case(caseId, _describeInputs(def, values), () => def.compute(values)));
     }
 
-    add(id, _buildValues(def, base));
+    add(id, buildGoldenValues(def, base));
 
     // Une variante par option de chaque liste de choix (autres champs inchangés).
     for (final f in def.fields.where((f) => f.kind == FieldKind.enumSelect)) {
       final current = base[f.id] is E ? (base[f.id] as E).index : -1;
       for (var i = 0; i < f.enumOptions!.length; i++) {
         if (i == current) continue;
-        add('$id#${f.id}=$i', _buildValues(def, base, enumField: f.id, enumIndex: i));
+        add('$id#${f.id}=$i', buildGoldenValues(def, base, enumField: f.id, enumIndex: i));
       }
     }
 
@@ -113,10 +77,10 @@ List<_Case> _buildCases() {
     for (final f in def.fields.where((f) => f.kind == FieldKind.numberWithUnit)) {
       final given = base[f.id];
       if (given is! N) continue;
-      final current = given.unit ?? _defaultUnit(f);
+      final current = given.unit ?? defaultUnitOf(f);
       for (final u in UnitRegistry.unitsFor(f.analyte!)) {
         if (u == current) continue;
-        add('$id#${f.id}@$u', _buildValues(def, base, unitField: f.id, unit: u));
+        add('$id#${f.id}@$u', buildGoldenValues(def, base, unitField: f.id, unit: u));
       }
     }
   }

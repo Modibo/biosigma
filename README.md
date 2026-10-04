@@ -260,6 +260,24 @@ Aucune source normative n'est citée pour ces relations de définition : chaque 
 (« à relire par le laboratoire »). Les références de Sigma, d'erreur totale et du tampon sont à compléter
 et à valider (décision D-12).
 
+## Socle de traçabilité (phase 1)
+
+- **Registre d'équations** (`EquationRegistry`) : chaque équation a un identifiant stable
+  `FAMILLE_NOM_001`, une version entière et un statut. Les 59 identifiants historiques restent valides
+  (alias). **Toutes sont « NON VALIDÉ »** : le statut « VALIDÉ » exige une fiche de validation (décision D-12).
+- **Politique d'arrondi `FMT_ARRONDI_001`** : calcul en double précision sans arrondi intermédiaire, un
+  seul arrondi à l'affichage (documenté et testé).
+- **Niveaux de résultat** : la valeur calculée, puis les *alertes*, puis les *informations et repères
+  d'interprétation* (généraux, non validés localement). BioSigma ne formule aucune décision clinique.
+- **Historique v2** (facultatif, local, anonyme) : chaque calcul garde l'équation, sa version, la version de
+  l'application, les entrées brutes et le résultat non arrondi ; **« Rejouer »** (Réglages → historique) refait
+  le calcul et signale toute différence, sans jamais modifier l'enregistrement. L'ancien historique est converti
+  (marqué « ancien format », non rejouable) et l'original est conservé.
+- **Pipettes** (Réglages) : vous décrivez les vôtres (plage de la fiche, seuil recommandé, vérification et sa
+  validité) ; Dilute contrôle les volumes : impossible / possible / recommandé / validé. Rien n'est embarqué.
+- **Intégration continue** (`.github/workflows/ci.yml`) : analyse, tests des deux paquets, cohérence des
+  versions (`tool/check_versions.sh`).
+
 ## Onglet Entraînement
 
 Quatre banques de questions (une par domaine : rénal, cardiométabolique, ionogramme, hémostase —

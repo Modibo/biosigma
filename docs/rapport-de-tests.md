@@ -641,3 +641,23 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - Vérifié visuellement : liste des sept modules dans l'onglet Lab (build web de production) ; le détail
   des parcours est couvert par les tests de widgets, pas par un essai sur téléphone.
 
+## Socle de traçabilité — P1-00, P1-02, P1-13 à P1-16, P2-01 (2026-10-04)
+
+- **Moteur : 351 tests** (+24) ; **application : 81 tests** (+24) ; analyse sans remarque ; golden master
+  inchangé (fixture non modifiée).
+- **T-REG-003** : les 59 identifiants historiques résolvent via le registre ; identifiants stables uniques.
+- **T-ARR-001** : règle `FMT_ARRONDI_001` testée (égalité exacte vers l'extérieur, 1,005 → « 1,00 »,
+  chiffres significatifs). Elle décrit le comportement existant : aucun résultat n'a changé.
+- **T-TRC-001** : pour les 57 équations du registre générique, calcul → enregistrement → JSON → relecture →
+  rejeu reproduit exactement les valeurs.
+- **T-MIG-001** : historique v1 converti sans toucher à v1, idempotent, ajout sans perte, v1 corrompu en
+  quarantaine, schéma v2 inattendu en quarantaine, effacement des deux clés.
+- **T-PIP-001/002** : 0,7 µL impossible avec les pipettes du jeu de test ; classes aux seuils ; « validé »
+  seulement avec vérification à jour. Les plages de test sont saisies dans les tests, pas dans le code.
+- **Niveaux de résultat (P1-16)** : séparation en *alertes* et *informations/repères* faite sur la sévérité
+  existante. **Limite** : le texte de chaque message n'a pas été reclassé un par un (interprétation,
+  note, aide) ; le champ « niveau » par message n'existe pas encore.
+- **Non fait** : CI jamais exécutée sur GitHub (écrite et cohérente, mais à constater au premier push) ;
+  « correction d'équation → enregistrements signalés » ; version d'équation > 1 (aucune équation n'a encore
+  changé depuis l'introduction du registre) ; statut VALIDÉ (D-12).
+

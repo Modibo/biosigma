@@ -59,5 +59,8 @@ export 'src/lab/count.dart';
 export 'src/lab/microbiology.dart';
 export 'src/lab/quality.dart';
 export 'src/lab/smart_solver.dart';
+export 'src/lab/pipette.dart';
 
 export 'src/catalog.dart';
+export 'src/rounding.dart';
+export 'src/registry/equation_registry.dart';

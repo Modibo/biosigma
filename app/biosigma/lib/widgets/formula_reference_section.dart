@@ -21,6 +21,10 @@ class FormulaReferenceSection extends StatelessWidget {
         childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (EquationRegistry.resolve(meta.id) case final record?) ...[
+            _section(context, 'Identifiant et statut',
+                '${record.stableId} · version ${record.version} · statut : ${record.status.label}'),
+          ],
           _section(context, 'Version', meta.version),
           _section(context, 'Formule', meta.equation, monospace: true),
           _section(context, 'Population d\'application', meta.applicablePopulation),

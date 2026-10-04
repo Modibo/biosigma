@@ -1,0 +1,44 @@
+# Intégration continue BioSigma (backlog P1-00) : analyse, tests des deux
+# paquets, cohérence des versions. Un échec bloque la fusion.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'   # version utilisée pour développer et valider
+          channel: stable
+          cache: true
+
+      - name: Cohérence des versions (pubspec, app_version, version.json)
+        working-directory: app/biosigma
+        run: sh tool/check_versions.sh
+
+      - name: Moteur — analyse
+        working-directory: packages/biosigma_core
+        run: |
+          dart pub get
+          dart analyze
+
+      - name: Moteur — tests
+        working-directory: packages/biosigma_core
+        run: dart test
+
+      - name: Application — analyse
+        working-directory: app/biosigma
+        run: |
+          flutter pub get
+          flutter analyze
+
+      - name: Application — tests (dont golden master)
+        working-directory: app/biosigma
+        run: flutter test

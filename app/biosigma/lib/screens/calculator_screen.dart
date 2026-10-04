@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/app_settings.dart';
 import '../models/calculator_definition.dart';
 import '../models/calculator_field.dart';
-import '../models/history_entry.dart';
+import '../models/calculation_record.dart';
 import '../models/local_threshold.dart';
 import '../state/app_state.dart';
 import '../widgets/disclaimer_banner.dart';
@@ -121,15 +121,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       setState(() => _result = result);
       final appState = context.read<AppState>();
       if (appState.settings.historyEnabled) {
-        await appState.recordHistoryEntry(HistoryEntry(
-          id: DateTime.now().microsecondsSinceEpoch.toString(),
-          calculatorId: widget.definition.meta.id,
-          calculatorName: widget.definition.meta.name,
-          timestamp: DateTime.now(),
-          echoedInputs: result.echoedInputs,
-          resultSummary: result.values
-              .map((v) => '${v.label} : ${v.isComputed ? v.value!.toStringAsFixed(v.precision) : "non calculé"} ${v.unit}')
-              .toList(),
+        await appState.recordCalculation(CalculationRecord.fromCalculation(
+          definition: widget.definition,
+          values: _values,
+          result: result,
+          now: DateTime.now(),
         ));
       }
     } on CalculationInputException catch (e) {

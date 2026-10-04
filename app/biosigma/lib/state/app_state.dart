@@ -1,7 +1,8 @@
+import 'package:biosigma_core/biosigma_core.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/app_settings.dart';
-import '../models/history_entry.dart';
+import '../models/calculation_record.dart';
 import '../models/local_threshold.dart';
 import '../models/quiz_attempt.dart';
 import '../services/app_storage_service.dart';
@@ -13,17 +14,21 @@ class AppState extends ChangeNotifier {
   AppState(this._storage)
       : settings = _storage.loadSettings(),
         favoriteIds = _storage.loadFavorites(),
-        history = _storage.loadHistory(),
+        history = _storage.loadRecords(),
         thresholds = _storage.loadThresholds(),
+        pipettes = _storage.loadPipettes(),
         quizAttempts = _storage.loadQuizAttempts();
 
   final AppStorageService _storage;
 
   AppSettings settings;
   Set<String> favoriteIds;
-  List<HistoryEntry> history;
+  List<CalculationRecord> history;
   List<LocalThreshold> thresholds;
   List<QuizAttempt> quizAttempts;
+
+  /// Pipettes décrites par l'utilisateur (aucune n'est embarquée).
+  List<Pipette> pipettes;
 
   Future<void> updateSettings(AppSettings Function(AppSettings) update) async {
     settings = update(settings);
@@ -41,10 +46,10 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> recordHistoryEntry(HistoryEntry entry) async {
+  Future<void> recordCalculation(CalculationRecord record) async {
     if (!settings.historyEnabled) return;
-    await _storage.appendHistoryEntry(entry);
-    history = _storage.loadHistory();
+    await _storage.appendRecord(record);
+    history = _storage.loadRecords();
     notifyListeners();
   }
 
@@ -69,6 +74,18 @@ class AppState extends ChangeNotifier {
         .where((t) => !(t.calculatorId == threshold.calculatorId && t.label == threshold.label))
         .toList();
     await _storage.saveThresholds(thresholds);
+    notifyListeners();
+  }
+
+  Future<void> savePipette(Pipette pipette) async {
+    pipettes = [...pipettes.where((p) => p.name != pipette.name), pipette];
+    await _storage.savePipettes(pipettes);
+    notifyListeners();
+  }
+
+  Future<void> removePipette(Pipette pipette) async {
+    pipettes = pipettes.where((p) => p.name != pipette.name).toList();
+    await _storage.savePipettes(pipettes);
     notifyListeners();
   }
 
@@ -105,6 +122,7 @@ class AppState extends ChangeNotifier {
     favoriteIds = <String>{};
     history = const [];
     thresholds = const [];
+    pipettes = const [];
     quizAttempts = const [];
     notifyListeners();
   }
