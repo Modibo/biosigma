@@ -29,6 +29,10 @@ class _CountScreenState extends State<CountScreen> with LabFormMixin<CountScreen
 
   _Mode _mode = _Mode.concentration;
   double? _counted, _area, _depth, _dilution;
+  // Chambre choisie (« custom » = surface et profondeur saisies).
+  String _chamberId = 'custom';
+  String? _unitLabel;
+  double? _unitsCounted;
   double? _totalConc, _totalVolume, _a, _b;
   double? _wbc, _nrbc;
   // Spermatozoïdes (OMS 6e éd.)
@@ -68,6 +72,18 @@ class _CountScreenState extends State<CountScreen> with LabFormMixin<CountScreen
   void _calculate() {
     switch (_mode) {
       case _Mode.concentration:
+        final chamber = countingChamberById(_chamberId);
+        if (chamber != null) {
+          final unit = _chamberUnit(chamber);
+          runCalc(() => calculateChamberCount(
+                chamber: chamber,
+                unit: unit,
+                unitsCounted: asInt(_unitsCounted),
+                counted: asInt(_counted),
+                dilutionFactor: _dilution,
+              ));
+          break;
+        }
         runCalc(() => calculateCellCount(
               counted: asInt(_counted),
               countedAreaMm2: _area,
@@ -87,6 +103,70 @@ class _CountScreenState extends State<CountScreen> with LabFormMixin<CountScreen
       case _Mode.semen:
         _calculateSemen();
     }
+  }
+
+  ChamberUnit _chamberUnit(CountingChamber c) =>
+      c.units.firstWhere((u) => u.label == _unitLabel, orElse: () => c.units.first);
+
+  List<Widget> _chamberFields(DecimalSeparator sep) {
+    final theme = Theme.of(context);
+    final chamber = countingChamberById(_chamberId);
+    final names = [for (final c in countingChambers) c.name, 'Personnalisée (surface et profondeur saisies)'];
+    final selected = chamber?.name ?? names.last;
+    final unit = chamber == null ? null : _chamberUnit(chamber);
+    final units = _unitsCounted == null || unit == null ? null : asInt(_unitsCounted);
+    return [
+      LabDropdown(
+        label: 'Chambre de numération',
+        value: selected,
+        options: names,
+        helperText: chamber == null
+            ? 'Choisissez votre chambre (Malassez, Neubauer améliorée…) ou saisissez sa géométrie.'
+            : 'Profondeur ${NumberFormatService.formatCompact(chamber.depthMm, sep)} mm.',
+        onChanged: (n) => setState(() {
+          final c = countingChambers.where((c) => c.name == n);
+          _chamberId = c.isEmpty ? 'custom' : c.first.id;
+          _unitLabel = c.isEmpty ? null : c.first.units.first.label;
+          _unitsCounted = null;
+          clearResult();
+        }),
+      ),
+      if (chamber != null && unit != null) ...[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 4),
+          child: Text(
+            'Valeurs reprises de documents cités (à confronter à la fiche de votre chambre) : ${chamber.source}',
+            style: theme.textTheme.bodySmall,
+          ),
+        ),
+        LabDropdown(
+          label: 'Unité de comptage',
+          value: unit.label,
+          options: [for (final u in chamber.units) u.label],
+          onChanged: (l) => setState(() {
+            _unitLabel = l;
+            _unitsCounted = null;
+            clearResult();
+          }),
+        ),
+        numberField(
+          id: 'unitsCounted',
+          label: 'Nombre d\'unités comptées (entier, au plus ${unit.maxPerChamber})',
+          value: _unitsCounted,
+          set: (v) => _unitsCounted = v,
+          separator: sep,
+        ),
+        if (units != null && units >= 1 && units <= unit.maxPerChamber)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Text(
+              'Surface comptée : ${NumberFormatService.formatCompact(units * unit.areaMm2, sep)} mm² ; volume compté : '
+              '${NumberFormatService.formatCompact(units * unit.areaMm2 * chamber.depthMm, sep, precision: 4)} µL.',
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
+      ],
+    ];
   }
 
   void _calculateSemen() {
@@ -203,6 +283,7 @@ class _CountScreenState extends State<CountScreen> with LabFormMixin<CountScreen
         _pairs..clear()..add(_SpermPair());
         _ejaculateVolume = null;
         _counted = _area = _depth = _dilution = null;
+        _unitsCounted = null;
         _totalConc = _totalVolume = _a = _b = _wbc = _nrbc = null;
         _resetCounterQuiet();
         clearResult();
@@ -269,16 +350,20 @@ class _CountScreenState extends State<CountScreen> with LabFormMixin<CountScreen
             const SizedBox(height: 12),
             if (_mode == _Mode.concentration) ...[
               Text(
-                'Surface comptée = nombre de carrés × surface d\'un carré, et profondeur : '
-                'selon la fiche de VOTRE chambre (BioSigma n\'en embarque aucune).',
+                'Choisissez votre chambre : la surface comptée se déduit du nombre d\'unités comptées et la '
+                'profondeur est celle de la chambre. Pour une autre chambre, saisissez sa surface comptée et '
+                'sa profondeur selon la fiche de VOTRE chambre.',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
+              ..._chamberFields(sep),
               numberField(id: 'counted', label: 'Cellules comptées (entier)', value: _counted,
                   set: (v) => _counted = v, separator: sep),
-              numberField(id: 'countedArea', label: 'Surface comptée (mm²)', value: _area,
-                  set: (v) => _area = v, separator: sep),
-              numberField(id: 'depth', label: 'Profondeur de la chambre (mm)', value: _depth,
-                  set: (v) => _depth = v, separator: sep),
+              if (_chamberId == 'custom') ...[
+                numberField(id: 'countedArea', label: 'Surface comptée (mm²)', value: _area,
+                    set: (v) => _area = v, separator: sep),
+                numberField(id: 'depth', label: 'Profondeur de la chambre (mm)', value: _depth,
+                    set: (v) => _depth = v, separator: sep),
+              ],
               numberField(id: 'dilution', label: 'Facteur de dilution (1 = sans dilution)',
                   value: _dilution, set: (v) => _dilution = v, separator: sep,
                   help: 'Volume total / volume d\'échantillon (ex. 20 pour 50 µL dans 1 mL).'),
@@ -309,7 +394,7 @@ class _CountScreenState extends State<CountScreen> with LabFormMixin<CountScreen
               numberField(id: 'concentrationB', label: 'Comptage B', value: _b, set: (v) => _b = v, separator: sep),
             ],
             if (_mode == _Mode.semen) ..._semenFields(sep),
-            otherErrors({'counted', 'countedArea', 'depth', 'dilution', 'wbc', 'nrbc', 'concentration',
+            otherErrors({'unitsCounted', 'counted', 'countedArea', 'depth', 'dilution', 'wbc', 'nrbc', 'concentration',
               'volume', 'concentrationA', 'concentrationB',
               for (var i = 0; i < _pairs.length; i++) ...['pairA$i', 'pairB$i', 'pair$i']}),
             const SizedBox(height: 12),

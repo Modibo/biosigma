@@ -868,3 +868,10 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Deux chiffres significatifs** pour la concentration (affichage seul : 40,8 → 41 ; 0,131 → 0,13 ; la valeur reste exacte) ; test des décimales selon l'ordre de grandeur. Moteur : **713 tests**.
 - Coquille « 22–36 » du tableau 2.3 : confirmée imprimée dans le manuel ; lecture « 22–26 » conservée et documentée.
 - Source McFarland (JAMA 1907;49:1176-1178) ajoutée à la fiche de l'équation.
+
+## Choix de la chambre de numération (2026-10-04, version 1.24.0)
+
+- **Retour utilisateur** : « le choix de la cellule (exemple Malassez) n'apparaît pas ». Neubauer améliorée (OMS) et Malassez sont maintenant proposées ; « Personnalisée » reste disponible (et par défaut).
+- **Tests** : 10 tests moteur (géométrie recoupée : Malassez 100 × 0,05 mm² × 0,2 mm = 1 µL, 0,01 µL par rectangle, ×10 000 pour 10 rectangles ; Neubauer 100 nL par grille ; calculs à la main ; même résultat que le mode Personnalisée ; refus au-delà du nombre d'unités de la chambre) + 6 tests d'écran. Moteur : **723 tests** ; application : **219 tests**. Golden master inchangé.
+- **Provenance** : Malassez = sources web lues en texte brut (4 sources concordantes), **non saisies par le validateur** : dossier FV-PREP-020.
+

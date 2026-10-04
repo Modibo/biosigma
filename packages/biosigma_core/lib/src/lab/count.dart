@@ -27,8 +27,9 @@ const FormulaMeta cellCountMeta = FormulaMeta(
   sources: [_toVerify],
   applicablePopulation: 'Sans objet (comptage analytique, indépendant du patient).',
   analyticalConditions: [
-    'La surface comptée et la profondeur sont celles de VOTRE chambre (fiche du fabricant) : '
-        'BioSigma n\'embarque aucune géométrie de chambre.',
+    'La surface comptée et la profondeur sont celles de VOTRE chambre (fiche du fabricant). BioSigma propose '
+        'les chambres Neubauer améliorée (OMS) et Malassez (documents cités, à confronter à votre fiche) ; '
+        'toute autre chambre se saisit en mode « Personnalisée ».',
     'Respecter les règles de bordure (cellules à cheval) de la méthode du laboratoire.',
   ],
   limitations: [
@@ -129,6 +130,120 @@ CalculationResult calculateCellCount({
           severity: WarningSeverity.caution,
         ),
     ],
+  );
+}
+
+/// Unité de comptage d'une chambre (un rectangle, une grille, un grand carré…).
+class ChamberUnit {
+  const ChamberUnit(this.label, this.areaMm2, this.maxPerChamber);
+  final String label;
+
+  /// Surface d'une unité (mm²).
+  final double areaMm2;
+
+  /// Nombre maximal d'unités de ce type dans une chambre (ou une grille de comptage).
+  final int maxPerChamber;
+}
+
+/// Géométrie d'une chambre de numération : profondeur et unités de comptage.
+class CountingChamber {
+  const CountingChamber({
+    required this.id,
+    required this.name,
+    required this.depthMm,
+    required this.units,
+    required this.source,
+  });
+  final String id;
+  final String name;
+
+  /// Profondeur de la chambre (mm), lamelle en place.
+  final double depthMm;
+  final List<ChamberUnit> units;
+
+  /// Origine des valeurs (à confronter à la fiche de la chambre du laboratoire).
+  final String source;
+}
+
+/// Chambres proposées. **Les valeurs sont celles de documents cités**, à confronter à la fiche de
+/// VOTRE chambre : une chambre non listée se saisit en mode « Personnalisée ».
+const List<CountingChamber> countingChambers = [
+  CountingChamber(
+    id: 'neubauer_improved',
+    name: 'Neubauer améliorée',
+    depthMm: 0.1,
+    units: [
+      ChamberUnit('grille de 1 mm × 1 mm (100 nL)', 1.0, 9),
+      ChamberUnit('grand carré de la grille centrale (1/25 de grille)', 1.0 / 25, 25),
+    ],
+    source: 'Manuel de l\'OMS pour l\'examen du sperme, 6e éd. (§ 2.4.8.2, figure 2.5) : neuf grilles de 1 mm × 1 mm '
+        'par chambre, profondeur 100 µm (0,1 mm), 100 nL par grille, 25 grands carrés dans la grille centrale.',
+  ),
+  CountingChamber(
+    id: 'malassez',
+    name: 'Malassez',
+    depthMm: 0.2,
+    units: [
+      ChamberUnit('rectangle (0,20 mm × 0,25 mm)', 0.05, 100),
+      ChamberUnit('quadrillage entier (100 rectangles, 5 mm², 1 µL)', 5.0, 1),
+    ],
+    source: 'Profondeur 0,2 mm ; quadrillage de 100 rectangles (10 × 10) de 0,20 mm × 0,25 mm, soit 2,5 mm × 2 mm '
+        '(5 mm²) et 1 µL au total (0,01 µL par rectangle) : Wikipédia « Cellule de Malassez », Bioltrop, '
+        'Laboratoires Humeau, Dutscher (consultés le 2026-10-04) ; recoupement : 100 × 0,05 mm² × 0,2 mm = 1 mm³ = 1 µL.',
+  ),
+];
+
+CountingChamber? countingChamberById(String id) {
+  for (final c in countingChambers) {
+    if (c.id == id) return c;
+  }
+  return null;
+}
+
+/// Concentration d'une numération dans une chambre **choisie** : la surface comptée est déduite de
+/// l'unité de comptage et de leur nombre ; la profondeur est celle de la chambre.
+CalculationResult calculateChamberCount({
+  required CountingChamber chamber,
+  required ChamberUnit unit,
+  required int? unitsCounted,
+  required int? counted,
+  required double? dilutionFactor,
+}) {
+  Validation.raiseIfAny([
+    unitsCounted == null || unitsCounted < 1
+        ? const FieldError(fieldId: 'unitsCounted', message: 'Le nombre d\'unités comptées doit être un entier ≥ 1.')
+        : null,
+    if (unitsCounted != null && unitsCounted > unit.maxPerChamber)
+      FieldError(
+        fieldId: 'unitsCounted',
+        message: 'Une chambre ${chamber.name} compte au plus ${unit.maxPerChamber} « ${unit.label} » '
+            '(vous en avez saisi $unitsCounted).',
+      ),
+  ]);
+  final base = calculateCellCount(
+    counted: counted,
+    countedAreaMm2: unitsCounted! * unit.areaMm2,
+    depthMm: chamber.depthMm,
+    dilutionFactor: dilutionFactor,
+  );
+  return CalculationResult(
+    formula: base.formula,
+    echoedInputs: {
+      'Chambre': chamber.name,
+      'Unité comptée': unit.label,
+      'Nombre d\'unités comptées': '$unitsCounted',
+      ...base.echoedInputs,
+    },
+    values: base.values,
+    warnings: [
+      ...base.warnings,
+      CalculationWarning(
+        'Géométrie de la chambre « ${chamber.name} » reprise de documents cités (${chamber.source}) : à '
+        'confronter à la fiche de votre chambre.',
+        severity: WarningSeverity.info,
+      ),
+    ],
+    isComplete: base.isComplete,
   );
 }
 
