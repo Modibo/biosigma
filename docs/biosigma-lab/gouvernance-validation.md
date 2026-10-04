@@ -1,6 +1,6 @@
 # Gouvernance de la validation scientifique (décision D-12, tâche P0-07)
 
-> **Statut : proposition à approuver.** Ce cadre est rédigé par l'assistant de développement ; il n'a **aucune valeur** tant que le responsable scientifique ne l'a pas approuvé et n'a pas désigné les personnes ci-dessous. À ce jour, **aucune équation, aucun analyte, aucun facteur n'est « VALIDÉ »** (le code l'impose : voir « Ce que fait le logiciel »).
+> **Statut : cadre rédigé par l'assistant ; validateur scientifique désigné le 2026-10-04 (Dr Coulibaly) ; relecteur technique et approbateur à désigner.** Le cadre n'a de valeur que s'il est approuvé par le responsable scientifique. À ce jour, **aucune équation, aucun analyte, aucun facteur n'est « VALIDÉ »** (le code l'impose : voir « Ce que fait le logiciel »).
 
 ## 1. Pourquoi ce cadre
 
@@ -15,7 +15,16 @@ BioSigma affiche des calculs que des professionnels peuvent utiliser pour des d�
 | **Validateur scientifique** | Biologiste médical / biochimiste : confronte l'élément aux sources et à la pratique du laboratoire, signe la fiche | **Nom, fonction et date sur chaque fiche** |
 | **Approbateur** | Autorise le statut « VALIDÉ » en production (responsable qualité ou directeur du laboratoire) | Peut être la même personne que le validateur dans un petit laboratoire, à condition de le consigner |
 
-**À décider par vous** : qui est validateur scientifique, qui est relecteur technique, et si une seule personne cumule validateur et approbateur. Dr Coulibaly, en tant que biologiste (PharmD, CLMS, PhD), vous pouvez tenir le rôle de validateur ; un **second regard** (collègue ou relecteur externe) est recommandé pour les éléments à fort impact (D-01).
+**Désignations (2026-10-04)** :
+
+| Rôle | Personne |
+|---|---|
+| Auteur | Assistant de développement (IA) — ne valide jamais |
+| **Validateur scientifique** | **Dr Modibo Mouctar Coulibaly** (PharmD, CLMS, PhD, Maître de Recherche, Hôpital Sominé Dolo, Mopti) — désigné par lui-même |
+| Relecteur technique | **Non désigné** (D-01) |
+| Approbateur | **Non désigné** : à préciser s'il est le même que le validateur |
+
+La séparation auteur / validateur est respectée (l'auteur est l'assistant, le validateur est un humain). **Restent à décider** : le relecteur technique et l'approbateur. Un **second regard** (collègue ou relecteur externe) est recommandé pour les éléments à fort impact. Tant que le relecteur technique n'est pas nommé, les fiches signées par le seul validateur sont enregistrées avec la mention « relecteur technique : non désigné ».
 
 ## 3. Ce qui se valide, et à quelle granularité
 
@@ -97,3 +106,8 @@ Valider **tout** d'un coup n'est pas réaliste. Ordre conseillé :
 3. Les autres, par domaine, au fil de l'usage.
 
 Entre-temps, les éléments non validés restent utilisables avec leur bandeau « NON VALIDÉ ».
+
+## 11. Dossiers de validation préparés
+
+Pour démarrer, deux dossiers prêts à être complétés et signés sont dans [`fiches-de-validation/`](fiches-de-validation/README.md) : DFG CKD-EPI créatinine 2021 (8 cas indépendants déjà calculés hors du code, constantes confrontées à la page de la NKF) et conversion du glucose. Le validateur y consulte la source primaire, refait au moins deux cas lui-même, puis tranche.
+

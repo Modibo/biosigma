@@ -565,4 +565,17 @@ void main() {
       );
     });
   });
+
+  // Cas du dossier de validation FV-PREP-002, calculés à la main.
+  group('Dossier FV-PREP-002 — glucose', () {
+    test('cas 1 : 100 mg/dL = 5,5507 mmol/L', () {
+      expect(aconv('glucose', 100, 'mg/dL', 'mmol/L'), closeTo(5.5507, 1e-4));
+    });
+    test('cas 2 : 5,5 mmol/L = 99,086 mg/dL', () {
+      expect(aconv('glucose', 5.5, 'mmol/L', 'mg/dL'), closeTo(99.086, 1e-3));
+    });
+    test('cas 3 : 126 mg/dL = 6,994 mmol/L', () {
+      expect(aconv('glucose', 126, 'mg/dL', 'mmol/L'), closeTo(6.9939, 1e-3));
+    });
+  });
 }
