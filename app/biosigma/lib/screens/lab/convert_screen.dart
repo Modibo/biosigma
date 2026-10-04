@@ -174,14 +174,11 @@ class _ConvertScreenState extends State<ConvertScreen> {
           children: [
             const DisclaimerBanner(),
             const SizedBox(height: 12),
-            SegmentedButton<_Mode>(
-              segments: const [
-                ButtonSegment(value: _Mode.units, label: Text('Unités')),
-                ButtonSegment(value: _Mode.analyte, label: Text('Analyte')),
-              ],
-              selected: {_mode},
-              onSelectionChanged: (s) => setState(() {
-                _mode = s.first;
+            ModeChips<_Mode>(
+              options: const [(_Mode.units, 'Unités'), (_Mode.analyte, 'Analyte')],
+              selected: _mode,
+              onSelected: (m) => setState(() {
+                _mode = m;
                 _errors = {};
                 _result = null;
               }),

@@ -276,6 +276,15 @@ Aucune source normative n'est citée pour ces relations de définition : chaque 
 (« à relire par le laboratoire »). Les références de Sigma, d'erreur totale et du tampon sont à compléter
 et à valider (décision D-12).
 
+## Accessibilité (backlog P6-01)
+
+Cible de travail **WCAG 2.1 AA** (décision D-15 à confirmer). Vérifié automatiquement sur les écrans principaux, en
+thème clair et sombre : contraste du texte 4,5:1, cibles tactiles ≥ 48 dp, étiquettes sémantiques, texte agrandi à
+200 % et largeur de 320 px sans débordement, navigation au clavier, résultat annoncé aux lecteurs d'écran. Le thème
+clair a été corrigé (le cyan de la marque, à 2,96:1, ne convenait pas au texte). **Les essais avec de vraies
+technologies d'assistance (VoiceOver, TalkBack, clavier sur Safari/Firefox…) restent à faire** : voir
+`docs/biosigma-lab/accessibilite.md`, qui contient la checklist. Ce n'est pas une déclaration de conformité.
+
 ## Impression et export (backlog P3-05, décision D-11)
 
 Chaque résultat (calculateurs et modules Lab) a un bouton **Imprimer / exporter**. Une boîte de **confirmation

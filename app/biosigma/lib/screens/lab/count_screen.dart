@@ -133,16 +133,11 @@ class _CountScreenState extends State<CountScreen> with LabFormMixin<CountScreen
           children: [
             const DisclaimerBanner(),
             const SizedBox(height: 12),
-            SegmentedButton<_Mode>(
-              segments: const [
-                ButtonSegment(value: _Mode.concentration, label: Text('Chambre')),
-                ButtonSegment(value: _Mode.differential, label: Text('Formule')),
-                ButtonSegment(value: _Mode.total, label: Text('Total')),
-                ButtonSegment(value: _Mode.duplicate, label: Text('A / B')),
-              ],
-              selected: {_mode},
-              onSelectionChanged: (s) => setState(() {
-                _mode = s.first;
+            ModeChips<_Mode>(
+              options: const [(_Mode.concentration, 'Chambre'), (_Mode.differential, 'Formule'), (_Mode.total, 'Total'), (_Mode.duplicate, 'A / B')],
+              selected: _mode,
+              onSelected: (m) => setState(() {
+                _mode = m;
                 clearResult();
               }),
             ),

@@ -37,62 +37,77 @@ class NumericUnitField extends StatelessWidget {
   Widget build(BuildContext context) {
     final initialText =
         value == null ? '' : NumberFormatService.format(value!, decimalSeparator, precision: 6);
+    final numberField = Semantics(
+      label: semanticsLabel ?? label,
+      child: TextFormField(
+        initialValue: initialText,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: false),
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9.,\s]')),
+        ],
+        decoration: InputDecoration(
+          labelText: label,
+          helperText: helpText,
+          helperMaxLines: 3,
+          errorText: errorText,
+          errorMaxLines: 4,
+        ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (text) => NumberFormatService.ambiguityMessage(text ?? '', decimalSeparator),
+        onChanged: (text) => onValueChanged(NumberFormatService.parse(text, decimalSeparator)),
+      ),
+    );
+
+    final hasDropdown = units != null && units!.length > 1;
+    final hasFixedUnit = units != null && units!.length == 1;
+    Widget dropdown() => DropdownButtonFormField<String>(
+          initialValue: unit,
+          isExpanded: true,
+          decoration: const InputDecoration(labelText: 'Unité'),
+          items: units!.map((u) => DropdownMenuItem(value: u, child: Text(u))).toList(growable: false),
+          onChanged: (u) {
+            if (u != null) onUnitChanged(u);
+          },
+        );
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 3,
-            child: Semantics(
-              label: semanticsLabel ?? label,
-              child: TextFormField(
-                initialValue: initialText,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: false),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.,\s]')),
-                ],
-                decoration: InputDecoration(
-                  labelText: label,
-                  helperText: helpText,
-                  helperMaxLines: 3,
-                  errorText: errorText,
-                  errorMaxLines: 4,
+      child: LayoutBuilder(builder: (context, constraints) {
+        // Sur écran étroit ou texte très agrandi, l'unité passe sous le champ
+        // (reflow, WCAG 1.4.10) au lieu de déborder.
+        final narrow = constraints.maxWidth < 380;
+        if (narrow) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              numberField,
+              if (hasDropdown) ...[const SizedBox(height: 8), dropdown()],
+              if (hasFixedUnit)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, left: 4),
+                  child: Text(units!.first, style: Theme.of(context).textTheme.bodyMedium),
                 ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (text) =>
-                    NumberFormatService.ambiguityMessage(text ?? '', decimalSeparator),
-                onChanged: (text) => onValueChanged(NumberFormatService.parse(text, decimalSeparator)),
+            ],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(flex: 3, child: numberField),
+            if (hasDropdown) ...[const SizedBox(width: 8), Expanded(flex: 2, child: dropdown())],
+            if (hasFixedUnit) ...[
+              const SizedBox(width: 8),
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text(units!.first, style: Theme.of(context).textTheme.bodyMedium),
+                ),
               ),
-            ),
-          ),
-          if (units != null && units!.length > 1) ...[
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 2,
-              child: DropdownButtonFormField<String>(
-                initialValue: unit,
-                decoration: const InputDecoration(labelText: 'Unité'),
-                items: units!
-                    .map((u) => DropdownMenuItem(value: u, child: Text(u)))
-                    .toList(growable: false),
-                onChanged: (u) {
-                  if (u != null) onUnitChanged(u);
-                },
-              ),
-            ),
-          ] else if (units != null && units!.length == 1) ...[
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Text(units!.first, style: Theme.of(context).textTheme.bodyMedium),
-              ),
-            ),
+            ],
           ],
-        ],
-      ),
+        );
+      }),
     );
   }
 }

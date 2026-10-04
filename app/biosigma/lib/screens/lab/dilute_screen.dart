@@ -392,17 +392,11 @@ class _DiluteScreenState extends State<DiluteScreen> {
           children: [
             const DisclaimerBanner(),
             const SizedBox(height: 12),
-            SegmentedButton<_Mode>(
-              showSelectedIcon: false,
-              segments: const [
-                ButtonSegment(value: _Mode.simple, label: Text('Simple')),
-                ButtonSegment(value: _Mode.series, label: Text('En série')),
-                ButtonSegment(value: _Mode.linearity, label: Text('Hors linéarité')),
-                ButtonSegment(value: _Mode.planner, label: Text('Planificateur')),
-              ],
-              selected: {_mode},
-              onSelectionChanged: (s) => setState(() {
-                _mode = s.first;
+            ModeChips<_Mode>(
+              options: const [(_Mode.simple, 'Simple'), (_Mode.series, 'En série'), (_Mode.linearity, 'Hors linéarité'), (_Mode.planner, 'Planificateur')],
+              selected: _mode,
+              onSelected: (m) => setState(() {
+                _mode = m;
                 _errors = {};
                 _result = null;
                 _series = null;

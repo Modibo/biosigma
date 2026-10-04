@@ -46,7 +46,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     for (final field in widget.definition.fields) {
       switch (field.kind) {
         case FieldKind.numberWithUnit:
-          final unit = field.defaultUnit ?? unitsForAnalyte(field.analyte!).first;
+          final unit =
+              field.defaultUnit ?? unitsForAnalyte(field.analyte!).first;
           map[field.id] = NumericEntry(null, unit);
         case FieldKind.numberFixedUnit:
           map[field.id] = NumericEntry(null, field.fixedUnitLabel ?? '');
@@ -122,12 +123,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       setState(() => _result = result);
       final appState = context.read<AppState>();
       if (appState.settings.historyEnabled) {
-        await appState.recordCalculation(CalculationRecord.fromCalculation(
-          definition: widget.definition,
-          values: _values,
-          result: result,
-          now: DateTime.now(),
-        ));
+        await appState.recordCalculation(
+          CalculationRecord.fromCalculation(
+            definition: widget.definition,
+            values: _values,
+            result: result,
+            now: DateTime.now(),
+          ),
+        );
       }
     } on CalculationInputException catch (e) {
       setState(() {
@@ -149,8 +152,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     r.echoedInputs.forEach((k, v) => buffer.writeln('$k : $v'));
     buffer.writeln();
     for (final v in r.values) {
-      buffer.writeln('${v.label} : '
-          '${v.isComputed ? v.value!.toStringAsFixed(v.precision) : "non calculé"} ${v.unit}');
+      buffer.writeln(
+        '${v.label} : '
+        '${v.isComputed ? v.value!.toStringAsFixed(v.precision) : "non calculé"} ${v.unit}',
+      );
     }
     if (r.warnings.isNotEmpty) {
       buffer.writeln();
@@ -159,7 +164,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       }
     }
     buffer.writeln();
-    buffer.writeln("Outil d'aide au calcul ; à valider par un professionnel compétent.");
+    buffer.writeln(
+      "Outil d'aide au calcul ; à valider par un professionnel compétent.",
+    );
     await Clipboard.setData(ClipboardData(text: buffer.toString()));
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -179,8 +186,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         title: Text(meta.shortName),
         actions: [
           IconButton(
-            tooltip: appState.isFavorite(meta.id) ? 'Retirer des favoris' : 'Ajouter aux favoris',
-            icon: Icon(appState.isFavorite(meta.id) ? Icons.star : Icons.star_border),
+            tooltip: appState.isFavorite(meta.id)
+                ? 'Retirer des favoris'
+                : 'Ajouter aux favoris',
+            icon: Icon(
+              appState.isFavorite(meta.id) ? Icons.star : Icons.star_border,
+            ),
             onPressed: () => appState.toggleFavorite(meta.id),
           ),
         ],
@@ -194,13 +205,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             Text(meta.name, style: Theme.of(context).textTheme.titleLarge),
             if (meta.helpText != null) ...[
               const SizedBox(height: 4),
-              Text(meta.helpText!, style: Theme.of(context).textTheme.bodySmall),
+              Text(
+                meta.helpText!,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ],
             const SizedBox(height: 16),
-            ...widget.definition.fields.map((field) => _buildField(field, settings)),
+            ...widget.definition.fields.map(
+              (field) => _buildField(field, settings),
+            ),
             if (_generalError != null) ...[
               const SizedBox(height: 8),
-              Text(_generalError!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+              Text(
+                _generalError!,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
             ],
             const SizedBox(height: 16),
             Wrap(
@@ -247,28 +266,39 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             ),
             if (_result != null) ...[
               const SizedBox(height: 20),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Résultat', style: Theme.of(context).textTheme.titleMedium),
-                      if (!_result!.isComplete) ...[
-                        const SizedBox(height: 4),
-                        Text('Score incomplet',
+              Semantics(
+                liveRegion: true,
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Résultat',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        if (!_result!.isComplete) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            'Score incomplet',
                             style: TextStyle(
-                                color: Theme.of(context).colorScheme.error,
-                                fontWeight: FontWeight.bold)),
+                              color: Theme.of(context).colorScheme.error,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                        const SizedBox(height: 8),
+                        ..._result!.values.map(
+                          (v) => ResultValueTile(
+                            result: v,
+                            decimalSeparator: settings.decimalSeparator,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        WarningList(warnings: _result!.warnings),
                       ],
-                      const SizedBox(height: 8),
-                      ..._result!.values.map(
-                        (v) => ResultValueTile(
-                            result: v, decimalSeparator: settings.decimalSeparator),
-                      ),
-                      const SizedBox(height: 8),
-                      WarningList(warnings: _result!.warnings),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -298,8 +328,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           units: unitsForAnalyte(field.analyte!),
           decimalSeparator: settings.decimalSeparator,
           errorText: _fieldErrors[field.id],
-          onValueChanged: (v) => setState(() => _values[field.id] = entry.copyWith(value: v)),
-          onUnitChanged: (u) => setState(() => _values[field.id] = entry.copyWith(unit: u)),
+          onValueChanged: (v) =>
+              setState(() => _values[field.id] = entry.copyWith(value: v)),
+          onUnitChanged: (u) =>
+              setState(() => _values[field.id] = entry.copyWith(unit: u)),
         );
       case FieldKind.numberFixedUnit:
         final entry = _values[field.id] as NumericEntry;
@@ -312,7 +344,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           units: [field.fixedUnitLabel ?? ''],
           decimalSeparator: settings.decimalSeparator,
           errorText: _fieldErrors[field.id],
-          onValueChanged: (v) => setState(() => _values[field.id] = entry.copyWith(value: v)),
+          onValueChanged: (v) =>
+              setState(() => _values[field.id] = entry.copyWith(value: v)),
           onUnitChanged: (_) {},
         );
       case FieldKind.boolean:
@@ -356,7 +389,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   ),
                 ),
             ],
-            onChanged: (i) => setState(() => _values[field.id] = i == null ? null : options[i].value),
+            onChanged: (i) => setState(
+              () => _values[field.id] = i == null ? null : options[i].value,
+            ),
             isExpanded: true,
           ),
         );
@@ -393,12 +428,17 @@ class _EchoedInputsCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Données et unités utilisées', style: Theme.of(context).textTheme.titleSmall),
+            Text(
+              'Données et unités utilisées',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
             const SizedBox(height: 8),
-            ...inputs.entries.map((e) => Padding(
-                  padding: const EdgeInsets.only(bottom: 2),
-                  child: Text('${e.key} : ${e.value}'),
-                )),
+            ...inputs.entries.map(
+              (e) => Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text('${e.key} : ${e.value}'),
+              ),
+            ),
           ],
         ),
       ),
@@ -424,8 +464,10 @@ class _LocalThresholdsCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Seuils locaux du laboratoire',
-                  style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'Seuils locaux du laboratoire',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 4),
               Text(
                 'Définis par votre laboratoire, non fournis par BioSigma. '

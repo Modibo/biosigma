@@ -73,15 +73,11 @@ class _PrepareScreenState extends State<PrepareScreen> with LabFormMixin<Prepare
           children: [
             const DisclaimerBanner(),
             const SizedBox(height: 12),
-            SegmentedButton<_Mode>(
-              segments: const [
-                ButtonSegment(value: _Mode.mass, label: Text('Masse')),
-                ButtonSegment(value: _Mode.percent, label: Text('Pourcentage')),
-                ButtonSegment(value: _Mode.buffer, label: Text('Tampon')),
-              ],
-              selected: {_mode},
-              onSelectionChanged: (s) => setState(() {
-                _mode = s.first;
+            ModeChips<_Mode>(
+              options: const [(_Mode.mass, 'Masse'), (_Mode.percent, 'Pourcentage'), (_Mode.buffer, 'Tampon')],
+              selected: _mode,
+              onSelected: (m) => setState(() {
+                _mode = m;
                 clearResult();
               }),
             ),

@@ -34,34 +34,41 @@ class LabResultCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Résultat', style: theme.textTheme.titleMedium),
-                const SizedBox(height: 8),
-                ...result.values
-                    .map((v) => ResultValueTile(result: v, decimalSeparator: decimalSeparator)),
-                if (extra != null) ...[const SizedBox(height: 8), extra!],
-                const SizedBox(height: 8),
-                WarningList(warnings: result.warnings),
-                const SizedBox(height: 8),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: OutlinedButton.icon(
-                    onPressed: () => showExportDialog(
-                      context,
-                      result: result,
-                      separator: decimalSeparator,
-                      extraSections: reportSections,
+        Semantics(
+          liveRegion: true,
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Résultat', style: theme.textTheme.titleMedium),
+                  const SizedBox(height: 8),
+                  ...result.values.map(
+                    (v) => ResultValueTile(
+                      result: v,
+                      decimalSeparator: decimalSeparator,
                     ),
-                    icon: const Icon(Icons.print),
-                    label: const Text('Imprimer / exporter'),
                   ),
-                ),
-              ],
+                  if (extra != null) ...[const SizedBox(height: 8), extra!],
+                  const SizedBox(height: 8),
+                  WarningList(warnings: result.warnings),
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: OutlinedButton.icon(
+                      onPressed: () => showExportDialog(
+                        context,
+                        result: result,
+                        separator: decimalSeparator,
+                        extraSections: reportSections,
+                      ),
+                      icon: const Icon(Icons.print),
+                      label: const Text('Imprimer / exporter'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -72,9 +79,13 @@ class LabResultCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Données et méthode utilisées', style: theme.textTheme.titleSmall),
+                  Text(
+                    'Données et méthode utilisées',
+                    style: theme.textTheme.titleSmall,
+                  ),
                   const SizedBox(height: 8),
-                  for (final e in result.echoedInputs.entries) Text('${e.key} : ${e.value}'),
+                  for (final e in result.echoedInputs.entries)
+                    Text('${e.key} : ${e.value}'),
                 ],
               ),
             ),
@@ -95,7 +106,10 @@ class LabErrorText extends StatelessWidget {
     if (message == null) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Text(message!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+      child: Text(
+        message!,
+        style: TextStyle(color: Theme.of(context).colorScheme.error),
+      ),
     );
   }
 }
@@ -127,8 +141,14 @@ class LabDropdown extends StatelessWidget {
         initialValue: value,
         isExpanded: true,
         decoration: InputDecoration(
-            labelText: label, errorText: errorText, helperText: helperText, helperMaxLines: 3),
-        items: [for (final o in options) DropdownMenuItem(value: o, child: Text(o))],
+          labelText: label,
+          errorText: errorText,
+          helperText: helperText,
+          helperMaxLines: 3,
+        ),
+        items: [
+          for (final o in options) DropdownMenuItem(value: o, child: Text(o)),
+        ],
         onChanged: (v) {
           if (v != null) onChanged(v);
         },
@@ -139,8 +159,8 @@ class LabDropdown extends StatelessWidget {
 
 /// Erreurs de champ d'un calcul, indexées par identifiant de champ.
 Map<String, String> fieldErrorMap(CalculationInputException e) => {
-      for (final err in e.errors) err.fieldId: err.message,
-    };
+  for (final err in e.errors) err.fieldId: err.message,
+};
 
 /// Entier à partir d'un nombre saisi (`null` s'il n'est pas entier).
 int? asInt(double? v) => v != null && v == v.roundToDouble() ? v.toInt() : null;
@@ -148,9 +168,13 @@ int? asInt(double? v) => v != null && v == v.roundToDouble() ? v.toInt() : null;
 /// Liste de nombres saisis, séparés par « ; » ou par des retours à la ligne
 /// (la virgule reste le séparateur décimal). Un élément illisible donne `null`.
 List<double?> parseNumberList(String text, DecimalSeparator separator) => [
-      for (final part in text.split(RegExp(r'[;\n]')).map((p) => p.trim()).where((p) => p.isNotEmpty))
-        NumberFormatService.parse(part, separator),
-    ];
+  for (final part
+      in text
+          .split(RegExp(r'[;\n]'))
+          .map((p) => p.trim())
+          .where((p) => p.isNotEmpty))
+    NumberFormatService.parse(part, separator),
+];
 
 /// Aides communes aux formulaires des modules Lab : erreurs par champ,
 /// remise à zéro, champs numériques.
@@ -160,7 +184,10 @@ mixin LabFormMixin<T extends StatefulWidget> on State<T> {
   CalculationResult? result;
 
   /// Exécute un calcul ; une erreur de saisie s'affiche sous le champ concerné.
-  void runCalc(CalculationResult Function() body, {void Function()? onSuccess}) {
+  void runCalc(
+    CalculationResult Function() body, {
+    void Function()? onSuccess,
+  }) {
     try {
       final r = body();
       setState(() {
@@ -191,22 +218,57 @@ mixin LabFormMixin<T extends StatefulWidget> on State<T> {
     String? unit,
     ValueChanged<String>? onUnit,
     String? help,
-  }) =>
-      NumericUnitField(
-        key: ValueKey('$id-$generation'),
-        label: label,
-        helpText: help,
-        value: value,
-        unit: unit ?? '',
-        units: units,
-        decimalSeparator: separator,
-        errorText: errors[id],
-        onValueChanged: (v) => setState(() => set(v)),
-        onUnitChanged: (u) => setState(() => onUnit?.call(u)),
-      );
+  }) => NumericUnitField(
+    key: ValueKey('$id-$generation'),
+    label: label,
+    helpText: help,
+    value: value,
+    unit: unit ?? '',
+    units: units,
+    decimalSeparator: separator,
+    errorText: errors[id],
+    onValueChanged: (v) => setState(() => set(v)),
+    onUnitChanged: (u) => setState(() => onUnit?.call(u)),
+  );
 
   /// Messages d'erreur dont le champ n'est pas dans [knownIds].
-  Widget otherErrors(Set<String> knownIds) => Column(children: [
-        for (final e in errors.entries.where((e) => !knownIds.contains(e.key))) LabErrorText(e.value),
-      ]);
+  Widget otherErrors(Set<String> knownIds) => Column(
+    children: [
+      for (final e in errors.entries.where((e) => !knownIds.contains(e.key)))
+        LabErrorText(e.value),
+    ],
+  );
+}
+
+/// Choix d'un mode parmi quelques-uns, sous forme de pastilles qui passent à
+/// la ligne sur les petits écrans (reflow, WCAG 1.4.10) — contrairement à un
+/// `SegmentedButton`, qui déborde quand les libellés sont longs ou le texte agrandi.
+class ModeChips<T> extends StatelessWidget {
+  const ModeChips({
+    super.key,
+    required this.options,
+    required this.selected,
+    required this.onSelected,
+  });
+
+  /// Couples (valeur, libellé).
+  final List<(T, String)> options;
+  final T selected;
+  final ValueChanged<T> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 4,
+      children: [
+        for (final (value, label) in options)
+          ChoiceChip(
+            label: Text(label),
+            selected: value == selected,
+            onSelected: (_) => onSelected(value),
+          ),
+      ],
+    );
+  }
 }

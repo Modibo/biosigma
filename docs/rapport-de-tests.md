@@ -756,3 +756,14 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
   rangée de boutons repousse la carte de résultat hors écran. Aucun comportement fonctionnel n'est en cause.
 - **Limites** : mise en page A4 simple ; pas de logo ; pas de signature électronique ; PDF obtenu via le navigateur.
 
+## Accessibilité (2026-10-04, backlog P6-01 / D-15)
+
+- Application : **57 tests ajoutés** (161 au total) : 20 contrôles de lignes directrices Flutter (contraste du texte, cibles
+  tactiles 48/44, étiquettes) sur 10 écrans × 2 thèmes ; 33 contrôles de non-débordement (11 écrans × 360 px/200 %,
+  320 px/100 %, 320 px/200 %) ; 4 contrôles clavier et sémantique.
+- **Défauts réels trouvés et corrigés** : contraste 2,78:1 (titres en cyan) et 2,96:1 (texte blanc sur boutons cyan) ;
+  avertissement « attention » à 4,24:1 ; débordement de 41 à 57 px à 320 px (liste d'unités et boutons segmentés).
+- **Éprouvé par mutation** : avec l'ancien thème les tests échouent ; avec le thème corrigé ils passent.
+- **Non fait** : essais avec VoiceOver/TalkBack, clavier sur Safari/Firefox, appareil réel, audit expert (checklist dans
+  `accessibilite.md`).
+

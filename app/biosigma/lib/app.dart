@@ -22,13 +22,13 @@ class BioSigmaApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      // Empêche la coupure du texte agrandi (accessibilité) tout en
-      // gardant l'app utilisable sur petit écran : borne raisonnable.
+      // Texte agrandi jusqu'à 200 % (WCAG 1.4.4) : les écrans principaux sont
+      // testés à 200 % sans débordement (test/accessibility/text_scale_test.dart).
       builder: (context, child) {
         final mq = MediaQuery.of(context);
         return MediaQuery(
           data: mq.copyWith(
-            textScaler: TextScaler.linear(mq.textScaler.scale(1.0).clamp(0.85, 1.6)),
+            textScaler: TextScaler.linear(mq.textScaler.scale(1.0).clamp(0.85, 2.0)),
           ),
           child: child!,
         );
