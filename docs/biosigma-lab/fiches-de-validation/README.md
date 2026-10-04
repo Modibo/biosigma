@@ -21,7 +21,7 @@ Un dossier par élément et par version. Les fichiers `FV-PREP-…` sont des **b
 | [FV-PREP-015](FV-PREP-015-conversions-frequentes.md) | Conversions fréquentes (8 analytes) | brouillon préparé, non signé |
 | [FV-PREP-016](FV-PREP-016-incertitude-gum.md) | Propagation d'incertitude (GUM), mode Expert | brouillon préparé, non signé |
 | [FV-PREP-017](FV-PREP-017-martin-hopkins.md) | LDL Martin-Hopkins (panel lipidique, version 2) | brouillon préparé, non signé — **tableau saisi par le validateur, non confronté à la source ; 1 cellule à vérifier (93–96 / ≥ 220)** |
-| [FV-PREP-018](FV-PREP-018-spermatozoides-oms.md) | Spermatozoïdes, OMS 6e éd. (tableaux 2.1, 2.3, 2.4, 8.3) | brouillon préparé, non signé — **tableaux recopiés du PDF ; coquille « 22–36 » corrigée en « 22–26 » à confirmer** |
-| [FV-PREP-019](FV-PREP-019-mcfarland.md) | Équivalence McFarland 0,5 ≈ 1,5 × 10⁸ UFC/mL | brouillon préparé, non signé — **valeur saisie, source non citée** |
+| [FV-PREP-018](FV-PREP-018-spermatozoides-oms.md) | Spermatozoïdes, OMS 6e éd. (tableaux 2.1, 2.3, 2.4, 8.3) | brouillon préparé, non signé — **tableaux recopiés du PDF ; coquille de l'OMS « 22–36 » (confirmée imprimée) lue « 22–26 »** |
+| [FV-PREP-019](FV-PREP-019-mcfarland.md) | Équivalence McFarland 0,5 ≈ 1,5 × 10⁸ UFC/mL | brouillon préparé, non signé — **valeur saisie ; référence McFarland JAMA 1907 à confronter** |
 
 Rappel : **aucun de ces dossiers n'est signé ; aucun élément n'est « VALIDÉ ».** Le registre `../registre-validation.csv` pointe vers ces dossiers (colonne `prepared_dossier`).

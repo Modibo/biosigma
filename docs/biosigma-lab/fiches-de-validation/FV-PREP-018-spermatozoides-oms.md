@@ -7,7 +7,7 @@
 |---|---|
 | Référence | FV-PREP-018 (brouillon) → à numéroter à la signature |
 | Élément | `LAB_LAB_SEMEN_COUNT_001` (alias historique `lab_semen_count`), version 1 |
-| Version de l'application | 1.23.0 |
+| Version de l'application | 1.23.1 |
 | Fichiers | `packages/biosigma_core/lib/src/lab/semen.dart` ; écran : mode « Sperme (OMS) » de Count |
 
 ### 1. Ce qui est à valider
@@ -41,10 +41,10 @@
 
 ### 4. Points à décider ou à relire
 
-1. **La coquille « 22–36 »** (voir § 3).
+1. **La coquille « 22–36 » — réponse du validateur le 2026-10-04 : « c'est bien 22–36 »**, c'est-à-dire que le manuel imprime bien « 22–36 » (et non une erreur de transcription de l'assistant). C'est donc une **coquille de l'OMS** : une ligne 22–36 recouvrirait 27–31 et 32–37. L'application lit **22–26** (seule lecture compatible avec les lignes voisines et la loi de Poisson) ; les sommes 27 à 36 gardent leurs propres lignes. Si vous voulez une autre lecture, dites-le.
 2. **Sommes > 1000** : le tableau 2.3 s'arrête à 1000 ; l'application calcule avec mise en garde et ne juge pas l'accord. Convient-il ?
-3. **Couple retenu** : « le premier couple acceptable » (l'OMS dit : si l'écart est acceptable, calculer ; elle ne dit pas explicitement de grouper les couples successifs). Interprétation à confirmer.
-4. **Chiffres significatifs de la concentration** : l'OMS ne les fixe pas dans ce paragraphe (elle les fixe pour d'autres méthodes) : l'application affiche 2 décimales ; à décider.
+3. **Couple retenu** : « le premier couple acceptable » (l'OMS ne dit pas explicitement de grouper les couples successifs) : **confirmé par le validateur le 2026-10-04**.
+4. **Chiffres significatifs de la concentration** : **décidé par le validateur le 2026-10-04 : oui, les fixer** ; l'application affiche **deux chiffres significatifs** (40,8 → 41 ; 0,131 → 0,13), comme l'OMS le prescrit pour la concentration moyenne dans la procédure pour faibles nombres (étape 13, page imprimée 39) ; la valeur n'est pas arrondie, seul l'affichage l'est ; le nombre total reste un entier de millions.
 5. **Mise en garde « < 25 »** : la borne 50/F est **dérivée** (pour 1 : 2 et 9 grilles : 0,056 ×10⁶/mL = « < 55 555/mL » du manuel) ; pour les autres configurations elle est calculée, non citée.
 6. **Repères d'interprétation** : le 5ᵉ centile est affiché comme repère « descriptif » avec la mise en garde du § 8.1.3 ; l'application ne conclut ni à une anomalie ni à une infertilité.
 7. **Azoospermie** : l'application n'emploie pas le terme ; elle renvoie à l'examen d'un culot de centrifugation (§ 2.4.8.8).

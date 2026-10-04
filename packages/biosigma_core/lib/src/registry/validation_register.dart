@@ -61,7 +61,7 @@ const Map<String, String> _equationFlags = {
   'absolute_leukocyte_counts': 'Citation primaire des définitions à compléter',
   'lab_convert_dimensional': 'Analyse dimensionnelle (P1-10) : relire les atomes d\'unités et leurs facteurs (définitions BIPM), les refus (échelles décalées, rapports sans dimension) et l\'absence de prise en charge des parenthèses',
   'lab_semen_count': 'OMS 6e éd. (tableaux 2.1, 2.3, 2.4, 8.3) recopiés du PDF : relire les tableaux ; coquille « 22–36 » du tableau 2.3 corrigée en « 22–26 » (voir la fiche FV-PREP-018)',
-  'lab_micro_mcfarland': 'Équivalence 0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL saisie par le validateur : citer la source primaire',
+  'lab_micro_mcfarland': 'Équivalence 0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL saisie par le validateur ; référence fournie : McFarland J. JAMA 1907;49:1176-1178 (à confronter : la publication donne-t-elle cette équivalence ?)',
   'lab_uncertainty': 'GUM (JCGM 100:2008) lu le 2026-10-04 (éq. 10, 12, 5, 7 ; §§ 6.2-6.3) : relire le périmètre (premier ordre, grandeurs non corrélées)',
   'lab_quality': 'Citations Sigma / erreur totale à compléter ; ETa et k saisis par l\'utilisateur',
   'lab_prepare_buffer': 'Citation Henderson-Hasselbalch à vérifier',

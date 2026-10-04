@@ -42,6 +42,7 @@ void main() {
 
   test('une seule équivalence est embarquée, avec sa mention de provenance', () {
     expect(mcFarlandEnteredCfuPerMl, {0.5: 1.5e8});
-    expect(mcFarlandMeta.sources.single.citation, contains('saisie par le validateur'));
+    expect(mcFarlandMeta.sources.single.citation, 'McFarland J. JAMA. 1907;49:1176-1178.');
+    expect(mcFarlandMeta.sources.single.note, contains('fournie par le validateur'));
   });
 }

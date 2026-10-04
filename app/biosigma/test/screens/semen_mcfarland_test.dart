@@ -32,7 +32,7 @@ void main() {
     }
 
     testWidgets(
-      '1 : 20, 1 grille, 210 et 198, volume 3 mL → 40,8 ×10⁶/mL, total 122',
+      '1 : 20, 1 grille, 210 et 198, volume 3 mL → 41 ×10⁶/mL (2 chiffres significatifs), total 122',
       (tester) async {
         await open(tester);
         final f = find.byType(TextFormField);
@@ -42,7 +42,7 @@ void main() {
         await tester.tap(find.text('Calculer'));
         await tester.pumpAndSettle();
         expect(find.text('Résultat'), findsOneWidget);
-        expect(find.text('40,80'), findsOneWidget);
+        expect(find.text('41'), findsWidgets);
         expect(find.text('122'), findsOneWidget);
         expect(find.textContaining('Couple 1'), findsWidgets);
         expect(find.textContaining('accepté'), findsWidgets);
@@ -59,7 +59,7 @@ void main() {
         await tester.tap(find.text('Calculer'));
         await tester.pumpAndSettle();
         expect(find.textContaining('nouvelle chambre'), findsWidgets);
-        expect(find.text('40,80'), findsNothing);
+        expect(find.text('41'), findsNothing);
         await tester.tap(
           find.text('Ajouter un nouveau comptage (écart trop grand)'),
         );
@@ -69,7 +69,7 @@ void main() {
         await tester.enterText(g.at(3), '95');
         await tester.tap(find.text('Calculer'));
         await tester.pumpAndSettle();
-        expect(find.text('19,50'), findsOneWidget);
+        expect(find.text('20'), findsWidgets);
       },
     );
 

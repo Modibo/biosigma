@@ -1,12 +1,12 @@
 # Dossier de validation préparé — FV-PREP-019
 ## Équivalence McFarland (`LAB_LAB_MICRO_MCFARLAND_001`, version 1)
 
-> **Préparé par l'auteur (assistant de développement). NON SIGNÉ : ce document ne valide rien.** La valeur a été **saisie par le validateur** le 2026-10-04 ; **aucune source n'a été citée** : l'assistant ne l'a confrontée à rien.
+> **Préparé par l'auteur (assistant de développement). NON SIGNÉ : ce document ne valide rien.** La valeur a été **saisie par le validateur** le 2026-10-04, avec la référence McFarland J. JAMA 1907 ; l'assistant n'a lu ni cette publication ni aucune autre source sur ce point.
 
 | Champ | Contenu |
 |---|---|
 | Élément | `LAB_LAB_MICRO_MCFARLAND_001` (alias `lab_micro_mcfarland`), version 1 |
-| Version de l'application | 1.23.0 |
+| Version de l'application | 1.23.1 |
 | Fichier | `packages/biosigma_core/lib/src/lab/microbiology.dart` ; écran : mode « McFarland » de Microbiology |
 
 ### 1. Ce qui est à valider
@@ -17,11 +17,11 @@
 
 | Source | Statut |
 |---|---|
-| Valeur saisie par le validateur, 2026-10-04 | **Source primaire non citée : À COMPLÉTER** (norme ou publication de référence : ______) |
+| **McFarland J. JAMA. 1907;49:1176–1178.** (référence fournie par le validateur le 2026-10-04, avec la valeur) | **À confronter par le validateur** : l'assistant n'a pas lu cette publication et ne peut pas dire si elle donne elle-même l'équivalence 0,5 ≈ 1,5 × 10⁸ UFC/mL (la correspondance en UFC peut venir d'une norme ultérieure). Date de votre lecture : ______ |
 
 ### 3. Points à décider ou à relire
 
-1. **La source** de l'équivalence (à citer dans la fiche de l'équation).
+1. **La source** : McFarland J. JAMA 1907 est citée ; **cette publication contient-elle l'équivalence en UFC/mL ?** Sinon, citer la norme qui la donne.
 2. **Le libellé de mise en garde** : « la turbidité n'est pas un dénombrement ; la correspondance peut varier selon l'espèce, la souche, la phase de croissance et la méthode de lecture » : cette formulation est une **mise en garde générale de l'assistant**, non issue de la valeur saisie ; à confirmer ou corriger.
 3. **Autres standards** (1, 2, 3…) : non renseignés ; à fournir (avec leur source) si utiles.
 

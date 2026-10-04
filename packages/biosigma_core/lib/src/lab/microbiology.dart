@@ -187,9 +187,10 @@ const FormulaMeta mcFarlandMeta = FormulaMeta(
       'Facteur de dilution = UFC/mL de la suspension / UFC/mL visées',
   sources: [
     Reference(
-      citation: 'Équivalence saisie par le validateur (Dr Modibo Mouctar Coulibaly), 2026-10-04 : '
-          '0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL. Source primaire non citée : à compléter par le validateur.',
-      note: 'valeur approximative ; seul le standard 0,5 est renseigné',
+      citation: 'McFarland J. JAMA. 1907;49:1176-1178.',
+      note: 'référence fournie par le validateur avec l\'équivalence qu\'il a saisie (2026-10-04) : '
+          '0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL ; l\'assistant n\'a pas vérifié que cette publication de 1907 '
+          'donne elle-même cette équivalence ; valeur approximative, seul le standard 0,5 est renseigné',
     ),
   ],
   applicablePopulation: 'Sans objet (suspension bactérienne).',

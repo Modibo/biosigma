@@ -2,6 +2,7 @@ import '../models/errors.dart';
 import '../models/formula_meta.dart';
 import '../models/reference.dart';
 import '../models/result.dart';
+import '../rounding.dart';
 
 /// Numération des spermatozoïdes selon le manuel de l'OMS (6e éd.), chambre de
 /// Neubauer améliorée (backlog P2-06).
@@ -41,6 +42,8 @@ const FormulaMeta semenCountMeta = FormulaMeta(
   limitations: [
     'Valable pour la chambre de Neubauer améliorée : toute autre chambre exige d\'autres facteurs.',
     'Sommes > 1000 : le tableau 2.3 de l\'OMS s\'arrête à 1000, l\'accord des réplicats n\'est pas évalué.',
+    'La concentration est affichée à deux chiffres significatifs (convention de l\'OMS pour la concentration '
+        'moyenne ; décision du validateur) ; le calcul n\'est pas arrondi.',
     'Le 5e centile de la population de référence (tableau 8.3, Campbell et al.) n\'est pas une limite entre hommes '
         'fertiles et infertiles (OMS § 8.1.3).',
     'Une absence de spermatozoïdes dans les réplicats ne permet pas de conclure à une azoospermie : celle-ci '
@@ -112,8 +115,10 @@ class ReplicateLimit {
 }
 
 /// Tableau 2.3 de l'OMS (de la plus grande somme à la plus petite). La ligne
-/// « 22–26 » est imprimée « 22–36 » dans le PDF (coquille évidente : la ligne
-/// suivante commence à 27).
+/// « 22–26 » est imprimée « 22–36 » dans le manuel lui-même (le validateur a
+/// confirmé que l'impression est bien « 22–36 », 2026-10-04) : c'est une
+/// coquille de l'OMS, car les lignes voisines (17–21 et 27–31) imposent 22–26 ;
+/// la limite et l'erreur imprimées sont celles de la somme 22 (loi de Poisson).
 const List<(int, int, int, double)> _table23 = [
   (969, 1000, 61, 3.2),
   (938, 968, 60, 3.3),
@@ -372,9 +377,20 @@ CalculationResult calculateSpermConcentration({
       if (ejaculateVolumeMl != null) 'Volume de l\'éjaculat': '${_fr(ejaculateVolumeMl, 1)} mL',
     },
     values: [
-      ResultValue(label: 'Concentration en spermatozoïdes', value: concentration, unit: '×10⁶/mL', precision: 2),
+      // Deux chiffres significatifs, comme l'OMS pour la concentration moyenne (décision du validateur).
+      ResultValue(
+        label: 'Concentration en spermatozoïdes',
+        value: concentration,
+        unit: '×10⁶/mL',
+        precision: concentration == null ? 2 : RoundingPolicy.decimalsForSignificant(concentration, significant: 2),
+      ),
       if (concentration != null)
-        ResultValue(label: 'Concentration en spermatozoïdes (par mL)', value: concentration * 1e6, unit: '/mL', precision: 0),
+        ResultValue(
+          label: 'Concentration en spermatozoïdes (par mL)',
+          value: double.parse((concentration * 1e6).toStringAsPrecision(2)),
+          unit: '/mL',
+          precision: 0,
+        ),
       if (limitRow != null)
         ResultValue(
             label: 'Erreur due au nombre d\'observations (tableau 2.3)', value: limitRow.errorPercent, unit: '%', precision: 1),

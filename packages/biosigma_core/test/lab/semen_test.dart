@@ -91,14 +91,26 @@ void main() {
   });
 
   group('calcul (valeurs calculées à la main)', () {
-    test('1 : 20, 1 grille : 210 et 198 → somme 408, accepté (écart 12 ≤ 39), 40,8 ×10⁶/mL, erreur 5,0 %', () {
+    test('1 : 20, 1 grille : 210 et 198 → somme 408, accepté (écart 12 ≤ 39), 40,8 ×10⁶/mL (affiché 41), erreur 5,0 %', () {
       final r = _calc([(210, 198)], vol: 3.0);
       close(_v(r, 'Concentration en spermatozoïdes'), 40.8);
-      close(_v(r, 'Concentration en spermatozoïdes (par mL)'), 40.8e6);
+      close(_v(r, 'Concentration en spermatozoïdes (par mL)'), 41e6, '2 chiffres significatifs');
+      expect(r.values.first.precision, 0, reason: '40,8 → 41 (2 chiffres significatifs)');
       close(_v(r, 'Erreur'), 5.0);
       close(_v(r, 'Nombre total'), 122.4);
       expect(r.values.last.precision, 0, reason: 'entier de millions (OMS § 2.4.8.7)');
       expect(r.isComplete, isTrue);
+    });
+
+    test('deux chiffres significatifs : décimales de l\'affichage selon l\'ordre de grandeur', () {
+      int prec(List<(int, int)> p, SpermDilution d, SpermArea a) =>
+          _calc(p, d: d, a: a).values.first.precision;
+      expect(prec([(210, 198)], SpermDilution.d20, SpermArea.grids1), 0); // 40,8
+      expect(prec([(60, 58)], SpermDilution.d2, SpermArea.grids9), 2); // 0,131 → 0,13
+      expect(prec([(900, 905)], SpermDilution.d50, SpermArea.squares5), 0); // 1805/0,8 = 2256 (> 100)
+      expect(prec([(24, 20)], SpermDilution.d2, SpermArea.grids9), 3); // 44/900 = 0,0489 → 0,049
+      final r = _calc([(210, 198)]);
+      close(r.values.first.value, 40.8, 'la valeur n\'est jamais arrondie');
     });
 
     test('nombre total < 10 millions : une décimale', () {
