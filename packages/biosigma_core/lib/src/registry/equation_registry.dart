@@ -1,6 +1,7 @@
 import '../catalog.dart';
 import '../lab/analyte_base.dart' show analyteConvertMeta;
 import '../lab/convert.dart';
+import '../lab/dimensions.dart' show dimensionalConvertMeta;
 import '../lab/count.dart';
 import '../lab/dilution.dart';
 import '../lab/dilution_planner.dart' show dilutionPlannerMeta;
@@ -84,6 +85,7 @@ class EquationRegistry {
   static final List<FormulaMeta> _labMetas = [
     convertMeta,
     analyteConvertMeta,
+    dimensionalConvertMeta,
     dilutionMeta,
     serialDilutionMeta,
     outOfRangeDilutionMeta,

@@ -187,7 +187,7 @@ void main() {
     final rows = parseCsv(csv);
 
     test(
-      'une ligne par élément validable : 76 équations/outils + 186 analytes',
+      'une ligne par élément validable : 77 équations/outils + 186 analytes',
       () {
         expect(
           rows.length - 1,

@@ -849,3 +849,10 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Revue des messages** : les 78 messages d'information distincts du golden master ont été relus et classés ; 6 équations produisent des recommandations publiées (CHA₂DS₂-VASc, Padua, Caprini, HAS-BLED, eAG/ADA, INR), 8 messages sont des précisions analytiques, le reste des repères d'interprétation. **Résultats et textes inchangés** : le golden master est identique (aucun cas modifié).
 - **Tests** : 6 tests moteur (classement, ordre, regroupement, rapport texte et HTML), 3 tests d'instantané (`warning-levels.json`, ensemble des équations à recommandations, équations « recommandation seule »), 2 tests d'écran (ordre et titres des blocs). Moteur : **626 tests** ; application : **198 tests**.
 
+## P1-10 : modèle dimensionnel des unités (2026-10-04, version 1.22.0)
+
+- **Moteur** : 61 tests (`dimensions_test.dart`) — algèbre des dimensions, 31 unités composées lues avec leur dimension et leur facteur (valeurs recalculées à la main/Python : mg/dL, U/L, mL/min/1,73 m², kg/m², /µL, G/L, ×10⁹/L, mmHg…), 7 refus motivés, plans de conversion, 9 conversions (créatinine, clairance, enzymes, mg/kg/d → µg/kg/min, kg → lb, calcium avec masse molaire et valence, numération, pression, débit), refus, mise en garde HbA1c.
+- **Cohérence avec `LabUnits`** : les **140 unités proposées** (températures exclues) ont la dimension attendue et le même rapport de facteurs ; **1 236 conversions** (toutes les paires d'une même grandeur) sont identiques à `calculateConversion` à 10⁻¹² près ; mêmes résultats avec masse molaire et valence ; a → b → a rend la valeur de départ pour toutes les paires. Aucun écart.
+- **Application** : 7 tests d'écran du mode « Unités composées » (unité hors des listes, dimension affichée, incompatibilité expliquée, masse molaire demandée puis utilisée, unité illisible, saisie rapide). **Golden master inchangé.**
+- **Totaux** : moteur 687 tests ; application, voir la dernière exécution.
+

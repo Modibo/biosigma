@@ -255,6 +255,11 @@ Deux modules sont disponibles ; ils ne font pas partie du catalogue des 61 calcu
     comparées à PubChem et au résolveur NCI/CADD (aucune différence) ; la fiche de relecture
     `docs/biosigma-lab/relecture-analytes.md` liste chaque analyte pour validation. Les calculateurs existants gardent leurs facteurs arrondis ;
     l'écart éventuel est indiqué sous le résultat.
+- **Unités composées (Convert, P1-10)** : troisième mode de Convert, par **analyse dimensionnelle** : une unité est un facteur
+  et une dimension (masse, longueur, temps, quantité de matière, température, équivalents) ; toute unité composée
+  (mg/kg/d, µmol/min/L, mL/min/1,73 m², kg/m², ×10⁹/L…) est lue, sa grandeur est nommée, et la conversion est refusée si
+  les dimensions diffèrent. Masse molaire et valence sont demandées (jamais déduites) quand la nature de la quantité change.
+  Cohérence prouvée contre l'ancien convertisseur (140 unités, 1 236 conversions identiques).
 - **Saisie rapide (Convert)** : « 88 umol/l en mg/dl » remplit valeur et unités ; toute réécriture est affichée
   (« casse corrigée : à confirmer »), une unité douteuse n'est jamais devinée (propositions), « G/L » avertit qu'il désigne
   des cellules et non des g/L, un séparateur ambigu est refusé.

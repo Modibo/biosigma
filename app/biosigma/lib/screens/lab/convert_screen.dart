@@ -25,7 +25,7 @@ class ConvertScreen extends StatefulWidget {
   State<ConvertScreen> createState() => _ConvertScreenState();
 }
 
-enum _Mode { units, analyte }
+enum _Mode { units, analyte, composed }
 
 class _ConvertScreenState extends State<ConvertScreen> {
   _Mode _mode = _Mode.units;
@@ -38,6 +38,9 @@ class _ConvertScreenState extends State<ConvertScreen> {
 
   // Saisie rapide (« 88 umol/l en mg/dl ») : trace de la lecture, jamais silencieuse.
   final TextEditingController _quick = TextEditingController();
+  // Mode « Unités composées » : unités saisies librement (analyse dimensionnelle).
+  final TextEditingController _cFrom = TextEditingController(text: 'mg/kg/d');
+  final TextEditingController _cTo = TextEditingController(text: 'µg/kg/min');
   List<String> _quickNotes = [];
   List<String> _quickCautions = [];
   List<String> _quickProblems = [];
@@ -84,6 +87,8 @@ class _ConvertScreenState extends State<ConvertScreen> {
   @override
   void dispose() {
     _quick.dispose();
+    _cFrom.dispose();
+    _cTo.dispose();
     super.dispose();
   }
 
@@ -116,6 +121,31 @@ class _ConvertScreenState extends State<ConvertScreen> {
     final value = NumberFormatService.parse(left.number, sep);
     if (ambiguity != null || value == null) {
       problems.add(ambiguity ?? 'Valeur « ${left.number} » illisible.');
+      return finish();
+    }
+    if (_mode == _Mode.composed) {
+      final fromParse = UnitAnalyzer.parse(left.unit);
+      final toParse = parts.length > 1 ? UnitAnalyzer.parse(parts[1]) : null;
+      if (fromParse.error != null) {
+        problems.add('Unité de départ : ${fromParse.error}');
+        return finish();
+      }
+      if (toParse?.error != null) {
+        problems.add('Unité d\'arrivée : ${toParse!.error}');
+        return finish();
+      }
+      setState(() {
+        _value = value;
+        _cFrom.text = left.unit;
+        if (parts.length > 1) _cTo.text = parts[1].trim();
+        _result = null;
+        _errors = {};
+        _generation++;
+      });
+      notes.add(
+        'Lu : ${NumberFormatService.formatCompact(value, sep)} ${left.unit}'
+        '${parts.length > 1 ? ' → ${parts[1].trim()}' : ''}.',
+      );
       return finish();
     }
     final from = UnitInterpreter.interpret(left.unit);
@@ -293,9 +323,109 @@ class _ConvertScreenState extends State<ConvertScreen> {
         b.quantityKind == LabDimension.equivalent,
   );
 
+  /// Plan de conversion des unités composées saisies (null si illisibles ou impossibles).
+  ConversionPlan? get _composedPlan {
+    final a = UnitAnalyzer.parse(_cFrom.text), b = UnitAnalyzer.parse(_cTo.text);
+    if (a.unit == null || b.unit == null) return null;
+    final plan = planConversion(a.unit!, b.unit!);
+    return plan.possible ? plan : null;
+  }
+
+  String _composedReading(String text) {
+    final p = UnitAnalyzer.parse(text);
+    if (p.unit == null) return p.error!;
+    return 'Lu : ${p.unit!.dim.name} (${p.unit!.dim.formula})';
+  }
+
+  List<Widget> _composedFields(DecimalSeparator sep) {
+    final plan = _composedPlan;
+    final a = UnitAnalyzer.parse(_cFrom.text), b = UnitAnalyzer.parse(_cTo.text);
+    final incompatible = a.unit != null && b.unit != null && plan == null;
+    return [
+      NumericUnitField(
+        key: ValueKey('value-$_generation'),
+        label: 'Valeur',
+        helpText: null,
+        value: _value,
+        unit: '',
+        units: null,
+        decimalSeparator: sep,
+        errorText: _errors['value'],
+        onValueChanged: (v) => setState(() => _value = v),
+        onUnitChanged: (_) {},
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: TextField(
+          key: ValueKey('c-from-$_generation'),
+          controller: _cFrom,
+          decoration: InputDecoration(
+            labelText: 'Unité de départ',
+            helperText: _composedReading(_cFrom.text),
+            helperMaxLines: 3,
+            errorText: _errors['fromUnit'],
+            errorMaxLines: 4,
+          ),
+          onChanged: (_) => setState(() => _result = null),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: TextField(
+          key: ValueKey('c-to-$_generation'),
+          controller: _cTo,
+          decoration: InputDecoration(
+            labelText: 'Unité d\'arrivée',
+            helperText: _composedReading(_cTo.text),
+            helperMaxLines: 3,
+            errorText: _errors['toUnit'],
+            errorMaxLines: 4,
+          ),
+          onChanged: (_) => setState(() => _result = null),
+        ),
+      ),
+      if (incompatible)
+        LabErrorText(planConversion(a.unit!, b.unit!).reason!),
+      if (plan?.needsMolarMass == true)
+        NumericUnitField(
+          key: ValueKey('molarMass-$_generation'),
+          label: 'Masse molaire (g/mol)',
+          helpText: 'À saisir : forme chimique réellement dosée (sel, hydrate, forme libre).',
+          value: _molarMass,
+          unit: 'g/mol',
+          units: const ['g/mol'],
+          decimalSeparator: sep,
+          errorText: _errors['molarMass'],
+          onValueChanged: (v) => setState(() => _molarMass = v),
+          onUnitChanged: (_) {},
+        ),
+      if (plan?.needsValence == true)
+        NumericUnitField(
+          key: ValueKey('valence-$_generation'),
+          label: 'Valence',
+          helpText: 'Nombre de charges par ion (ex. 1 pour Na⁺, 2 pour Ca²⁺).',
+          value: _valence,
+          unit: '',
+          units: null,
+          decimalSeparator: sep,
+          errorText: _errors['valence'],
+          onValueChanged: (v) => setState(() => _valence = v),
+          onUnitChanged: (_) {},
+        ),
+    ];
+  }
+
   void _calculate() {
     try {
-      final result = _mode == _Mode.units
+      final result = _mode == _Mode.composed
+          ? calculateDimensionalConversion(
+              value: _value,
+              fromUnit: _cFrom.text,
+              toUnit: _cTo.text,
+              molarMassGPerMol: _composedPlan?.needsMolarMass == true ? _molarMass : null,
+              valence: _composedPlan?.needsValence == true ? _valence : null,
+            )
+          : _mode == _Mode.units
           ? calculateConversion(
               value: _value,
               fromUnit: _from,
@@ -396,6 +526,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
               options: const [
                 (_Mode.units, 'Unités'),
                 (_Mode.analyte, 'Analyte'),
+                (_Mode.composed, 'Unités composées'),
               ],
               selected: _mode,
               onSelected: (m) => setState(() {
@@ -406,7 +537,12 @@ class _ConvertScreenState extends State<ConvertScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              _mode == _Mode.units
+              _mode == _Mode.composed
+                  ? 'Unités composées quelconques (mg/kg/d, µmol/min/L, mL/min/1,73 m², kg/m², ×10⁹/L…) : '
+                        'la conversion est calculée par analyse dimensionnelle. Elle est refusée si les '
+                        'dimensions diffèrent ; masse molaire et valence sont saisies quand la nature de la '
+                        'quantité change.'
+                  : _mode == _Mode.units
                   ? 'Toutes les unités SI et traditionnelles courantes. Pour passer d\'une masse à une '
                         'quantité de matière ou à des équivalents, saisissez la masse molaire et la valence.'
                   : '${AnalyteBase.all.length} analytes et grandeurs : la masse molaire est calculée à '
@@ -415,6 +551,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
             ),
             const SizedBox(height: 8),
             _quickEntry(sep),
+            if (_mode == _Mode.composed) ..._composedFields(sep) else ...[
             if (_mode == _Mode.units)
               LabDropdown(
                 label: 'Grandeur',
@@ -526,6 +663,7 @@ class _ConvertScreenState extends State<ConvertScreen> {
                 onValueChanged: (v) => setState(() => _valence = v),
                 onUnitChanged: (_) {},
               ),
+            ],
             for (final message in general) LabErrorText(message),
             const SizedBox(height: 12),
             Wrap(
