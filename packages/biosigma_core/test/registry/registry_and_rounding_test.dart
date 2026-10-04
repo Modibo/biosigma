@@ -43,7 +43,7 @@ void main() {
 
     test('les outils Lab sont enregistrés mais hors catalogue', () {
       final lab = EquationRegistry.all.where((r) => !r.fromCatalog);
-      expect(lab.length, 16);
+      expect(lab.length, 18);
       expect(lab.every((r) => r.family == 'LAB'), isTrue);
       expect(EquationRegistry.resolve('lab_dilution_c1v1')!.stableId, 'LAB_LAB_DILUTION_C1V1_001');
     });

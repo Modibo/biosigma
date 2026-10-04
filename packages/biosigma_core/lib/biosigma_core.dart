@@ -31,6 +31,7 @@ export 'src/calculators/metabolic/martin_hopkins.dart';
 export 'src/lab/uncertainty.dart';
 export 'src/lab/unit_interpreter.dart';
 export 'src/lab/dimensions.dart';
+export 'src/lab/semen.dart';
 export 'src/models/warning_level.dart';
 export 'src/teaching/exercises.dart';
 

@@ -8,6 +8,7 @@ import '../lab/dilution_planner.dart' show dilutionPlannerMeta;
 import '../lab/microbiology.dart';
 import '../lab/prepare.dart';
 import '../lab/quality.dart';
+import '../lab/semen.dart' show semenCountMeta;
 import '../lab/uncertainty.dart';
 import '../models/formula_meta.dart';
 import 'validation.dart';
@@ -95,8 +96,10 @@ class EquationRegistry {
     bufferMeta,
     cellCountMeta,
     totalCountMeta,
+    semenCountMeta,
     differentialMeta,
     cfuMeta,
+    mcFarlandMeta,
     qualityMeta,
     uncertaintyMeta,
   ];

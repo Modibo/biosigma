@@ -279,9 +279,16 @@ embarquée : l'utilisateur la saisit** (et le résultat le rappelle).
   (m/v, v/v), tampons (Henderson-Hasselbalch). Masse molaire, pureté et pKa sont saisis.
 - **Count** : numération en chambre (surface comptée et profondeur saisies — aucune chambre
   embarquée), formule leucocytaire avec compteur tactile, nombre total, comptages en double (sans
-  seuil d'acceptabilité).
+  seuil d'acceptabilité) ; **mode « Sperme (OMS) »** (P2-06) : méthode du manuel de l'OMS 6e éd., chambre de Neubauer
+  améliorée, deux chambres en réplicat : dilutions (tableau 2.1), surface comptée et facteur de correction (tableau 2.4,
+  55 valeurs recoupées par la géométrie 100 nL/grille), **accord des réplicats** (tableau 2.3, 61 lignes recoupées par
+  la loi de Poisson), conduite en cas d'écart (nouveau comptage, trois comptages, moyenne), erreur due au nombre
+  d'observations, nombre total (entier de millions), et **repères de la population de référence** (tableau 8.3 : 5e centile,
+  médiane) toujours accompagnés de la mise en garde de l'OMS (§ 8.1.3). Dossier FV-PREP-018.
 - **Microbiology** : UFC/mL par boîte et moyenne des boîtes retenues ; l'intervalle de colonies
-  dénombrables est saisi. **Aucune équivalence McFarland ↔ UFC** n'est proposée.
+  dénombrables est saisi. **McFarland (P2-08)** : une seule équivalence, **saisie par le validateur** (0,5 McFarland ≈
+  1,5 × 10⁸ UFC/mL), avec le facteur de dilution vers une cible ; tout autre standard est refusé (aucune extrapolation).
+  Dossier FV-PREP-019 (source à citer).
 - **Quality** : moyenne, écart-type, CV, biais, récupération, erreur totale (k saisi), Sigma (ETa
   saisie) — **sans verdict d'interprétation**.
 - **Incertitude (mode Expert)** : propagation d'incertitude selon le GUM (JCGM 100:2008, éq. 10 et 12), au premier ordre,

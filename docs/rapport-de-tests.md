@@ -856,3 +856,10 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - **Application** : 7 tests d'écran du mode « Unités composées » (unité hors des listes, dimension affichée, incompatibilité expliquée, masse molaire demandée puis utilisée, unité illisible, saisie rapide). **Golden master inchangé.**
 - **Totaux** : moteur 687 tests ; application, voir la dernière exécution.
 
+## P2-06 (spermatozoïdes, OMS 6e éd.) et P2-08 (McFarland) (2026-10-04, version 1.23.0)
+
+- **Source** : manuel de l'OMS (6e éd.) fourni par le validateur, texte du PDF extrait et lu (§ 2.4.4.5, 2.4.8, 8.1). Tableaux 2.1, 2.3, 2.4 et 8.3 embarqués.
+- **Recoupements indépendants** : tableau 2.4 : les **55 facteurs** imprimés sont retrouvés par la géométrie (2 chambres × 100 nL par grille ÷ dilution) ; tableau 2.3 : **61 lignes** contiguës de 1 à 1000, chacune conforme à la loi de Poisson (limite = ⌊1,96·√S⌋, erreur = 100/√S à 0,1 près), ce qui valide aussi la transcription ; **une coquille du PDF** (« 22–36 » pour « 22–26 ») corrigée et signalée ; tableau 8.3 : centiles croissants, 5es centiles et effectifs imprimés.
+- **Tests** : 20 tests moteur (`semen_test.dart`) + 5 (`mcfarland_test.dart`) + 8 tests d'écran. Moteur : **712 tests** ; application : **213 tests**. **Golden master inchangé.**
+- **Limites** : faible nombre (centrifugation), mobilité, morphologie et pourcentages (tableau 2.2) hors périmètre ; une seule équivalence McFarland (saisie, source non citée).
+

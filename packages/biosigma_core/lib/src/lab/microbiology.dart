@@ -35,7 +35,8 @@ const FormulaMeta cfuMeta = FormulaMeta(
         'elle ne remplace pas la formule d\'une norme (ex. dilutions successives pondérées).',
     'Une boîte sans colonie donne une limite de détection, jamais « 0 UFC/mL ».',
     'Les UFC ne sont pas équivalentes à une densité optique ni à un standard de McFarland : '
-        'aucune correspondance universelle n\'existe, aucune n\'est proposée.',
+        'l\'équivalence 0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL, saisie par le validateur, est proposée à part '
+        '(calcul « McFarland ») avec ses réserves ; aucun autre standard n\'est renseigné.',
   ],
   displayPrecision: 2,
 );
@@ -165,6 +166,104 @@ CalculationResult calculateCfu({
         'Moyenne arithmétique simple des boîtes retenues ; ne remplace pas la formule d\'une norme.',
         severity: WarningSeverity.info,
       ),
+    ],
+  );
+}
+
+
+/// Équivalence McFarland **saisie par le validateur** (Dr Modibo Mouctar Coulibaly,
+/// 2026-10-04) : 0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL. Seul ce standard est
+/// renseigné ; aucune autre valeur n'est embarquée.
+final Map<double, double> mcFarlandEnteredCfuPerMl = {0.5: 1.5e8};
+
+const FormulaMeta mcFarlandMeta = FormulaMeta(
+  id: 'lab_micro_mcfarland',
+  name: 'Suspension au standard McFarland : UFC/mL approximatif et dilution',
+  shortName: 'Microbiology — McFarland',
+  category: CalculatorCategory.laboratory,
+  version: 'McFarland 1 — équivalence saisie par le validateur (0,5 ≈ 1,5 × 10⁸ UFC/mL)',
+  equation:
+      'UFC/mL ≈ valeur d\'équivalence du standard (0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL)\n'
+      'Facteur de dilution = UFC/mL de la suspension / UFC/mL visées',
+  sources: [
+    Reference(
+      citation: 'Équivalence saisie par le validateur (Dr Modibo Mouctar Coulibaly), 2026-10-04 : '
+          '0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL. Source primaire non citée : à compléter par le validateur.',
+      note: 'valeur approximative ; seul le standard 0,5 est renseigné',
+    ),
+  ],
+  applicablePopulation: 'Sans objet (suspension bactérienne).',
+  limitations: [
+    'Seul le standard 0,5 McFarland est renseigné : aucun autre n\'est embarqué ni extrapolé.',
+    'L\'équivalence est approximative : la turbidité n\'est pas un dénombrement ; la correspondance avec les UFC '
+        'peut varier selon l\'espèce, la souche, la phase de croissance et la méthode de lecture (mise en garde '
+        'générale, non issue de la source saisie). Confirmer par dénombrement si le résultat compte.',
+  ],
+  displayPrecision: 2,
+);
+
+/// UFC/mL approximatif d'une suspension au standard McFarland [standard] et, si
+/// [targetCfuPerMl] est donné, facteur de dilution pour l'atteindre.
+CalculationResult calculateMcFarland({
+  required double? standard,
+  double? targetCfuPerMl,
+}) {
+  final errors = <FieldError?>[
+    Validation.checkProvided(standard, 'standard', 'Le standard McFarland'),
+  ];
+  Validation.raiseIfAny(errors);
+  final cfu = mcFarlandEnteredCfuPerMl[standard];
+  if (cfu == null) {
+    throw CalculationInputException([
+      FieldError(
+        fieldId: 'standard',
+        message: 'Seul le standard 0,5 McFarland est renseigné (valeur saisie par le validateur) ; '
+            'aucune équivalence n\'est embarquée ni extrapolée pour ${standard.toString().replaceAll('.', ',')}.',
+      ),
+    ]);
+  }
+  double? factor;
+  if (targetCfuPerMl != null) {
+    if (!(targetCfuPerMl > 0)) {
+      throw CalculationInputException(const [
+        FieldError(fieldId: 'target', message: 'La concentration visée doit être strictement positive.'),
+      ]);
+    }
+    if (targetCfuPerMl > cfu) {
+      throw CalculationInputException([
+        FieldError(
+          fieldId: 'target',
+          message: 'La concentration visée (${_sci(targetCfuPerMl)} UFC/mL) dépasse celle de la suspension '
+              '(${_sci(cfu)} UFC/mL) : une dilution ne peut que la diminuer.',
+        ),
+      ]);
+    }
+    factor = cfu / targetCfuPerMl;
+  }
+  return CalculationResult(
+    formula: mcFarlandMeta,
+    echoedInputs: {
+      'Standard McFarland': standard.toString().replaceAll('.', ','),
+      if (targetCfuPerMl != null) 'Concentration visée': '${_sci(targetCfuPerMl)} UFC/mL',
+    },
+    values: [
+      ResultValue(label: 'UFC/mL approximatif de la suspension', value: cfu, unit: 'UFC/mL', precision: 0),
+      ResultValue(label: 'log10 (UFC/mL)', value: math.log(cfu) / math.ln10, unit: 'log10', precision: 2),
+      if (factor != null)
+        ResultValue(label: 'Facteur de dilution à appliquer', value: factor, unit: '', precision: 1),
+    ],
+    warnings: [
+      const CalculationWarning(
+        'Équivalence approximative saisie par le validateur (0,5 McFarland ≈ 1,5 × 10⁸ UFC/mL) : la turbidité '
+        'n\'est pas un dénombrement. À confirmer par dénombrement si le résultat compte.',
+        severity: WarningSeverity.caution,
+      ),
+      if (factor != null)
+        CalculationWarning(
+          'Dilution théorique : 1 volume de suspension + ${(factor - 1).toStringAsFixed(1).replaceAll('.', ',')} '
+          'volumes de diluant. Pour une dilution en plusieurs étapes, utilisez le planificateur de Dilute.',
+          severity: WarningSeverity.info,
+        ),
     ],
   );
 }
