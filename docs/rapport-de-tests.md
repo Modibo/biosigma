@@ -795,3 +795,17 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
   compilait pas dès qu'une fiche existait. Corrigé (`final`), avec un test de garde. Les tests unitaires seuls ne l'avaient pas vu.
 - **Aucune fiche n'est enregistrée** : `validation_data.dart` est vide ; rien n'est validé.
 
+## Dossiers de validation prioritaires et constats (2026-10-04)
+
+- Cinq dossiers préparés (FV-PREP-003 à 007 : FIB-4, INR, TyG, IMC, HOMA-IR), liés au registre de validation. Pour chacun : 4 à 5 cas
+  **calculés en Python hors du code** (23 tests, tous égaux au code à 10⁻¹² près), constantes confrontées à des sources secondaires
+  consultées le 2026-10-04 (INR, IMC/CDC, HOMA-IR incluant HOMA-β, FIB-4/Université de Washington ; TyG : résumé PubMed illisible,
+  non confronté). Moteur : **510 tests**.
+- **Deux constats réels, non corrigés, soumis au validateur** (une correction changerait un résultat existant : golden master) :
+  1. **FIB-4** : l'interprétation affiche 1,30 / 2,67 en les disant « dérivés de la cohorte originale (Sterling 2006) » ; la source
+     secondaire donne **1,45 / 3,25** pour Sterling. L'attribution semble inexacte (les valeurs 1,30/2,67 sont par ailleurs usuelles).
+  2. **TyG** : le texte cite « TyG > 4,5 » comme exemple de seuil, alors que la convention implémentée (mg/dL) donne **8 à 10** pour
+     des sujets ordinaires : le seuil cité est inapplicable ici.
+- **Limite** : les cas indépendants sont écrits par l'auteur à partir de la même connaissance des formules ; la confrontation à des
+  sources externes réduit ce risque sans l'éliminer. La validation reste l'acte du validateur sur les sources primaires.
+

@@ -228,6 +228,24 @@ void main() {
       expect(ckd[col('prepared_dossier')], contains('FV-PREP-001'));
       final glucose = rows.firstWhere((r) => r.first == 'analyte:glucose');
       expect(glucose[col('prepared_dossier')], contains('FV-PREP-002'));
+      for (final id in [
+        'IONO_FIB4_001',
+        'HEMO_INR_001',
+        'METAB_TYG_INDEX_001',
+        'METAB_BMI_001',
+        'METAB_HOMA_IR_001',
+      ]) {
+        final row = rows.firstWhere((r) => r.first == id);
+        expect(
+          row[col('prepared_dossier')],
+          startsWith('fiches-de-validation/FV-PREP-'),
+          reason: id,
+        );
+      }
+      final fib4 = rows.firstWhere((r) => r.first == 'IONO_FIB4_001');
+      expect(fib4[col('points_to_review')], contains('CONSTAT'));
+      final tyg = rows.firstWhere((r) => r.first == 'METAB_TYG_INDEX_001');
+      expect(tyg[col('points_to_review')], contains('4,5'));
       final apri = rows.firstWhere((r) => r.first == 'IONO_APRI_001');
       expect(
         apri[col('points_to_review')],

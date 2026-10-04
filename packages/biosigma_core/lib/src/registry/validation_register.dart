@@ -13,9 +13,16 @@ Map<String, int> validationKnownVersions() => {
 const Map<String, String> preparedDossiers = {
   'RENAL_CKD_EPI_CREATININE_2021_001': 'fiches-de-validation/FV-PREP-001-ckd-epi-creatinine-2021.md',
   'analyte:glucose': 'fiches-de-validation/FV-PREP-002-conversion-glucose.md',
+  'IONO_FIB4_001': 'fiches-de-validation/FV-PREP-003-fib-4.md',
+  'HEMO_INR_001': 'fiches-de-validation/FV-PREP-004-inr.md',
+  'METAB_TYG_INDEX_001': 'fiches-de-validation/FV-PREP-005-tyg.md',
+  'METAB_BMI_001': 'fiches-de-validation/FV-PREP-006-imc.md',
+  'METAB_HOMA_IR_001': 'fiches-de-validation/FV-PREP-007-homa-ir.md',
 };
 
 const Map<String, String> _equationFlags = {
+  'fib4': 'CONSTAT : seuils 1,30/2,67 attribués à Sterling 2006, la source secondaire donne 1,45/3,25 pour Sterling (voir FV-PREP-003)',
+  'tyg_index': 'CONSTAT : seuil cité « TyG > 4,5 » incohérent avec la convention mg/dL (valeurs de 8 à 10) (voir FV-PREP-005)',
   'apri': 'Référence à reconfirmer (R-08 : citée sans lecture du texte source)',
   'padua_prediction_score': 'Référence à reconfirmer (R-08)',
   'has_bled_score': 'Référence à reconfirmer (R-08)',
