@@ -240,11 +240,13 @@ Deux modules sont disponibles ; ils ne font pas partie du catalogue des 59 calcu
     fraction (%, L/L), osmolalité, excrétion par temps (g/24 h, mmol/24 h), débits, DFG (mL/min ↔ mL/s
     pour 1,73 m²), longueurs (cm, in, ft), masses (kg, lb, oz). Les facteurs sont des **définitions**.
     Pour passer d'une masse à des moles ou à des équivalents, masse molaire et valence sont saisies.
-  - *Analyte* : plus de 80 analytes et grandeurs (électrolytes, métabolites, lipides, hormones, vitamines,
+  - *Analyte* : 186 analytes et grandeurs (électrolytes, métabolites, lipides, hormones, vitamines,
     médicaments, protéines, enzymes, hématologie, gaz du sang). La **masse molaire est calculée** à partir de
     la formule brute et des poids atomiques IUPAC abrégés (aucune n'est saisie de mémoire). Les protéines
     et marqueurs à masse molaire hétérogène ne proposent que des conversions massiques. **Toute la base est
-    « NON VALIDÉ »** (décision D-12 en attente). Les calculateurs existants gardent leurs facteurs arrondis ;
+    « NON VALIDÉ »** (voir `docs/biosigma-lab/gouvernance-validation.md`). Les 125 formules brutes ont été
+    comparées à PubChem et au résolveur NCI/CADD (aucune différence) ; la fiche de relecture
+    `docs/biosigma-lab/relecture-analytes.md` liste chaque analyte pour validation. Les calculateurs existants gardent leurs facteurs arrondis ;
     l'écart éventuel est indiqué sous le résultat.
 - **Dilute** : dilution simple (C1·V1 = C2·V2), dilutions en série, résultat après dilution avec
   contrôle de l'intervalle de linéarité saisi par l'utilisateur.

@@ -682,3 +682,20 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
   sourcée) ; unités propres aux dosages (UI d'insuline µU, UI de TSH) ; conversions de médicaments sous forme de sels.
   Aucune valeur n'a été relue par un biologiste responsable.
 
+## Relecture des analytes, nouveaux analytes, cadre D-12 (2026-10-04)
+
+- **Contrôle indépendant des formules** : les 125 analytes à formule brute (47 initiaux + 78 ajoutés) ont été
+  comparés à une source externe — PubChem (NCBI) et NCI/CADD Chemical Identifier Resolver. **Résultat : 125
+  formules identiques, 0 différente.** Cinq cas où un résolveur renvoyait un autre composé (aluminium et arsenic →
+  hydrures ; thiamine → chlorure ; pyridoxal-phosphate → hydrate ; metformine → chlorhydrate) ont été tranchés avec
+  l'autre source (la metformine par SMILES de la base libre). Limites : un seul type de contrôle (formule du composé
+  nommé) ; la **forme chimique retenue** et les **valences** restent à relire par le laboratoire ; PubChem arrondit
+  parfois les masses à 0,1 g/mol, d'où des écarts apparents sur le plomb, le lithium et les triglycérides.
+- **Base d'analytes : 186 entrées** (+98) : oligo-éléments, métabolites, vitamines, hormones, médicaments (forme libre),
+  protéines (conversions massiques), enzymes, numération, pression artérielle. Masses molaires toujours calculées.
+- **Cadre de validation (D-12)** : `gouvernance-validation.md` (rôles, statuts, critères, modèle de fiche) ;
+  `relecture-analytes.md` (186 lignes à relire, colonnes de décision vides) ; le code dérive le statut des fiches
+  (`ValidationRecord`) : fiche incomplète ignorée, fiche d'une autre version sans effet, fiche rejetée = RETIRÉ.
+  **Aucune fiche n'existe : tout reste « NON VALIDÉ ».**
+- Tests : **moteur 398** (+12), **application 85**. Golden master inchangé.
+

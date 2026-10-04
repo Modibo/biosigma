@@ -489,4 +489,80 @@ void main() {
       },
     );
   });
+
+  group('Ajouts à la base (formules vérifiées contre NCI/CADD et PubChem)', () {
+    double m(String id) => AnalyteBase.byId(id)!.molarMass!;
+
+    test('masses molaires calculées à la main', () {
+      expect(
+        m('caffeine'),
+        closeTo(8 * 12.011 + 10 * 1.008 + 4 * 14.007 + 2 * 15.999, 1e-9),
+      ); // 194,194
+      expect(m('caffeine'), closeTo(194.194, 1e-9));
+      expect(m('creatine'), closeTo(131.135, 1e-9));
+      expect(m('warfarin'), closeTo(308.333, 1e-9));
+      expect(m('aspirin'), closeTo(180.159, 1e-9));
+      expect(m('cyclosporine'), closeTo(1202.635, 1e-9));
+      expect(m('metformin'), closeTo(129.167, 1e-9));
+      expect(m('cadmium'), closeTo(112.41, 1e-12));
+      expect(m('aldosterone'), closeTo(360.450, 1e-9));
+    });
+
+    test('conversions : caféine 10 µg/mL = 51,49 µmol/L ; cadmium 5 µg/L = 44,48 nmol/L ; aldostérone 100 pg/mL = 277,4 pmol/L', () {
+      expect(
+        aconv('caffeine', 10, 'µg/mL', 'µmol/L'),
+        closeTo(10000 / 194.194, 1e-6),
+      );
+      expect(
+        aconv('cadmium', 5, 'µg/L', 'nmol/L'),
+        closeTo(5000 / 112.41, 1e-6),
+      );
+      expect(
+        aconv('aldosterone', 100, 'pg/mL', 'pmol/L'),
+        closeTo(100000 / 360.450, 1e-6),
+      );
+    });
+
+    test('les médicaments rappellent qu\'il s\'agit de la forme libre', () {
+      for (final id in [
+        'caffeine',
+        'warfarin',
+        'vancomycin',
+        'metformin',
+        'morphine',
+      ]) {
+        expect(AnalyteBase.byId(id)!.note, contains('Forme libre'), reason: id);
+      }
+    });
+
+    test('catégories complètes et nombre d\'entrées', () {
+      expect(AnalyteBase.all.length, greaterThanOrEqualTo(170));
+      for (final c in AnalyteBase.categories) {
+        expect(AnalyteBase.inCategory(c), isNotEmpty);
+      }
+    });
+
+    test('statut d\'un analyte : non validé sans fiche, validé avec une fiche complète', () {
+      expect(AnalyteBase.statusOf('glucose'), EquationStatus.notValidated);
+      final fiche = ValidationRecord(
+        itemId: 'analyte:glucose',
+        itemVersion: 1,
+        validatorName: 'Dr Exemple',
+        validatorRole: 'Biologiste médical responsable',
+        validatedOn: DateTime.utc(2026, 10, 5),
+        scope: 'formule brute, masse molaire, valence, unités',
+        sourcesReviewed: 'Source de test',
+        independentCases: 2,
+        sheetReference: 'FV-TEST',
+      );
+      expect(
+        AnalyteBase.statusOf('glucose', records: [fiche]),
+        EquationStatus.validated,
+      );
+      expect(
+        AnalyteBase.statusOf('sodium', records: [fiche]),
+        EquationStatus.notValidated,
+      );
+    });
+  });
 }

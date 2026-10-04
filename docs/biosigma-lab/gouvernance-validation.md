@@ -1,0 +1,99 @@
+# Gouvernance de la validation scientifique (décision D-12, tâche P0-07)
+
+> **Statut : proposition à approuver.** Ce cadre est rédigé par l'assistant de développement ; il n'a **aucune valeur** tant que le responsable scientifique ne l'a pas approuvé et n'a pas désigné les personnes ci-dessous. À ce jour, **aucune équation, aucun analyte, aucun facteur n'est « VALIDÉ »** (le code l'impose : voir « Ce que fait le logiciel »).
+
+## 1. Pourquoi ce cadre
+
+BioSigma affiche des calculs que des professionnels peuvent utiliser pour des décisions. Le code a été écrit par un assistant d'intelligence artificielle ; les tests prouvent que le code **fait ce qu'il dit**, pas que **ce qu'il dit est juste**. La validation est l'acte humain qui comble cet écart. Sans elle, l'application doit continuer à afficher « NON VALIDÉ » (décision D-08 : usage possible avec bandeau).
+
+## 2. Rôles (à pourvoir par des personnes nommées)
+
+| Rôle | Responsabilité | Règle |
+|---|---|---|
+| **Auteur** | Écrit ou modifie une équation, une constante, une entrée d'analyte | L'assistant de développement ; **ne valide jamais son propre travail** |
+| **Relecteur technique** | Vérifie le code et les tests (D-01) | Humain, compétent en développement ; indépendant de l'auteur |
+| **Validateur scientifique** | Biologiste médical / biochimiste : confronte l'élément aux sources et à la pratique du laboratoire, signe la fiche | **Nom, fonction et date sur chaque fiche** |
+| **Approbateur** | Autorise le statut « VALIDÉ » en production (responsable qualité ou directeur du laboratoire) | Peut être la même personne que le validateur dans un petit laboratoire, à condition de le consigner |
+
+**À décider par vous** : qui est validateur scientifique, qui est relecteur technique, et si une seule personne cumule validateur et approbateur. Dr Coulibaly, en tant que biologiste (PharmD, CLMS, PhD), vous pouvez tenir le rôle de validateur ; un **second regard** (collègue ou relecteur externe) est recommandé pour les éléments à fort impact (D-01).
+
+## 3. Ce qui se valide, et à quelle granularité
+
+La validation porte sur **un élément à une version précise** :
+
+- une **équation** (formule, unités d'entrée et de sortie, domaine de validité, population, cas interdits) ;
+- une **entrée de la base d'analytes** (formule brute, forme chimique, valence, unités) ;
+- un **facteur ou une définition d'unité** non triviale ;
+- un **texte d'interprétation** (seuil et formulation) — aujourd'hui noyé dans les messages ; non validable séparément (limite connue).
+
+Toute modification (formule, constante, unité, domaine, forme chimique) crée une **nouvelle version** : l'ancienne fiche ne couvre pas la nouvelle.
+
+## 4. Statuts et transitions
+
+`NON VALIDÉ (existant)` → `PROPOSÉ` → `VALIDÉ` → `RETIRÉ` ; et `BLOQUÉ` (source insuffisante).
+
+- **NON VALIDÉ** : présent, testé, jamais relu par un validateur. **État de tout le catalogue aujourd'hui.**
+- **VALIDÉ** : fiche complète et signée **pour la version courante** (voir §5).
+- **RETIRÉ** : fiche rejetée, ou élément remplacé ; reste consultable, avec avertissement.
+- **BLOQUÉ** : on ne dispose pas d'une source suffisante (ex. masse molaire d'une protéine) ; l'élément n'est pas utilisable pour la partie concernée.
+
+## 5. Critères pour passer à « VALIDÉ » (tous obligatoires)
+
+1. **Source consultée** : le validateur a lu la source primaire (pas un résumé), et la cite (référence complète).
+2. **Au moins deux cas de vérification indépendants**, **calculés hors du code testé** (à la main, tableur, autre outil) ; leurs valeurs sont jointes à la fiche.
+3. **Tests verts** : les tests du dépôt couvrent ces cas et passent.
+4. **Limites documentées** : population, cas interdits, conditions analytiques, forme chimique.
+5. **Fiche signée** (modèle ci-dessous), avec nom, fonction, date, périmètre, version de l'élément, référence de la fiche.
+6. **Séparation** : l'auteur n'est pas le signataire.
+
+## 6. Quand revalider
+
+- à chaque nouvelle version de l'élément ;
+- en cas de changement de méthode analytique, de réactif ou d'automate qui touche l'élément ;
+- à une échéance fixée par le laboratoire (proposition : tous les 2 ans) ;
+- à la publication d'une recommandation qui remplace la source citée.
+
+## 7. Que se passe-t-il en cas d'erreur découverte ?
+
+Nouvelle version corrigée + note ; les enregistrements d'historique concernés sont **signalés, jamais modifiés** (le rejeu les compare explicitement). L'élément fautif passe « RETIRÉ ».
+
+## 8. Ce que fait le logiciel (déjà implémenté)
+
+- Le statut affiché (« NON VALIDÉ », « VALIDÉ », « RETIRÉ ») est **calculé** à partir de la liste des fiches de validation (`validationRecords`, vide à ce jour). Aucun élément ne devient « VALIDÉ » par un simple changement de drapeau.
+- Une fiche **incomplète** (validateur, rôle, périmètre, sources, référence manquants, ou moins de deux cas indépendants) est **ignorée**.
+- Une fiche valable pour la version 1 **ne valide pas** la version 2.
+- Une fiche **rejetée** marque l'élément « RETIRÉ ».
+- Les tests `validation_test.dart` et `extended_units_and_analytes_test.dart` protègent ces règles.
+
+Pour enregistrer une validation : ajouter une `ValidationRecord` à `validationRecords` (`packages/biosigma_core/lib/src/registry/validation.dart`), avec la référence de la fiche signée archivée ; relancer les tests ; publier une nouvelle version de l'application.
+
+## 9. Modèle de fiche de validation
+
+> À imprimer ou à copier. Une fiche par élément et par version. Conserver l'original signé.
+
+| Champ | À renseigner |
+|---|---|
+| Référence de la fiche | FV-AAAA-NNN |
+| Élément validé | Identifiant (`METAB_BMI_001` ou `analyte:glucose`) |
+| Version de l'élément | (entier) |
+| Version de l'application | |
+| Périmètre validé | ☐ formule ☐ unités ☐ domaine/population ☐ cas interdits ☐ forme chimique ☐ valence ☐ constantes ☐ texte d'interprétation |
+| Sources consultées | Citation complète ; **date de consultation** ; édition/version |
+| Cas de vérification indépendants (≥ 2) | Entrées → résultat attendu (calculé hors du code) ; outil utilisé ; tolérance et sa justification |
+| Tests du dépôt associés | Nom des tests |
+| Limites et conditions | Population, cas interdits, conditions analytiques, forme chimique |
+| Écarts constatés | (aucun / décrire) |
+| **Décision** | ☐ approuvé ☐ à corriger ☐ rejeté |
+| Validateur | Nom · fonction · date · signature |
+| Relecteur technique | Nom · date |
+| Approbateur | Nom · fonction · date · signature |
+
+## 10. Par où commencer (proposition réaliste)
+
+Valider **tout** d'un coup n'est pas réaliste. Ordre conseillé :
+
+1. Les **calculs cliniques les plus utilisés** dans votre laboratoire (ex. DFG CKD-EPI, FIB-4, INR, TyG), un par un.
+2. Les **conversions d'analytes les plus fréquentes** (glucose, créatinine, urée, calcium, cholestérol, bilirubine) à partir de `relecture-analytes.md`.
+3. Les autres, par domaine, au fil de l'usage.
+
+Entre-temps, les éléments non validés restent utilisables avec leur bandeau « NON VALIDÉ ».

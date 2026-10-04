@@ -118,7 +118,8 @@ class _ConvertScreenState extends State<ConvertScreen> {
             '${NumberFormatService.format(m!, sep, precision: 3)} g/mol'
             '${_analyte.valence != null ? ' — valence ${_analyte.valence}' : ''}',
       if (_analyte.note != null) _analyte.note!,
-      'Statut : NON VALIDÉ (base d\'analytes non revue par un biologiste responsable).',
+      'Statut : ${AnalyteBase.statusOf(_analyte.id).label}'
+          '${AnalyteBase.statusOf(_analyte.id) == EquationStatus.notValidated ? ' (non revu par un biologiste responsable)' : ''}.',
     ];
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),

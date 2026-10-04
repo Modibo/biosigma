@@ -2,164 +2,36 @@ import '../models/errors.dart';
 import '../models/formula_meta.dart';
 import '../models/reference.dart';
 import '../models/result.dart';
+import '../registry/equation_registry.dart' show EquationStatus;
+import '../registry/validation.dart';
 import '../units/analyte.dart';
 import '../units/unit_registry.dart';
 import '../validation.dart';
+import 'analyte_additions.dart';
+import 'analyte_model.dart';
 import 'convert.dart';
-import 'lab_units.dart';
 
-/// Poids atomiques standard **abrégés** (valeurs conventionnelles).
-///
-/// Source : Commission sur les abondances isotopiques et les poids atomiques
-/// (CIAAW) de l'IUPAC, « Standard atomic weights » (valeurs abrégées). Les
-/// masses molaires de la base d'analytes sont **calculées** à partir de ces
-/// poids et de la formule brute : aucune masse molaire n'est saisie « de
-/// mémoire ». Statut : non validé par un biologiste responsable (D-12).
-const Map<String, double> atomicWeights = {
-  'H': 1.008, 'Li': 6.94, 'C': 12.011, 'N': 14.007, 'O': 15.999, 'Na': 22.990, 'Mg': 24.305,
-  'P': 30.974, 'S': 32.06, 'Cl': 35.45, 'K': 39.098, 'Ca': 40.078, 'Co': 58.933, 'Fe': 55.845,
-  'Cu': 63.546, 'Zn': 65.38, 'Se': 78.971, 'I': 126.904, 'Hg': 200.59, 'Pb': 207.2,
-};
+export 'analyte_model.dart';
 
-/// Nature d'un analyte du menu Convert : détermine les unités proposées.
-enum AnalyteKind {
-  /// Formule brute connue : masse molaire calculée, conversions masse ↔ mol.
-  molecular,
-
-  /// Masse molaire hétérogène ou non sourcée : conversions massiques seulement.
-  massOnly,
-
-  /// Facteurs du moteur existant (insuline, HbA1c) via `UnitRegistry`.
-  legacy,
-
-  /// Activité enzymatique (U/L ↔ katal), par définition.
-  enzyme,
-
-  /// Numération cellulaire (par litre, par µL, par mm³).
-  cellCount,
-  pressure,
-  temperature,
-  fraction,
-  osmolality,
-  clearance,
-}
-
-/// Un analyte (ou une grandeur) proposé par Convert.
-class LabAnalyte {
-  const LabAnalyte({
-    required this.id,
-    required this.name,
-    required this.category,
-    required this.kind,
-    this.formula,
-    this.formulaText,
-    this.valence,
-    this.note,
-    this.urine24h = false,
-    this.legacy,
-  });
-
-  final String id;
-  final String name;
-  final String category;
-  final AnalyteKind kind;
-
-  /// Formule brute : élément → nombre d'atomes (ex. glucose C6H12O6).
-  final Map<String, int>? formula;
-  final String? formulaText;
-
-  /// Valence de l'ion ou de la forme dosée (éq), `null` si non définie.
-  final int? valence;
-
-  /// Forme chimique de référence et précautions (ex. « exprimé en P »).
-  final String? note;
-
-  /// Proposer aussi les unités d'excrétion (g/24 h, mmol/24 h…).
-  final bool urine24h;
-
-  /// Analyte correspondant du moteur existant, s'il y en a un.
-  final Analyte? legacy;
-
-  /// Masse molaire (g/mol) calculée par la formule brute, ou `null`.
-  double? get molarMass {
-    final f = formula;
-    if (f == null) return null;
-    var sum = 0.0;
-    for (final e in f.entries) {
-      sum += atomicWeights[e.key]! * e.value;
-    }
-    return sum;
-  }
-
-  /// Unités comparables à [fromUnit] pour cet analyte : une concentration ne
-  /// se convertit qu'en concentration, une excrétion (par temps) qu'en
-  /// excrétion, etc.
-  List<String> compatibleUnits(String fromUnit) {
-    if (kind == AnalyteKind.legacy) return units;
-    final family = LabUnits.parse(fromUnit)?.family;
-    return units.where((u) => LabUnits.parse(u)?.family == family).toList(growable: false);
-  }
-
-  /// Unités proposées pour cet analyte.
-  List<String> get units {
-    final rates = urine24h
-        ? [
-            ...LabUnits.massRates,
-            if (kind == AnalyteKind.molecular) ...LabUnits.amountRates,
-            if (kind == AnalyteKind.molecular && valence != null) ...LabUnits.equivalentRates,
-          ]
-        : const <String>[];
-    switch (kind) {
-      case AnalyteKind.molecular:
-        return [
-          ...LabUnits.massConcentrations,
-          ...LabUnits.molarConcentrations,
-          if (valence != null) ...LabUnits.equivalentConcentrations,
-          ...rates,
-        ];
-      case AnalyteKind.massOnly:
-        return [...LabUnits.massConcentrations, ...rates];
-      case AnalyteKind.legacy:
-        return UnitRegistry.unitsFor(legacy!);
-      case AnalyteKind.enzyme:
-        return LabUnits.catalyticConcentrations;
-      case AnalyteKind.cellCount:
-        return LabUnits.cellConcentrations;
-      case AnalyteKind.pressure:
-        return LabUnits.pressures;
-      case AnalyteKind.temperature:
-        return LabUnits.temperatures;
-      case AnalyteKind.fraction:
-        return LabUnits.fractions;
-      case AnalyteKind.osmolality:
-        return LabUnits.osmolalities;
-      case AnalyteKind.clearance:
-        return LabUnits.bsaClearances;
-    }
-  }
-}
-
-const String _massOnlyNote =
-    'Masse molaire hétérogène ou non sourcée : seules les conversions massiques sont proposées '
-    '(pour une conversion molaire, utilisez le mode Unités avec une masse molaire saisie).';
+const String _massOnlyNote = massOnlyNote;
 
 /// Base d'analytes de Convert (backlog P1-11) : formules brutes, valences et
 /// natures. **Statut de toutes les entrées : NON VALIDÉ.**
 class AnalyteBase {
   AnalyteBase._();
 
-  static const _el = 'Électrolytes et minéraux';
-  static const _met = 'Métabolites';
-  static const _lip = 'Lipides';
-  static const _hor = 'Hormones';
-  static const _vit = 'Vitamines';
-  static const _tdm = 'Médicaments et toxiques';
-  static const _pro = 'Protéines et marqueurs (conversions massiques)';
-  static const _enz = 'Enzymes (activité catalytique)';
-  static const _hem = 'Hématologie';
-  static const _gaz = 'Gaz du sang, physiologie';
+  static const _el = catElectrolytes;
+  static const _met = catMetabolites;
+  static const _lip = catLipids;
+  static const _hor = catHormones;
+  static const _vit = catVitamins;
+  static const _tdm = catDrugs;
+  static const _pro = catProteins;
+  static const _enz = catEnzymes;
+  static const _hem = catHematology;
+  static const _gaz = catPhysiology;
 
-  static const List<LabAnalyte> all = [
+  static const List<LabAnalyte> _core = [
     // --- Électrolytes et minéraux ---
     LabAnalyte(id: 'sodium', name: 'Sodium (Na⁺)', category: _el, kind: AnalyteKind.molecular,
         formula: {'Na': 1}, formulaText: 'Na', valence: 1, urine24h: true),
@@ -336,6 +208,15 @@ class AnalyteBase {
     LabAnalyte(id: 'gfr', name: 'DFG (clairance rapportée à 1,73 m²)', category: _gaz, kind: AnalyteKind.clearance),
   ];
 
+  /// Toutes les entrées : base initiale puis ajouts (formules vérifiées
+  /// contre une source externe indépendante).
+  static const List<LabAnalyte> all = [..._core, ...additionalAnalytes];
+
+  /// Statut de validation d'un analyte (fiches de validation) : `NON VALIDÉ`
+  /// tant qu'aucune fiche complète n'existe pour sa version.
+  static EquationStatus statusOf(String id, {List<ValidationRecord> records = validationRecords}) =>
+      validationStatusFor('analyte:$id', 1, records: records);
+
   static LabAnalyte? byId(String id) {
     for (final a in all) {
       if (a.id == id) return a;
@@ -452,7 +333,7 @@ CalculationResult calculateAnalyteUnitConversion({
                 : k,
         v)),
     if (analyte.formulaText != null) 'Formule brute': analyte.formulaText!,
-    'Statut de la base': 'NON VALIDÉ',
+    'Statut de la base': AnalyteBase.statusOf(analyte.id).label,
   };
 
   final warnings = <CalculationWarning>[

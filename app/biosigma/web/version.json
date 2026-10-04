@@ -1,5 +1,5 @@
 {
-  "latest": "1.10.0",
+  "latest": "1.11.0",
   "url": "https://biosigma.komodi-labo.org",
-  "notes": "Convert étendu : toutes les unités SI et traditionnelles courantes (concentrations, enzymes, numération, pression, température, excrétion, DFG…) et plus de 80 analytes avec masse molaire calculée à partir de la formule brute. Base d'analytes non validée : à relire par le laboratoire."
+  "notes": "Convert : 186 analytes (oligo-éléments, vitamines, hormones, médicaments, enzymes…) dont les formules ont été contrôlées contre deux sources externes. Le statut « VALIDÉ » ne peut plus être affiché sans fiche de validation complète. Base d'analytes toujours à relire par le laboratoire."
 }

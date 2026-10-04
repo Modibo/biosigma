@@ -7,11 +7,13 @@ import '../lab/microbiology.dart';
 import '../lab/prepare.dart';
 import '../lab/quality.dart';
 import '../models/formula_meta.dart';
+import 'validation.dart';
 
 /// Statut de validation scientifique d'une équation (schéma E.3 du dossier).
 ///
-/// Aucune équation n'est `validated` tant qu'une fiche de validation signée
-/// n'existe pas (décision D-12 en attente) : toutes sont `notValidated`.
+/// Il est dérivé des fiches de validation (`validationRecords`) : une
+/// équation n'est `validated` que si une fiche complète existe pour sa
+/// version courante. Aucune fiche n'existe à ce jour : toutes sont `notValidated`.
 enum EquationStatus {
   notValidated('NON VALIDÉ'),
   validated('VALIDÉ'),
@@ -97,7 +99,7 @@ class EquationRegistry {
       family: family,
       version: 1,
       versionLabel: meta.version,
-      status: EquationStatus.notValidated,
+      status: validationStatusFor('${family}_${meta.id.toUpperCase()}_001', 1),
       fromCatalog: fromCatalog,
       meta: meta,
     );
