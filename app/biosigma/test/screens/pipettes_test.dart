@@ -136,4 +136,67 @@ void main() {
       expect(state.pipettes, isEmpty);
     });
   });
+
+  group('Planificateur de dilutions', () {
+    Future<AppState> withPipettes() async {
+      final state = await _state();
+      await state.savePipette(const Pipette(name: 'P100 (test)', minUl: 10, maxUl: 100, recommendedMinUl: 20));
+      await state.savePipette(const Pipette(name: 'P1000 (test)', minUl: 100, maxUl: 1000, recommendedMinUl: 200));
+      return state;
+    }
+
+    Future<void> plan(WidgetTester tester, String factor, String volume) async {
+      await tester.tap(find.text('Planificateur'));
+      await tester.pumpAndSettle();
+      final fields = find.byType(TextFormField);
+      await tester.enterText(fields.at(0), factor);
+      await tester.enterText(fields.at(1), volume);
+      await tester.tap(find.text('Planifier'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('F = 10 dans 1000 µL : une étape avec les bonnes pipettes', (tester) async {
+      await _pump(tester, await withPipettes(), const DiluteScreen());
+      await plan(tester, '10', '1000');
+      expect(find.textContaining('Stratégie proposée'), findsOneWidget);
+      expect(find.textContaining('Étape 1 — dilution 1/10'), findsOneWidget);
+      expect(find.textContaining('Prélever 100 µL de la solution mère avec P100 (test)'), findsOneWidget);
+      expect(find.textContaining('Ajouter 900 µL de diluant avec P1000 (test)'), findsOneWidget);
+      expect(find.textContaining('Stratégies écartées'), findsNothing);
+    });
+
+    testWidgets('F = 1000 : plusieurs étapes, et la stratégie à une étape est écartée avec sa raison',
+        (tester) async {
+      await _pump(tester, await withPipettes(), const DiluteScreen());
+      await plan(tester, '1000', '1000');
+      expect(find.textContaining('Étape 2'), findsWidgets);
+      expect(find.textContaining('Stratégies écartées et pourquoi'), findsOneWidget);
+      await tester.tap(find.textContaining('Stratégies écartées et pourquoi'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('inférieur au minimum'), findsOneWidget);
+    });
+
+    testWidgets('aucune stratégie réalisable : message bloquant et raisons visibles', (tester) async {
+      final state = await _state();
+      await state.savePipette(const Pipette(name: 'P1000 (test)', minUl: 100, maxUl: 1000, recommendedMinUl: 200));
+      await _pump(tester, state, const DiluteScreen());
+      await plan(tester, '100000', '1000');
+      expect(find.textContaining('Aucune stratégie réalisable'), findsOneWidget);
+      expect(find.textContaining('Stratégies écartées et pourquoi'), findsOneWidget);
+      expect(find.textContaining('Stratégie proposée'), findsNothing);
+    });
+
+    testWidgets('sans pipette : invitation à en enregistrer, aucun plan', (tester) async {
+      await _pump(tester, await _state(), const DiluteScreen());
+      await plan(tester, '10', '1000');
+      expect(find.textContaining('Aucune pipette enregistrée : ajoutez-les dans Réglages'), findsOneWidget);
+      expect(find.textContaining('Stratégie proposée'), findsNothing);
+    });
+
+    testWidgets('facteur ≤ 1 : message sous le champ', (tester) async {
+      await _pump(tester, await withPipettes(), const DiluteScreen());
+      await plan(tester, '1', '1000');
+      expect(find.textContaining('supérieur à 1'), findsOneWidget);
+    });
+  });
 }

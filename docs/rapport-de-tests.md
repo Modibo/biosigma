@@ -722,3 +722,21 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
 - Limites : classement heuristique (aucun jeu de requêtes réelles de la section 41 du cahier des charges n'a été fourni) ;
   synonymes écrits à la main, non exhaustifs ; pas de correction de fautes de frappe.
 
+## Planificateur de dilutions (2026-10-04, backlog P5-04 / T-PIP-003)
+
+- Moteur (`dilution_planner.dart`) : **15 tests** (moteur : 454 au total). Une fonction de vérification **indépendante du
+  planificateur** contrôle chaque stratégie : produit des facteurs = F, prélèvement = V/f, diluant = V − prélèvement,
+  tube intermédiaire ≥ prélèvement suivant + volume mort, concentration finale = C0/F (produit des t/V), classe de pipette
+  ≥ « recommandé » (sauf option), volume final respecté.
+- Cas couverts : une étape (F = 10 dans 1000 µL : 100 µL P100 + 900 µL P1000), non entier (2,5), plusieurs étapes avec rejet
+  motivé de l'étape unique (1 µL < 10 µL), volume mort 50 µL, volumes « possibles » refusés puis autorisés, aucune
+  stratégie (P1000 seule, F = 10⁵) avec avertissement bloquant et aide, diluant supérieur à la plus grande pipette,
+  préférence pour une pipette validée, vérification périmée signalée, refus de saisie, performance (F = 10⁶, 4 étapes :
+  ≈ 1,3 s sur machine de développement ; plus long dans un navigateur, d'où l'indicateur d'attente).
+- Application : **5 tests de widgets** (99 au total) : une étape, plusieurs étapes avec raison du rejet, aucune stratégie,
+  sans pipette, facteur ≤ 1.
+- **Limites** : recherche bornée (facteurs entiers pour les premières étapes, dernier facteur déduit ; 3 étapes jusqu'à
+  200 × 200, 4 étapes jusqu'à 30 par facteur) : « la plus simple parmi celles explorées », pas une optimalité prouvée ;
+  choix du volume des tubes intermédiaires par grille (glouton, de la dernière étape à la première) ; pas de pipetages
+  multiples ; exactitude et justesse des pipettes non modélisées.
+

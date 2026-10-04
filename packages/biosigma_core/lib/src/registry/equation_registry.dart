@@ -3,6 +3,7 @@ import '../lab/analyte_base.dart' show analyteConvertMeta;
 import '../lab/convert.dart';
 import '../lab/count.dart';
 import '../lab/dilution.dart';
+import '../lab/dilution_planner.dart' show dilutionPlannerMeta;
 import '../lab/microbiology.dart';
 import '../lab/prepare.dart';
 import '../lab/quality.dart';
@@ -80,6 +81,7 @@ class EquationRegistry {
     dilutionMeta,
     serialDilutionMeta,
     outOfRangeDilutionMeta,
+    dilutionPlannerMeta,
     solutionPreparationMeta,
     percentSolutionMeta,
     bufferMeta,

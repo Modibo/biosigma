@@ -249,7 +249,13 @@ Deux modules sont disponibles ; ils ne font pas partie du catalogue des 61 calcu
     `docs/biosigma-lab/relecture-analytes.md` liste chaque analyte pour validation. Les calculateurs existants gardent leurs facteurs arrondis ;
     l'écart éventuel est indiqué sous le résultat.
 - **Dilute** : dilution simple (C1·V1 = C2·V2), dilutions en série, résultat après dilution avec
-  contrôle de l'intervalle de linéarité saisi par l'utilisateur.
+  contrôle de l'intervalle de linéarité saisi par l'utilisateur, et **planificateur** : à partir d'un facteur
+  de dilution, d'un volume final et de **vos pipettes**, il cherche la stratégie réalisable la plus simple
+  (1 à 4 étapes, volume mort facultatif), indique pour chaque volume la pipette à utiliser et sa classe
+  (validé / recommandé / possible), propose des variantes et **explique chaque stratégie écartée** (« 1 µL est
+  inférieur au minimum de votre pipette la plus fine »). Si rien n'est réalisable, il le dit et indique le
+  volume final minimal pour une étape. Les volumes supérieurs à votre plus grande pipette sont refusés
+  (pas de pipetages multiples). Calcul théorique : exactitude réelle, volume mort réel et mélange non modélisés.
 
 Cinq autres modules sont disponibles. Pour chacun, **toute valeur qui exigerait une source n'est pas
 embarquée : l'utilisateur la saisit** (et le résultat le rappelle).

@@ -7,6 +7,7 @@ import '../../services/number_format_service.dart';
 import '../../state/app_state.dart';
 import '../../widgets/disclaimer_banner.dart';
 import '../../widgets/lab_widgets.dart';
+import '../../widgets/dilution_plan_view.dart';
 import '../../widgets/numeric_unit_field.dart';
 import '../../widgets/pipette_widgets.dart';
 
@@ -19,7 +20,7 @@ class DiluteScreen extends StatefulWidget {
   State<DiluteScreen> createState() => _DiluteScreenState();
 }
 
-enum _Mode { simple, series, linearity }
+enum _Mode { simple, series, linearity, planner }
 
 class _DiluteScreenState extends State<DiluteScreen> {
   _Mode _mode = _Mode.simple;
@@ -42,6 +43,16 @@ class _DiluteScreenState extends State<DiluteScreen> {
   double? _finalVolume;
   String _volumeUnit = 'mL';
 
+  // Planificateur.
+  double? _planFactor;
+  double? _planVolume;
+  String _planVolumeUnit = 'µL';
+  double? _planDead;
+  int _planMaxSteps = 3;
+  bool _planAllowDiscouraged = false;
+  DilutionPlanResult? _plan;
+  bool _planning = false;
+
   // Hors linéarité.
   double? _diluted;
   String _resultUnit = 'U/L';
@@ -62,9 +73,47 @@ class _DiluteScreenState extends State<DiluteScreen> {
     }
   }
 
+  Future<void> _runPlanner(AppState appState) async {
+    setState(() {
+      _planning = true;
+      _plan = null;
+      _result = null;
+      _errors = {};
+    });
+    // laisse l'interface afficher « calcul en cours » avant la recherche
+    await Future<void>.delayed(const Duration(milliseconds: 30));
+    try {
+      final unit = LabUnits.parse(_planVolumeUnit);
+      final volumeUl = _planVolume == null || unit == null ? _planVolume : _planVolume! * unit.factorToBase * 1e6;
+      final plan = planDilution(
+        factor: _planFactor,
+        finalVolumeUl: volumeUl,
+        pipettes: appState.pipettes,
+        now: DateTime.now(),
+        maxSteps: _planMaxSteps,
+        deadVolumeUl: _planDead ?? 0,
+        allowDiscouraged: _planAllowDiscouraged,
+      );
+      if (!mounted) return;
+      setState(() {
+        _plan = plan;
+        _result = plan.result;
+        _planning = false;
+      });
+    } on CalculationInputException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _errors = fieldErrorMap(e);
+        _planning = false;
+      });
+    }
+  }
+
   void _calculate(AppSettings settings) {
     _run(() {
       switch (_mode) {
+        case _Mode.planner:
+          break; // le planificateur a son propre bouton (asynchrone)
         case _Mode.simple:
           final r = calculateDilution(
             c1: _simpleValues['c1'], c1Unit: _simpleUnits['c1']!,
@@ -129,7 +178,7 @@ class _DiluteScreenState extends State<DiluteScreen> {
   /// Volumes à pipeter (µL) déduits du résultat courant.
   Map<String, double> _pipetteVolumes() {
     final r = _result;
-    if (r == null || _mode == _Mode.linearity) return const {};
+    if (r == null || _mode == _Mode.linearity || _mode == _Mode.planner) return const {};
     double? ul(double? v, String unit) {
       final u = LabUnits.parse(unit);
       return v == null || u == null || u.dimension != LabDimension.volume ? null : v * u.factorToBase * 1e6;
@@ -161,6 +210,8 @@ class _DiluteScreenState extends State<DiluteScreen> {
         _stock = _factor = _tubes = _finalVolume = null;
         _diluted = _totalFactorDirect = _linMin = _linMax = null;
         _stepsText = '';
+        _planFactor = _planVolume = _planDead = null;
+        _plan = null;
         _errors = {};
         _result = null;
         _series = null;
@@ -253,6 +304,45 @@ class _DiluteScreenState extends State<DiluteScreen> {
             (v) => _linMax = v, sep),
       ]);
 
+  Widget _plannerForm(DecimalSeparator sep, AppState appState) => Column(children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Text(
+            'Trouve comment réaliser la dilution avec VOS pipettes (Réglages) : une ou plusieurs étapes, '
+            'en vérifiant que chaque volume est réalisable. Seuils et vérifications : ceux que vous avez saisis.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+        if (appState.pipettes.isEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text(
+              'Aucune pipette enregistrée : ajoutez-les dans Réglages pour utiliser le planificateur.',
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        _number('factor', 'Facteur de dilution visé (F)', _planFactor, (v) => _planFactor = v, sep,
+            help: 'F = C départ / C final (ex. 1000 pour une dilution au 1/1000).'),
+        _number('finalVolume', 'Volume final souhaité', _planVolume, (v) => _planVolume = v, sep,
+            units: LabUnits.volumes, unit: _planVolumeUnit, onUnit: (u) => _planVolumeUnit = u),
+        _number('deadVolume', 'Volume mort à conserver dans les tubes intermédiaires (µL) — facultatif',
+            _planDead, (v) => _planDead = v, sep),
+        LabDropdown(
+          label: 'Nombre d\'étapes maximal',
+          value: '$_planMaxSteps',
+          options: const ['1', '2', '3', '4'],
+          errorText: _errors['maxSteps'],
+          onChanged: (v) => setState(() => _planMaxSteps = int.parse(v)),
+        ),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Autoriser les volumes « possibles (déconseillés) »'),
+          subtitle: const Text('Sous votre seuil recommandé, mais dans la plage de la pipette.'),
+          value: _planAllowDiscouraged,
+          onChanged: (v) => setState(() => _planAllowDiscouraged = v),
+        ),
+      ]);
+
   Widget _seriesTable(SerialDilutionResult s, DecimalSeparator sep) {
     String f(double v, {int? d}) =>
         NumberFormatService.format(v, sep, precision: d ?? LabUnits.decimalsForSignificant(v));
@@ -289,7 +379,8 @@ class _DiluteScreenState extends State<DiluteScreen> {
     final sep = appState.settings.decimalSeparator;
     final knownIds = {
       'c1', 'c2', 'v1', 'v2', 'stockConcentration', 'factor', 'tubes', 'finalVolume',
-      'dilutedResult', 'factors', 'totalFactor', 'linearityMin', 'linearityMax',
+      'dilutedResult', 'factors', 'totalFactor', 'linearityMin', 'linearityMax', 'maxSteps', 'deadVolume',
+      'pipettes',
     };
     final general = _errors.entries.where((e) => !knownIds.contains(e.key)).map((e) => e.value);
 
@@ -302,10 +393,12 @@ class _DiluteScreenState extends State<DiluteScreen> {
             const DisclaimerBanner(),
             const SizedBox(height: 12),
             SegmentedButton<_Mode>(
+              showSelectedIcon: false,
               segments: const [
                 ButtonSegment(value: _Mode.simple, label: Text('Simple')),
                 ButtonSegment(value: _Mode.series, label: Text('En série')),
                 ButtonSegment(value: _Mode.linearity, label: Text('Hors linéarité')),
+                ButtonSegment(value: _Mode.planner, label: Text('Planificateur')),
               ],
               selected: {_mode},
               onSelectionChanged: (s) => setState(() {
@@ -320,17 +413,31 @@ class _DiluteScreenState extends State<DiluteScreen> {
               _Mode.simple => _simpleForm(sep),
               _Mode.series => _seriesForm(sep),
               _Mode.linearity => _linearityForm(sep),
+              _Mode.planner => _plannerForm(sep, appState),
             },
             for (final message in general) LabErrorText(message),
             const SizedBox(height: 12),
             Wrap(spacing: 8, runSpacing: 8, children: [
               FilledButton.icon(
-                  onPressed: () => _calculate(appState.settings),
+                  onPressed: _planning
+                      ? null
+                      : () => _mode == _Mode.planner ? _runPlanner(appState) : _calculate(appState.settings),
                   icon: const Icon(Icons.calculate),
-                  label: const Text('Calculer')),
+                  label: Text(_mode == _Mode.planner ? 'Planifier' : 'Calculer')),
               OutlinedButton.icon(
                   onPressed: _reset, icon: const Icon(Icons.refresh), label: const Text('Nouvelle saisie')),
             ]),
+            if (_planning) const Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            if (_plan != null && _mode == _Mode.planner) ...[
+              const SizedBox(height: 16),
+              if (_plan!.best != null)
+                DilutionPlanView(
+                    plan: _plan!.best!, separator: sep, title: 'Stratégie proposée (la plus simple réalisable)'),
+              DilutionPlanDetails(result: _plan!, separator: sep),
+            ],
             if (_result != null) ...[
               const SizedBox(height: 16),
               LabResultCard(
