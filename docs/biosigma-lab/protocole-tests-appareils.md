@@ -64,6 +64,10 @@ Problèmes : (description, capture d'écran si possible)
 - Fixer l'**objectif de démarrage** de la décision D-14 sur la mesure du téléphone de référence.
 - Mettre à jour `accessibilite.md` et `performance.md`, et passer P6-03 à « fait » **seulement pour les appareils réellement testés**.
 
+## 4 bis. Résultats déjà reçus
+
+Voir [`resultats-tests-appareils.md`](resultats-tests-appareils.md) (premier essai : iPhone / Safari, déclaré sans problème).
+
 ## 5. Limites
 
 - Ce protocole ne remplace pas un test de recette formel ; il ne couvre pas Android et iOS **natifs** (applications installées depuis un magasin) : ils ne sont pas compilés, faute de SDK sur la machine de développement.
