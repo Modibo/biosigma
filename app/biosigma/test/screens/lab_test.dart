@@ -291,4 +291,59 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.textContaining('Aucun module reconnu'), findsOneWidget);
   });
+
+  testWidgets('Convert : choix de la grandeur « Température » → 37 °C = 98,60 °F', (tester) async {
+    await _pump(tester, const ConvertScreen());
+    await tester.tap(find.text('Concentration (masse, mol, éq par volume)'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Température').last);
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextFormField).at(0), '37');
+    await tester.tap(find.text('Convertir'));
+    await tester.pumpAndSettle();
+    expect(find.text('98,60'), findsOneWidget);
+    expect(find.text('Masse molaire (g/mol)'), findsNothing, reason: 'aucune masse molaire demandée');
+  });
+
+  testWidgets('Convert : un enzyme n\'exige aucune masse molaire (40 U/L → 0,6667 µkat/L)', (tester) async {
+    await _pump(tester, const ConvertScreen());
+    await tester.tap(find.text('Concentration (masse, mol, éq par volume)'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Activité enzymatique (par volume)').last);
+    await tester.pumpAndSettle();
+    expect(find.text('Masse molaire (g/mol)'), findsNothing);
+    await tester.enterText(find.byType(TextFormField).at(0), '40');
+    await tester.tap(find.text('Convertir'));
+    await tester.pumpAndSettle();
+    expect(find.text('Résultat'), findsOneWidget);
+  });
+
+  testWidgets('Convert analytes : glucose par défaut, masse molaire calculée affichée', (tester) async {
+    await _pump(tester, const ConvertScreen());
+    await tester.tap(find.text('Analyte'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('C6H12O6'), findsOneWidget);
+    expect(find.textContaining('180,156 g/mol'), findsOneWidget);
+    expect(find.textContaining('NON VALIDÉ'), findsOneWidget);
+    await tester.enterText(find.byType(TextFormField).at(0), '100');
+    await tester.tap(find.text('Convertir'));
+    await tester.pumpAndSettle();
+    expect(find.text('5,551'), findsOneWidget);
+    expect(find.textContaining('facteur arrondi'), findsOneWidget);
+  });
+
+  testWidgets('Convert analytes : changer d\'analyte met à jour la formule et les unités', (tester) async {
+    await _pump(tester, const ConvertScreen());
+    await tester.tap(find.text('Analyte'));
+    await tester.pumpAndSettle();
+    // filtre par saisie (le menu est long : on tape le début du nom)
+    await tester.enterText(
+        find.descendant(of: find.byType(DropdownMenu<String>), matching: find.byType(TextField)), 'Sodium');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Sodium (Na⁺)').last);
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Formule brute : Na'), findsOneWidget);
+    expect(find.textContaining('valence 1'), findsOneWidget);
+    expect(find.textContaining('C6H12O6'), findsNothing);
+  });
 }

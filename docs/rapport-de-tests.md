@@ -661,3 +661,24 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
   « correction d'équation → enregistrements signalés » ; version d'équation > 1 (aucune équation n'a encore
   changé depuis l'introduction du registre) ; statut VALIDÉ (D-12).
 
+## Extension de Convert : unités et analytes (2026-10-04)
+
+- Moteur : unités étendues (activité catalytique, pression, température affine, numération cellulaire,
+  fraction, osmolalité, longueur, temps, excrétion par temps, débits, clairance, mg%, lb/oz) ; base de
+  **80+ analytes** (`analyte_base.dart`) ; **35 tests ajoutés** (386 au total pour le moteur). Application :
+  85 tests (+4). Golden master inchangé : les 59 calculs et leurs facteurs arrondis ne sont pas touchés.
+- **Masses molaires calculées, jamais saisies de mémoire** : somme des poids atomiques IUPAC abrégés × formule
+  brute. Les valeurs attendues des tests sont des sommes refaites à la main (glucose 180,156 ; créatinine 113,120 ;
+  cholestérol 386,664 ; triglycérides 885,453 [convention de la trioléine] ; BUN 28,014…).
+- Propriété vérifiée sur **toutes** les unités de chaque famille et sur **tous** les analytes : l'aller-retour redonne
+  la valeur de départ (plus de 5 000 paires).
+- **Écart avec les calculateurs** : Convert (formule exacte) donne par ex. 90 mg/dL de glucose = 4,9957 mmol/L
+  alors que les calculateurs utilisent le facteur arrondi 0,0555 (4,995). L'écart (≈ 0,01 %) est affiché
+  sous le résultat ; les calculateurs ne sont pas modifiés (aucun résultat existant ne change).
+- **Choix de prudence** : triglycérides = convention de la trioléine ; phosphate exprimé en P (pas d'équivalents) ;
+  fer sans équivalents (valence ambiguë) ; lactate en acide lactique ; D-dimères et troponine : unités FEU/DDU et
+  méthodes non convertibles entre elles (mise en garde). Insuline et HbA1c : facteurs du moteur existant.
+- **Non fait** : hémoglobine, protéines, hormones peptidiques en molaire (masse molaire hétérogène ou non
+  sourcée) ; unités propres aux dosages (UI d'insuline µU, UI de TSH) ; conversions de médicaments sous forme de sels.
+  Aucune valeur n'a été relue par un biologiste responsable.
+

@@ -36,8 +36,10 @@ const FormulaMeta convertMeta = FormulaMeta(
   limitations: [
     'Aucune masse molaire n\'est embarquée dans cette conversion : elle est '
         'toujours saisie par l\'utilisateur, qui en est responsable.',
-    'Les conversions propres à un analyte (ex. créatinine mg/dL ↔ µmol/L) utilisent les '
-        'facteurs arrondis du moteur existant, non validés par un biologiste responsable.',
+    'Les conversions propres à un analyte utilisent la base d\'analytes (masses molaires calculées '
+        'à partir de la formule brute), non validée par un biologiste responsable.',
+    'Unités non SI (mmHg, Torr, atm, cmH2O, lb, oz, in, ft, °F, U) : facteurs exacts par '
+        'définition conventionnelle, à relire par le laboratoire.',
   ],
   displayPrecision: 4,
   helpText: 'Choisissez une valeur, son unité de départ et l\'unité d\'arrivée.',
@@ -77,27 +79,27 @@ CalculationResult calculateConversion({
   final from = LabUnits.require(fromUnit, 'fromUnit', 'l\'unité de départ');
   final to = LabUnits.require(toUnit, 'toUnit', 'l\'unité d\'arrivée');
 
-  final fromIsConc = from.isConcentration;
-  final toIsConc = to.isConcentration;
-  final fromVolume = from.dimension == LabDimension.volume;
-  final toVolume = to.dimension == LabDimension.volume;
-  if (fromIsConc != toIsConc || fromVolume != toVolume) {
+  if (from.family != to.family) {
     throw CalculationInputException([
       FieldError(
         fieldId: 'toUnit',
         message: 'Conversion impossible : « $fromUnit » (${from.dimension.label}) et '
             '« $toUnit » (${to.dimension.label}) ne sont pas comparables '
-            '(une concentration ne se convertit pas en quantité ni en volume).',
+            '(une concentration ne se convertit pas en quantité, en volume ou en temps).',
       ),
     ]);
   }
 
   final fromKind = from.quantityKind;
   final toKind = to.quantityKind;
-  final needsMolarMass = !fromVolume &&
+  // Seules les familles quantité / concentration / excrétion changent de
+  // nature (masse, mol, éq) ; l'activité catalytique ne se convertit jamais
+  // en masse ni en mol.
+  final natureChangeable = from.family == 'quantity' || from.family == 'concentration' || from.family == 'rate';
+  final needsMolarMass = natureChangeable &&
       fromKind != toKind &&
       (fromKind == LabDimension.mass || toKind == LabDimension.mass);
-  final needsValence = !fromVolume &&
+  final needsValence = natureChangeable &&
       fromKind != toKind &&
       (fromKind == LabDimension.equivalent || toKind == LabDimension.equivalent);
 
@@ -120,17 +122,22 @@ CalculationResult calculateConversion({
   }
   Validation.raiseIfAny(errors);
 
-  final base = value! * from.factorToBase;
+  final base = value! * from.factorToBase + from.offsetToBase;
+  if (from.dimension == LabDimension.temperature && base < 0) {
+    throw CalculationInputException(const [
+      FieldError(fieldId: 'value', message: 'Température inférieure au zéro absolu : valeur impossible.'),
+    ]);
+  }
   final double converted;
-  if (fromKind == toKind) {
-    converted = base / to.factorToBase;
+  if (fromKind == toKind || !natureChangeable) {
+    converted = (base - to.offsetToBase) / to.factorToBase;
   } else {
     final mol = _toMol(base, fromKind, molarMassGPerMol, valence);
     converted = _fromMol(mol, toKind, molarMassGPerMol, valence) / to.factorToBase;
   }
 
-  final method = fromKind == toKind
-      ? 'mise à l\'échelle par préfixes SI'
+  final method = fromKind == toKind || !natureChangeable
+      ? 'conversion par les définitions des unités'
       : 'passage par la quantité de matière'
           '${needsMolarMass ? ' avec la masse molaire saisie' : ''}'
           '${needsMolarMass && needsValence ? ' et' : ''}'

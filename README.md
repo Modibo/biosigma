@@ -233,11 +233,19 @@ consultables hors connexion depuis l'écran « Références et limites » de l'a
 
 Deux modules sont disponibles ; ils ne font pas partie du catalogue des 59 calculs cliniques.
 
-- **Convert** : conversion de grandeurs par préfixes SI (masse, volume, quantité de matière,
-  équivalents, concentrations). Pour changer de nature (masse → mol → équivalents), la **masse molaire
-  et la valence sont saisies par l'utilisateur** : BioSigma n'embarque aucune masse molaire nouvelle.
-  Un second mode convertit les 11 analytes cliniques déjà gérés, avec leurs facteurs existants
-  (arrondis, non validés).
+- **Convert** : deux modes.
+  - *Unités* : toutes les unités SI et traditionnelles courantes, regroupées par grandeur — concentrations
+    (mg/dL, g/L, mmol/L, µmol/L, mEq/L, mg%…), quantités, activité enzymatique (U/L ↔ µkat/L), numération
+    cellulaire (×10⁹/L, /µL, /mm³…), pression (mmHg, kPa, Torr, atm, cmH2O), température (°C, °F, K),
+    fraction (%, L/L), osmolalité, excrétion par temps (g/24 h, mmol/24 h), débits, DFG (mL/min ↔ mL/s
+    pour 1,73 m²), longueurs (cm, in, ft), masses (kg, lb, oz). Les facteurs sont des **définitions**.
+    Pour passer d'une masse à des moles ou à des équivalents, masse molaire et valence sont saisies.
+  - *Analyte* : plus de 80 analytes et grandeurs (électrolytes, métabolites, lipides, hormones, vitamines,
+    médicaments, protéines, enzymes, hématologie, gaz du sang). La **masse molaire est calculée** à partir de
+    la formule brute et des poids atomiques IUPAC abrégés (aucune n'est saisie de mémoire). Les protéines
+    et marqueurs à masse molaire hétérogène ne proposent que des conversions massiques. **Toute la base est
+    « NON VALIDÉ »** (décision D-12 en attente). Les calculateurs existants gardent leurs facteurs arrondis ;
+    l'écart éventuel est indiqué sous le résultat.
 - **Dilute** : dilution simple (C1·V1 = C2·V2), dilutions en série, résultat après dilution avec
   contrôle de l'intervalle de linéarité saisi par l'utilisateur.
 

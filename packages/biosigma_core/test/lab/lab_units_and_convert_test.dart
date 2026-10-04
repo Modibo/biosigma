@@ -39,7 +39,7 @@ void main() {
     });
 
     test('refuse tout ce qui est ambigu ou inconnu', () {
-      for (final s in ['', 'xyz', 'mg/g', 'mL/L', 'mg/mg', 'g/', '/L', 'dmol', 'kL', 'mg/dL/s']) {
+      for (final s in ['', 'xyz', 'mg/g', 'mL/L', 'mg/mg', 'g/', 'dmol', 'kL', 'mg/dL/s']) {
         expect(LabUnits.parse(s), isNull, reason: s);
       }
     });
