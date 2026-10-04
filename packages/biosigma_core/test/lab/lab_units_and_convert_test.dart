@@ -183,8 +183,8 @@ void main() {
     });
   });
 
-  test('les outils laboratoire ne sont pas dans le catalogue des 59 calculs', () {
-    expect(CalculatorCatalog.all.length, 59);
+  test('les outils laboratoire ne sont pas dans le catalogue des calculs cliniques', () {
+    expect(CalculatorCatalog.all.length, 61);
     expect(CalculatorCatalog.byCategory(CalculatorCategory.laboratory), isEmpty);
   });
 }

@@ -50,6 +50,7 @@ export 'src/calculators/hemostasis/caprini_score.dart';
 export 'src/calculators/hematology/microcytic_indices.dart';
 export 'src/calculators/hematology/reticulocytes.dart';
 export 'src/calculators/hematology/inflammation_indices.dart';
+export 'src/calculators/hematology/blood_count_indices.dart';
 
 export 'src/lab/lab_units.dart';
 export 'src/lab/convert.dart';

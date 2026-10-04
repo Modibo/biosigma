@@ -1,6 +1,6 @@
 // « Golden master » de non-régression (backlog P0-02).
 //
-// Fige, pour les 59 équations du catalogue, les résultats, unités, entrées
+// Fige, pour les 61 équations du catalogue, les résultats, unités, entrées
 // échoïsées et avertissements produits par le code à la version
 // `baseline-v1.6.0` (commit cf1beae). Ce n'est PAS une validation
 // scientifique : toute différence signale une modification — voulue ou
@@ -198,11 +198,11 @@ void main() {
     for (final c in cases) c.id: {'inputs': c.inputs, 'outcome': _outcome(c)},
   };
 
-  test('le golden master couvre les 59 équations du catalogue', () {
+  test('le golden master couvre les 61 équations du catalogue', () {
     final covered = {for (final c in cases) c.id.split('#').first};
     final missing = CalculatorCatalog.all.map((m) => m.id).where((id) => !covered.contains(id));
     expect(missing, isEmpty, reason: 'équations sans cas de référence');
-    expect(CalculatorCatalog.all.length, 59);
+    expect(CalculatorCatalog.all.length, 61);
   });
 
   test('les résultats actuels sont identiques au golden master baseline-v1.6.0', () {

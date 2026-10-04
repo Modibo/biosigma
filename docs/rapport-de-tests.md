@@ -699,3 +699,15 @@ session) ; le comportement sur Safari/iOS et sur anciens Android WebView n'a pas
   **Aucune fiche n'existe : tout reste « NON VALIDÉ ».**
 - Tests : **moteur 398** (+12), **application 85**. Golden master inchangé.
 
+## Hématologie : constantes érythrocytaires et valeurs absolues (2026-10-04, backlog P3-01)
+
+- Deux équations ajoutées au catalogue (59 → **61**) : **VGM, TCMH, CCMH** (à partir de Hb, hématocrite, GR) et **ANC, ALC**
+  (à partir des leucocytes et de la formule). Ce sont des **relations de définition** : aucun intervalle de référence ni seuil
+  de neutropénie/lymphopénie n'est appliqué.
+- Moteur : **12 tests ajoutés** (422 au total), valeurs calculées à la main (Hb 15, Ht 45, GR 5 → VGM 90, TCMH 30, CCMH 33,33 ;
+  8 ×10⁹/L, neutrophiles 60 %, bandes 5 %, lymphocytes 30 % → ANC 5,2, ALC 2,4). Somme de pourcentages > 100 % : avertissement bloquant.
+- **Golden master mis à jour par ajout explicite** : 142 → 144 cas ; vérifié par comparaison de l'ancien et du nouveau fichier
+  que **aucun cas existant n'est modifié ni supprimé** (seuls `red_cell_indices` et `absolute_leukocyte_counts` s'ajoutent).
+- Rejeu T-TRC-001 étendu : 59 équations génériques (57 + 2).
+- Citation primaire des définitions (attribuées à Wintrobe) **non vérifiée** : signalée « à compléter » dans la fiche de chaque équation.
+

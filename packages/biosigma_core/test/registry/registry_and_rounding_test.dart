@@ -3,14 +3,14 @@ import 'package:test/test.dart';
 
 void main() {
   group('Registre d\'équations (T-REG-003)', () {
-    test('les 59 identifiants historiques résolvent tous', () {
+    test('les 59 identifiants historiques et les 2 ajouts résolvent tous', () {
       for (final meta in CalculatorCatalog.all) {
         final record = EquationRegistry.resolve(meta.id);
         expect(record, isNotNull, reason: meta.id);
         expect(record!.legacyId, meta.id);
         expect(record.fromCatalog, isTrue);
       }
-      expect(CalculatorCatalog.all.length, 59);
+      expect(CalculatorCatalog.all.length, 61);
     });
 
     test('identifiant stable et historique résolvent vers la même entrée', () {

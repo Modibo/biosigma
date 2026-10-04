@@ -153,4 +153,8 @@ final Map<String, Map<String, Object>> goldenInputs = {
   'reticulocyte_indices_panel': {'reticulocytes': n(2.0), 'rbc': n(3.0), 'hematocrit': n(35)},
   'sii_index': {'platelets': n(250), 'neutrophils': n(6), 'lymphocytes': n(2)},
   'siri_index': {'neutrophils': n(6), 'monocytes': n(0.8), 'lymphocytes': n(2)},
+  'red_cell_indices': {'hemoglobin': n(15), 'hematocrit': n(45), 'rbc': n(5)},
+  'absolute_leukocyte_counts': {
+    'wbc': n(8), 'neutrophils': n(60), 'bands': n(5), 'lymphocytes': n(30),
+  },
 };

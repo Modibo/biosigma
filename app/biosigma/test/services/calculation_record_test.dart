@@ -64,7 +64,7 @@ void main() {
         }
         replayed++;
       }
-      expect(replayed, 57);
+      expect(replayed, 59);
     });
 
     test('l\'enregistrement porte équation, version, application et règle d\'arrondi', () {

@@ -30,14 +30,14 @@ BioSigma/
   packages/biosigma_core/   # Moteur de calcul PUR — aucune dépendance Flutter
     lib/src/models/         # Quantity, CalculationResult, FormulaMeta, Reference, erreurs
     lib/src/units/          # Bibliothèque centrale de conversion d'unités (Analyte, UnitRegistry)
-    lib/src/calculators/    # 59 fonctions de calcul pures, groupées par domaine :
+    lib/src/calculators/    # 61 fonctions de calcul pures, groupées par domaine :
       renal/  metabolic/  ionogram/  hemostasis/  hematology/
     lib/src/catalog.dart    # Registre déclaratif des métadonnées (recherche, catégories)
     test/                   # 240 tests unitaires (dart test)
   app/biosigma/              # Application Flutter
     lib/models/               Contrat déclaratif du formulaire (CalculatorDefinition, champs),
                                questions/tentatives d'entraînement
-    lib/data/                  Câblage des 59 calculateurs + banques de questions par domaine
+    lib/data/                  Câblage des 61 calculateurs + banques de questions par domaine
     lib/screens/               root_tab_screen (barre de navigation à 5 onglets), calculateur
                                 générique, panel CKD-EPI, scores guidés (ISTH-CIVD, 4Ts),
                                 entraînement, références, réglages, à propos
@@ -231,7 +231,7 @@ consultables hors connexion depuis l'écran « Références et limites » de l'a
 
 ## Onglet Lab (phase 1 de BioSigma Lab)
 
-Deux modules sont disponibles ; ils ne font pas partie du catalogue des 59 calculs cliniques.
+Deux modules sont disponibles ; ils ne font pas partie du catalogue des 61 calculs cliniques.
 
 - **Convert** : deux modes.
   - *Unités* : toutes les unités SI et traditionnelles courantes, regroupées par grandeur — concentrations
@@ -273,7 +273,7 @@ et à valider (décision D-12).
 ## Socle de traçabilité (phase 1)
 
 - **Registre d'équations** (`EquationRegistry`) : chaque équation a un identifiant stable
-  `FAMILLE_NOM_001`, une version entière et un statut. Les 59 identifiants historiques restent valides
+  `FAMILLE_NOM_001`, une version entière et un statut. Les 59 identifiants historiques restent valides (61 équations au catalogue)
   (alias). **Toutes sont « NON VALIDÉ »** : le statut « VALIDÉ » exige une fiche de validation (décision D-12).
 - **Politique d'arrondi `FMT_ARRONDI_001`** : calcul en double précision sans arrondi intermédiaire, un
   seul arrondi à l'affichage (documenté et testé).
@@ -348,8 +348,8 @@ suivants nécessitent une décision et une validation propres à chaque laborato
 
 | Élément | État |
 |---|---|
-| Moteur de calcul pur (59 calculs, conversions, métadonnées, 5 domaines dont hématologie, interprétations sourcées) | ✅ Construit, `dart analyze` propre, 240/240 tests verts |
-| Application Flutter (accueil, recherche, favoris, 59 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 9/9 tests widget verts, vérifiée visuellement (bureau et mobile) |
+| Moteur de calcul pur (61 calculs, conversions, métadonnées, 5 domaines dont hématologie, interprétations sourcées) | ✅ Construit, `dart analyze` propre, 240/240 tests verts |
+| Application Flutter (accueil, recherche, favoris, 61 calculateurs génériques, panel CKD-EPI, scores guidés, réglages, références, historique, seuils locaux, accessibilité, thème clair/sombre) | ✅ Construite, `flutter analyze` propre, 9/9 tests widget verts, vérifiée visuellement (bureau et mobile) |
 | Navigation par onglets, en haut de l'écran (Calcul, Entraînement, Références, Réglages, À propos) | ✅ `TabBar` sous une `AppBar` partagée (logo visible en permanence, y compris à l'ouverture de chaque onglet), testée (parcours bout en bout par onglet) |
 | Interprétations toujours affichées, sourcées par société savante (KDIGO, ESC/EAS, ADA, AASLD, WHO, ISTH...) ; honnêtement signalées comme non consensuelles quand aucune n'existe (SII, SIRI, HOMA-IR, QUICKI, TyG...) | ✅ `CalculationWarning` (sévérité `info`) sur chaque calculateur concerné, jamais masqué |
 | SCORE2 (risque cardiovasculaire ESC 2021, 4 régions européennes) | ✅ Coefficients vérifiés par recherche web contre le papier original et deux implémentations indépendantes (résultats reproduits au dixième de %) |

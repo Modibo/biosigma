@@ -244,6 +244,73 @@ final CalculatorDefinition siriIndexDefinition = CalculatorDefinition(
   ),
 );
 
+/// Constantes érythrocytaires : VGM, TCMH, CCMH.
+final CalculatorDefinition redCellIndicesDefinition = CalculatorDefinition(
+  meta: redCellIndicesMeta,
+  fields: const [
+    CalculatorFieldSpec(
+      id: 'hemoglobin',
+      label: 'Hémoglobine',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: 'g/dL',
+    ),
+    CalculatorFieldSpec(
+      id: 'hematocrit',
+      label: 'Hématocrite',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: '%',
+    ),
+    CalculatorFieldSpec(
+      id: 'rbc',
+      label: 'GR (numération des globules rouges)',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: '×10¹²/L',
+    ),
+  ],
+  compute: (values) => calculateRedCellIndices(
+    hemoglobinGdL: (values['hemoglobin'] as NumericEntry).value!,
+    hematocritPercent: (values['hematocrit'] as NumericEntry).value!,
+    rbcTeraL: (values['rbc'] as NumericEntry).value!,
+  ),
+);
+
+/// Valeurs absolues leucocytaires : ANC et ALC.
+final CalculatorDefinition absoluteLeukocyteCountsDefinition = CalculatorDefinition(
+  meta: absoluteLeukocyteCountsMeta,
+  fields: const [
+    CalculatorFieldSpec(
+      id: 'wbc',
+      label: 'Leucocytes',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: '×10⁹/L',
+    ),
+    CalculatorFieldSpec(
+      id: 'neutrophils',
+      label: 'Neutrophiles segmentés',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: '%',
+    ),
+    CalculatorFieldSpec(
+      id: 'bands',
+      label: 'Bandes (0 si non comptées)',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: '%',
+    ),
+    CalculatorFieldSpec(
+      id: 'lymphocytes',
+      label: 'Lymphocytes',
+      kind: FieldKind.numberFixedUnit,
+      fixedUnitLabel: '%',
+    ),
+  ],
+  compute: (values) => calculateAbsoluteLeukocyteCounts(
+    wbcGL: (values['wbc'] as NumericEntry).value!,
+    neutrophilsPercent: (values['neutrophils'] as NumericEntry).value!,
+    bandsPercent: (values['bands'] as NumericEntry).value!,
+    lymphocytesPercent: (values['lymphocytes'] as NumericEntry).value!,
+  ),
+);
+
 /// Tous les calculateurs du domaine hématologie, prêts à être ajoutés au
 /// registre agrégé de l'application.
 final List<CalculatorDefinition> hematologyCalculators = [
@@ -255,4 +322,6 @@ final List<CalculatorDefinition> hematologyCalculators = [
   reticulocyteIndicesPanelDefinition,
   siiIndexDefinition,
   siriIndexDefinition,
+  redCellIndicesDefinition,
+  absoluteLeukocyteCountsDefinition,
 ];

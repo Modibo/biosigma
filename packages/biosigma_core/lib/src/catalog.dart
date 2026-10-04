@@ -1,3 +1,4 @@
+import 'calculators/hematology/blood_count_indices.dart';
 import 'calculators/hematology/inflammation_indices.dart';
 import 'calculators/hematology/microcytic_indices.dart';
 import 'calculators/hematology/reticulocytes.dart';
@@ -104,6 +105,8 @@ class CalculatorCatalog {
     reticulocyteIndicesPanelMeta,
     siiIndexMeta,
     siriIndexMeta,
+    redCellIndicesMeta,
+    absoluteLeukocyteCountsMeta,
   ];
 
   static List<FormulaMeta> byCategory(CalculatorCategory category) =>

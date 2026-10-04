@@ -4642,6 +4642,96 @@
         }
       }
     },
+    "red_cell_indices": {
+      "inputs": {
+        "hemoglobin": "15.0 g/dL",
+        "hematocrit": "45.0 %",
+        "rbc": "5.0 ×10¹²/L"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "VGM",
+            "value": 90.0,
+            "unit": "fL",
+            "precision": 1
+          },
+          {
+            "label": "TCMH",
+            "value": 30.0,
+            "unit": "pg",
+            "precision": 1
+          },
+          {
+            "label": "CCMH",
+            "value": 33.333333333333336,
+            "unit": "g/dL",
+            "precision": 1
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun intervalle de référence n'est comparé : il dépend de l'âge, du sexe et de la méthode de votre laboratoire."
+          }
+        ],
+        "echoed": {
+          "Hémoglobine": "15.0 g/dL",
+          "Hématocrite": "45.0 %",
+          "GR": "5.00 ×10¹²/L"
+        }
+      }
+    },
+    "absolute_leukocyte_counts": {
+      "inputs": {
+        "wbc": "8.0 ×10⁹/L",
+        "neutrophils": "60.0 %",
+        "bands": "5.0 %",
+        "lymphocytes": "30.0 %"
+      },
+      "outcome": {
+        "complete": true,
+        "values": [
+          {
+            "label": "ANC (polynucléaires neutrophiles)",
+            "value": 5.2,
+            "unit": "×10⁹/L",
+            "precision": 2
+          },
+          {
+            "label": "ANC",
+            "value": 5200.0,
+            "unit": "/µL",
+            "precision": 0
+          },
+          {
+            "label": "ALC (lymphocytes)",
+            "value": 2.4,
+            "unit": "×10⁹/L",
+            "precision": 2
+          },
+          {
+            "label": "ALC",
+            "value": 2400.0,
+            "unit": "/µL",
+            "precision": 0
+          }
+        ],
+        "warnings": [
+          {
+            "severity": "info",
+            "message": "Aucun seuil n'est appliqué : neutropénie, lymphopénie ou leur gravité dépendent de l'âge, de l'origine et du contexte clinique."
+          }
+        ],
+        "echoed": {
+          "Leucocytes": "8.00 ×10⁹/L",
+          "Neutrophiles segmentés": "60.0 %",
+          "Bandes": "5.0 %",
+          "Lymphocytes": "30.0 %"
+        }
+      }
+    },
     "isth_dic_score": {
       "inputs": {
         "underlyingDisorderPresent": true,

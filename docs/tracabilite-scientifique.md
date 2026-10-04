@@ -64,6 +64,9 @@ embarqué). Aucun seuil interprétatif clinique n'est codé en dur comme univers
 | Score ISTH de CIVD (`isth_dic_score`) | Taylor FB Jr et al. (ISTH). *Thromb Haemost.* 2001;86(5):1327-1330. | Somme de 4 sous-scores (plaquettes, marqueur de fibrine, allongement TP, fibrinogène) | G/L ; secondes ; g/L | Pathologie associée à un risque de CIVD | Absence de pathologie associée ; donnée manquante → « score incomplet » | Interprétation toujours affichée (décision D-03) ; non validée par un biologiste responsable |
 | Score 4Ts (`four_ts_score`) | Lo GK et al. (Warkentin). *J Thromb Haemost.* 2006;4(4):759-765. | Somme de 4 sous-scores catégoriels (0-2 points chacun) | catégoriel | Suspicion de TIH | Donnée manquante → « score incomplet » | Interprétation toujours affichée (décision D-03) ; non validée par un biologiste responsable |
 
+| Constantes érythrocytaires (`red_cell_indices`) | Relations de définition attribuées à Wintrobe — citation primaire à compléter | VGM = Ht×10/GR ; TCMH = Hb×10/GR ; CCMH = Hb×100/Ht | Hb g/dL ; Ht % ; GR ×10¹²/L → fL, pg, g/dL | Tout âge | Ht ∉ ]0 ; 100] ; valeurs ≤ 0 | Aucun intervalle de référence comparé |
+| Valeurs absolues leucocytaires (`absolute_leukocyte_counts`) | Pourcentage × numération / 100 (définition) | ANC = WBC×(N%+bandes%)/100 ; ALC = WBC×L%/100 | ×10⁹/L ; % → ×10⁹/L et /µL | Tout âge | Pourcentage hors 0-100 ; somme > 100 % bloquante | Aucun seuil de neutropénie/lymphopénie |
+
 ## Points signalés plutôt que devinés
 
 - **LDL Martin-Hopkins** : volontairement non implémenté (table de facteurs ajustés à 180 cellules ;
